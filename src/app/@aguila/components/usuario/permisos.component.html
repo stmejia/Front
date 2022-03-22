@@ -1,0 +1,144 @@
+<ng-container *ngIf="!cargandoDatos">
+  <app-header-component [header]="header" (eventos)="eventosHeader($event)">
+  </app-header-component>
+</ng-container>
+
+<!-- Contenido de la Pagina -->
+<div class="box">
+  <div class="div-center w-100 mt-10" *ngIf="cargandoDatos">
+    <mat-spinner></mat-spinner>
+  </div>
+
+  <mat-card *ngIf="!cargandoDatos" class="mat-elevation-z12">
+    <mat-card-content>
+      <h5 class="txt-c-titulo p-0 m-0">{{ usuario.nombre }}</h5>
+      <p class="p-0 m-0">{{ usuario.username }}</p>
+      <p class="p-0 m-0">{{ usuario.email }}</p>
+      <div class="mt-10">
+        <mat-divider></mat-divider>
+      </div>
+      <mat-tab-group>
+        <mat-tab label="Modulos">
+          <div class="pt-10">
+            <h4 class="p-0 m-0 txt-c-titulo mt-5">Modulos Asignados</h4>
+            <mat-divider></mat-divider>
+
+            <div class="div-modulo" *ngFor="let modulo of listaModulosAsignados |async">
+              <h5 class="p-0 m-0">{{modulo.modulo.nombre}}</h5>
+              <span class="separador"></span>
+              <button class="" mat-button color="primary" matTooltip="Establecer modulo por defecto"
+                *ngIf="modulo.moduloId != usuario.moduloId" (click)="establecerModuloPorDefecto(modulo.modulo)">
+                <mat-icon>check_circle_outline</mat-icon> Por Defecto
+              </button>
+              <button class="" mat-button color="warn" matTooltip="Desasignar Modulo"
+                (click)="desasignarModulo(modulo.modulo)">
+                <mat-icon>highlight_off</mat-icon> Desasignar
+              </button>
+            </div>
+
+            <h4 class="p-0 m-0 txt-c-titulo mt-5">Modulos Disponibles</h4>
+            <mat-divider></mat-divider>
+
+            <div class="div-modulo" *ngFor="let modulo of listaModulosParaAsignar |async">
+              <h5 class="p-0 m-0">{{modulo.nombre}}</h5>
+              <span class="separador"></span>
+              <button mat-flat-button color="primary" matTooltip="Asignar Modulo" (click)="asignarModulo(modulo)">
+                <mat-icon>assignment_turned_in</mat-icon> Asignar Modulo
+              </button>
+            </div>
+          </div>
+        </mat-tab>
+        <mat-tab label="Estaciones De Trabajo">
+          <div class="pt-10">
+            <h4 class="p-0 m-0 txt-c-titulo mt-5">Estaciones De Trabajo Asignada</h4>
+            <mat-divider></mat-divider>
+
+            <div class="div-modulo" *ngFor="let estacion of listaEstacionesAsignados |async">
+              <h5 class="p-0 m-0">{{estacion.estacionTrabajo.codigo}} - {{estacion.estacionTrabajo.nombre}}</h5>
+              <span class="separador"></span>
+              <button mat-button color="primary" matTooltip="Establecer Estación De Trabajo por defecto"
+                *ngIf="estacion.estacionTrabajo.id != usuario.estacionTrabajoId"
+                (click)="establecerEstacionDeTrabajoPorDefecto(estacion.estacionTrabajo)">
+                <mat-icon>check_circle_outline</mat-icon> Por Defecto
+              </button>
+              <button class="" mat-button color="warn" matTooltip="Desasignar Estación De Trabajo"
+                (click)="desasignarEstacionDeTrabajo(estacion)">
+                <mat-icon>highlight_off</mat-icon> Desasignar
+              </button>
+            </div>
+
+            <h4 class="p-0 m-0 txt-c-titulo mt-5">Estaciones De Trabajo Disponibles</h4>
+            <mat-divider></mat-divider>
+
+            <div class="div-modulo" *ngFor="let estacion of listaEstacionesParaAsignar |async">
+              <h5 class="p-0 m-0">{{estacion.codigo}} - {{estacion.nombre}}</h5>
+              <span class="separador"></span>
+              <button mat-flat-button color="primary" matTooltip="Asignar Estación De Trabajo"
+                (click)="asignarEstacionDeTrabajo(estacion)">
+                <mat-icon>assignment_turned_in</mat-icon> Asignar Estación
+              </button>
+            </div>
+          </div>
+        </mat-tab>
+        <mat-tab label="Permisos">
+          <h4 class="pt-5 m-0 txt-c-titulo mt-5">Estaciones De Trabajo Asignada</h4>
+          <mat-divider></mat-divider>
+          <div class="pt-10">
+            <div class="card">
+              <mat-accordion multi>
+                <mat-expansion-panel *ngFor="let estacion of listaEstacionesAsignados | async">
+                  <mat-expansion-panel-header>
+                    <mat-panel-title>
+                      {{estacion.estacionTrabajo.nombre}}
+                    </mat-panel-title>
+                    <mat-panel-description>
+                    </mat-panel-description>
+                  </mat-expansion-panel-header>
+                  <div class="">
+                    <!-- Recursos Asignados -->
+                    <ng-container *ngFor="let recurso of listaRecursosAsignados |async">
+                      <div class="row mt-5 card" *ngIf="recurso.estacionTrabajo_id == estacion.estacionTrabajoId">
+                        <div class="col-md-3 col-sm-4 div-center-v p-5">
+                          <b>{{ recurso.recurso.nombre }}</b>
+                        </div>
+                        <div class="col-md-9 col-sm-8 p-10">
+                          <mat-chip-list multiple>
+                            <mat-chip class="txt-no-selection" *ngFor="let opcion of recurso.recurso.opciones"
+                              [matTooltip]="'Haz doble click para Asignar'"
+                              (dblclick)="actualizarPermiso(opcion,recurso)" [selected]="isAsignado(opcion, recurso)">
+                              {{opcion}}
+                            </mat-chip>
+                          </mat-chip-list>
+                        </div>
+                      </div>
+                    </ng-container>
+                    <!-- Recursos Para Asignar -->
+                    <ng-container *ngFor="let recurso of listaRecursosParaAsignar |async">
+                      <div class="row mt-5 card" *ngIf="mostrarRecurso(recurso)">
+                        <div class="col-md-3 col-sm-4 div-center-v p-5">
+                          <b>{{ recurso.nombre }}</b>
+                        </div>
+                        <div class="col-md-9 col-sm-8 p-10">
+                          <mat-chip-list multiple>
+                            <mat-chip class="txt-no-selection" *ngFor="let opcion of recurso.opciones"
+                              [matTooltip]="'Haz doble click para Asignar'"
+                              (dblclick)="asignarPermiso(opcion,recurso,estacion.estacionTrabajoId)">
+                              {{opcion}}
+                            </mat-chip>
+                          </mat-chip-list>
+                        </div>
+                      </div>
+                    </ng-container>
+                    <div class="mt-10">
+                      <mat-divider></mat-divider>
+                    </div>
+                  </div>
+                </mat-expansion-panel>
+              </mat-accordion>
+            </div>
+          </div>
+        </mat-tab>
+      </mat-tab-group>
+    </mat-card-content>
+  </mat-card>
+</div>

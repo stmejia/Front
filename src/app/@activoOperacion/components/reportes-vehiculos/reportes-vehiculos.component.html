@@ -1,0 +1,120 @@
+<div *ngIf="!cargandoDatos">
+    <ng-container>
+        <app-header-component [header]="(configuracionComponent | async).header" (eventos)="eventosHeader($event)">
+        </app-header-component>
+
+        <div class="box">
+            <mat-card class="mat-elevation-z18 p-0 slide-in-bottom">
+                <mat-card-content class="p-10">
+                    <!-- Filtros -->
+                    <div class="card">
+                        <app-filtros [filtros]="getFiltrosComponent() | async" (queryFilters)="getFiltros($event)"
+                            (clickConsultarDatos)="cargarPaginaFiltros()"></app-filtros>
+                    </div>
+                    <mat-tab-group mat-align-tabs="end">
+                        <mat-tab label="Resumen">
+                            <ng-container>
+                                <div class="contadores">
+                                    <div class="contador">
+                                        <div class="card-glass">
+                                            <img src="./assets/img/remolque.svg" alt="">
+                                            <div class="texto">
+                                                <h4>{{(getDatos() | async).length}}</h4>
+                                                <p>Total</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="contador">
+                                        <div class="card-glass">
+                                            <img src="./assets/img/disponible.svg" alt="">
+                                            <div class="texto">
+                                                <h4>{{getEquiposDisponibles().length}}</h4>
+                                                <p>Disponibles</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="contador">
+                                        <div class="card-glass">
+                                            <img src="./assets/img/ruta.svg" alt="">
+                                            <div class="texto">
+                                                <h4>{{getDatosXEstado('egresado').length}}</h4>
+                                                <p>Ruta</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="contador">
+                                        <div class="card-glass">
+                                            <img src="./assets/img/almacen.svg" alt="">
+                                            <div class="texto">
+                                                <h4>{{getDatosXEstado('bodega').length}}</h4>
+                                                <p>Bodega</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="contador">
+                                        <div class="card-glass">
+                                            <img src="./assets/img/rentaInterna.svg" alt="">
+                                            <div class="texto">
+                                                <h4>{{getDatosXEstado('renta interna').length}}</h4>
+                                                <p>Renta Interna</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="contador">
+                                        <div class="card-glass">
+                                            <img src="./assets/img/rentaExterna.svg" alt="">
+                                            <div class="texto">
+                                                <h4>{{getDatosXEstado('renta externa').length}}</h4>
+                                                <p>Renta Externa</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="contador">
+                                        <div class="card-glass">
+                                            <img src="./assets/img/reparar.svg" alt="">
+                                            <div class="texto">
+                                                <h4>{{getDatosXEstado('reparado').length}}</h4>
+                                                <p>Reparación</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="graficas" *ngIf="mostrarGraficas">
+                                    <div class="grafica" >
+                                        <div class="card-glass" echarts [options]="optionsEquiposPorEstado"></div>
+                                    </div>
+                                    <div class="grafica" >
+                                        <div class="card-glass" echarts [options]="optionsEquiposPorEstacion"></div>
+                                    </div>
+                                </div>
+                                <div class="graficas" *ngIf="mostrarGraficas">
+                                    <div class="grafica-bar">
+                                        <div class="card-glass">
+                                            <div echarts [options]="optionsEquiposPorEstadoEstacion"></div>
+                                        </div>
+                                    </div>
+                                    <div class="grafica-bar">
+                                        <div class="card-glass">
+                                            <div echarts [options]="optionsEquiposPorTipo"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </ng-container>
+                        </mat-tab>
+                        <mat-tab label="Datos">
+                            <app-aguila-tabla [columnas]="getColumnas() |async" [listaDatos]="getDatos() | async"
+                                [listaOpciones]="getMenuOpcionesTabla() | async"
+                                (eventMenu)="eventoMenuOpciones($event)" (eventExcel)="generarExcel($event)"
+                                (eventPdf)="generarPdf($event)">
+                            </app-aguila-tabla>
+                        </mat-tab>
+                    </mat-tab-group>
+                </mat-card-content>
+            </mat-card>
+        </div>
+    </ng-container>
+</div>
+
+<div class="div-center w-100 mt-10" *ngIf="cargandoDatos">
+    <mat-spinner></mat-spinner>
+</div>

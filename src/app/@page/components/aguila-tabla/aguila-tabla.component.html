@@ -1,0 +1,198 @@
+<!--Buscador y Paginador-->
+<div class="row pl-10 pr-5 pt-10">
+    <!--Buscador-->
+    <div class="col-md-5 col-sm-12 p-0" *ngIf="buscador">
+        <div class="div-buscador">
+            <mat-form-field class="w-100">
+                <mat-label>{{'Buscar'}}:</mat-label>
+                <input matInput (keyup.enter)="eventoBuscador()" #input [(ngModel)]="filtro"
+                    [matTooltip]="'Presiona ENTER para buscar'" (keyup)="filtrarTabla()" />
+                <button mat-button matSuffix mat-icon-button (click)="eventoBuscador()">
+                    <mat-icon matSuffix>search</mat-icon>
+                </button>
+            </mat-form-field>
+            <button class="ml-5 mr-5" mat-icon-button [matMenuTriggerFor]="menu" matTooltip="Herramientas">
+                <mat-icon>home_repair_service</mat-icon>
+            </button>
+            <mat-menu #menu="matMenu">
+                <button mat-menu-item [matMenuTriggerFor]="listaColumn">
+                    <mat-icon>visibility</mat-icon>
+                    <span>Mostrar/Ocultar Columnas</span>
+                </button>
+                <button mat-menu-item [matMenuTriggerFor]="listaExportar" [disabled]="!exportar">
+                    <mat-icon>get_app</mat-icon>
+                    <span>Exportar</span>
+                </button>
+            </mat-menu>
+            <mat-menu #listaColumn="matMenu">
+                <mat-list cdkDropList [cdkDropListData]="columnas" (cdkDropListDropped)="drop($event)">
+                    <mat-list-item *ngFor="let colum of columnas" cdkDrag (click)="$event.stopPropagation()">
+                        <mat-checkbox [(ngModel)]="colum.visible">
+                            {{colum.titulo}}
+                        </mat-checkbox>
+                    </mat-list-item>
+                </mat-list>
+            </mat-menu>
+            <mat-menu #listaExportar="matMenu">
+                <mat-list>
+                    <mat-list-item>
+                        <button mat-flat-button (click)="generarExcel()">
+                            <img class="" src="https://img.icons8.com/material-outlined/24/000000/ms-excel--v2.png" />
+                            Exportar a Excel
+                        </button>
+                    </mat-list-item>
+                    <mat-list-item>
+                        <button mat-flat-button (click)="generarPdf()">
+                            <mat-icon class="">picture_as_pdf</mat-icon>
+                            Exportar a PDF
+                        </button>
+                    </mat-list-item>
+                </mat-list>
+            </mat-menu>
+        </div>
+    </div>
+    <!--Paginador-->
+    <div class="col-md-7 col-sm-12 p-0" *ngIf="paginador">
+        <div class="box-paginador">
+            <div class="box-right card pl-5 pr-5">
+                <p class="p-0 m-0 mr-5">
+                    {{
+                    paginador.pageSize * paginador.currentPage -
+                    paginador.pageSize +
+                    1
+                    }}-{{ paginador.pageSize * paginador.currentPage }} {{'de'}}
+                    {{ paginador.totalCount }}
+                </p>
+                <button class="pagina" *ngIf="1 !== paginador.currentPage" mat-icon-button
+                    disabled="{{ 1 == paginador.currentPage }}" (click)="clickEventPaginador(1)"
+                    [matTooltip]="'Primera Página'">
+                    <mat-icon>first_page</mat-icon>
+                </button>
+                <button class="pagina" *ngIf="paginador.hasPreviousPage" mat-icon-button
+                    disabled="{{ !paginador.hasPreviousPage }}" (click)="clickEventPaginador(paginador.currentPage - 1)"
+                    [matTooltip]="'Página Anterior'">
+                    <mat-icon>keyboard_arrow_left</mat-icon>
+                </button>
+                <button class="pagina" mat-icon-button *ngFor="let item of paginador.paginas"
+                    [ngClass]="{ 'txt-c-titulo': paginador.currentPage == item }" (click)="clickEventPaginador(item)"
+                    [matTooltip]="('Página') + ' ' +item">
+                    {{ item }}
+                </button>
+                <button class="pagina" *ngIf="paginador.hasNextPage" mat-icon-button
+                    disabled="{{ !paginador.hasNextPage }}" (click)="clickEventPaginador(paginador.currentPage + 1)"
+                    [matTooltip]="'Página Siguiente'">
+                    <mat-icon>keyboard_arrow_right</mat-icon>
+                </button>
+                <button class="pagina" *ngIf="paginador.totalPages !== paginador.currentPage" mat-icon-button
+                    disabled="{{ paginador.totalPages == paginador.currentPage }}"
+                    (click)="clickEventPaginador(paginador.totalPages)" [matTooltip]="'Ultima Página'">
+                    <mat-icon>last_page</mat-icon>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Tabla de Datos -->
+<div class="table-responsive" style="max-height: 500px;">
+    <table class="table">
+        <thead class="thead" cdkDropList cdkDropListOrientation="horizontal" (cdkDropListDropped)="drop($event)">
+            <tr class="tr">
+                <!-- Columna Modal-->
+                <th class="th" scope="col" *ngIf="modal">
+                    <mat-icon>settings</mat-icon>
+                </th>
+                <!--Columnas -->
+                <ng-container *ngFor="let columna of columnas">
+                    <th cdkDrag class="th cursor" [ngClass]="getCssAligment(columna)"
+                        *ngIf="columna.visible ==true && (columna.tipo == 'texto' || columna.tipo == 'fecha' || columna.tipo == 'fechaHora' || columna.tipo == 'boolean' || columna.tipo == 'concatenar')">
+                        {{columna.titulo}}
+                    </th>
+                    <th class="th cursor" cdkDrag
+                        *ngIf="columna.tipo == 'imagen' || columna.tipo == 'opcion' && columna.visible ==true">
+                        <mat-icon>{{columna.titulo}}</mat-icon>
+                    </th>
+                </ng-container>
+            </tr>
+        </thead>
+        <!-- Cuerpo de Tabla -->
+        <tbody class="tbody">
+            <tr class="tr" *ngFor="let item of getDatos(); index as i">
+                <td class="td" *ngIf="modal">
+                    <button *ngIf="!multi" mat-mini-fab color="primary" matTooltip="Seleccionar"
+                        [mat-dialog-close]="[item]">
+                        <mat-icon>check</mat-icon>
+                    </button>
+                    <mat-checkbox *ngIf="multi" class="example-margin" (click)="seleccionarItem(item)">
+                    </mat-checkbox>
+                </td>
+                <ng-container *ngFor="let columna of columnas">
+                    <ng-container *ngIf="columna.visible">
+                        <!-- Menu Opciones -->
+                        <td class="td" *ngIf="columna.tipo == 'opcion'">
+                            <button mat-icon-button [matMenuTriggerFor]="menu" [matTooltip]="'Opciones'">
+                                <mat-icon>more_vert</mat-icon>
+                            </button>
+                            <mat-menu #menu="matMenu">
+                                <ng-container *ngFor="let opcion of listaOpciones">
+                                    <button mat-menu-item [disabled]="!opcion.disponible"
+                                        (click)="clickEventoMenuOpciones(opcion.idEvento,item)">
+                                        <mat-icon>{{opcion.icono}}</mat-icon>
+                                        {{opcion.nombre}}
+                                    </button>
+                                </ng-container>
+                            </mat-menu>
+                        </td>
+                        <!-- Texto -->
+                        <td class="td" *ngIf="columna.tipo == 'texto'" [ngClass]="getCssAligment(columna)">
+                            <span class="td-m">
+                                {{columna.titulo}}
+                            </span>
+                            {{getDatoObjeto(item,columna.target)}}
+                        </td>
+                        <!-- Imagen -->
+                        <td class="td" *ngIf="columna.tipo == 'imagen'">
+                            <img class="img-perfil d-block mx-auto" onerror="this.src = 'assets/img/LogoApp.png'"
+                                [src]="getDatoObjeto(item,columna.target) || columna.imgError " alt="Imagen"
+                                (click)="mostrarImagen(getDatoObjeto(item,columna.target))"
+                                [matTooltip]="'Click para visualizar'">
+                        </td>
+                        <!-- Boolean -->
+                        <td class="td" *ngIf="columna.tipo == 'boolean'">
+                            <span class="td-m">{{columna.titulo}}</span>
+                            <div class="div-center-h">
+                                <img class="icono-25" *ngIf="getDatoObjeto(item,columna.target) == true"
+                                    oncontextmenu="return false" src="assets/iconos/checked.png" alt="IconoCheck">
+                                <img class="icono-25" *ngIf="getValorBolean(item,columna.target) === false"
+                                    oncontextmenu="return false" src="assets/iconos/checked_red.png" alt="IconoCheck">
+                            </div>
+                        </td>
+                        <!-- Fecha -->
+                        <td class="td" *ngIf="columna.tipo == 'fecha'" [ngClass]="getCssAligment(columna)">
+                            <span class="td-m">{{columna.titulo}}</span>
+                            {{getDatoObjeto(item,columna.target) | fecha : columna.formatoFecha}}
+                        </td>
+                        <!-- Concatenar -->
+                        <td class="td" *ngIf="columna.tipo == 'concatenar'" [ngClass]="getCssAligment(columna)">
+                            <span class="td-m">
+                                {{columna.titulo}}
+                            </span>
+                            {{getDatoObjetoConcatenar(item,columna.targetConcatenar,columna.caracterConcatenar)}}
+                        </td>
+                    </ng-container>
+                </ng-container>
+        </tbody>
+    </table>
+    <ng-container *ngIf="getDatos().length<1">
+        <div class="text-center">
+            <p>No hay datos para mostrar</p>
+        </div>
+    </ng-container>
+</div>
+
+<ng-container *ngIf="modal">
+    <mat-dialog-actions align="end">
+        <button mat-button mat-dialog-close color="warn">Cancelar</button>
+        <button mat-button *ngIf="multi" color="primary" [mat-dialog-close]="itemsSeleccionados">Seleccionar</button>
+    </mat-dialog-actions>
+</ng-container>

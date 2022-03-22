@@ -1,0 +1,58 @@
+<header>
+  <mat-toolbar color="primary">
+    <button mat-icon-button (click)="sidenav.toggle()">
+      <mat-icon>menu</mat-icon>
+    </button>
+    <span class="vista-m">AguilaApp</span>
+    <span class="example-spacer"></span>
+
+    <!-- Boton de Menu Principal -->
+    <button mat-flat-button color="primary" [matMenuTriggerFor]="menu" *ngIf="usuario.id">
+      {{ usuario.nombre }}
+      <img mat-icon class="img-perfil" [src]="img" fallimg />
+    </button>
+
+    <!-- Menu Principal -->
+    <mat-menu class="mr-5 mt-10" #menu="matMenu">
+      <button mat-menu-item [routerLink]="['/aguila/ajustes']">
+        <mat-icon>person_outline</mat-icon>
+        <span>{{textos && textos.tltPerfil || 'Perfil'}}</span>
+      </button>
+      <!-- Boton que muesta el Menu de Seleccion de Modulos -->
+      <button mat-menu-item [matMenuTriggerFor]="modulos" *ngIf="modulosU.length">
+        <mat-icon>view_module</mat-icon>
+        <span>{{textos && textos.btnCambiarModulo || 'Cambiar Modulo'}}</span>
+      </button>
+      <button mat-menu-item (click)="EstacionDialog()">
+        <mat-icon>store</mat-icon>
+        <span>{{textos && textos.btnCambiarEstacion || 'Cambiar Estacion'}}</span>
+      </button>
+      <button mat-menu-item (click)="btnLogout()">
+        <mat-icon>exit_to_app</mat-icon>
+        <span>{{textos && textos.btnCerrarSesion || 'Cerrar Sesión'}}</span>
+      </button>
+    </mat-menu>
+
+    <!-- Menu de Seleccion de Modulos -->
+    <mat-menu #modulos="matMenu" class="mr-5" >
+      <button mat-menu-item *ngFor="let modulo of modulosU" (click)='cambiarModulo(modulo)'>
+        <mat-icon>{{getIconoModulo(modulo.path)}}</mat-icon>
+        <span>{{modulo.nombre}}</span>
+      </button>
+      <ng-container *ngIf="isSuperAdmin()">
+        <button mat-menu-item *ngIf="!produccion" [routerLink]="['/prumod']">
+          <mat-icon>bug_report</mat-icon>
+          <span>Modulo de Pruebas</span>
+        </button>
+      </ng-container>
+
+    </mat-menu>
+
+    <!-- Boton para iniciar sesion -->
+    <button mat-icon-button [routerLink]="['/security/login']"
+      [matTooltip]="textos && textos.btnIniciarSesion || 'Iniciar Sesión'" *ngIf="!usuario.id">
+      <mat-icon>account_circle</mat-icon>
+    </button>
+
+  </mat-toolbar>
+</header>

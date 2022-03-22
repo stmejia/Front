@@ -1,0 +1,216 @@
+<ng-container *ngIf="!cargando">
+    <app-header-component [header]="(configuracionComponent | async).header" (eventos)="eventosHeader($event)">
+    </app-header-component>
+</ng-container>
+
+<div class="box">
+    <div class="div-center w-100 mt-10" *ngIf="cargando">
+        <mat-spinner></mat-spinner>
+    </div>
+
+    <mat-card class="mat-elevation-z12 slide-in-bottom" *ngIf="!cargando">
+        <mat-card-content>
+            <div class="card">
+                <mat-accordion class="w-100">
+                    <mat-expansion-panel expanded>
+                        <mat-expansion-panel-header>
+                            <mat-panel-title>
+                                <h4 class="p-0 m-0 div-center-v">Filtrar Datos</h4>
+                            </mat-panel-title>
+                        </mat-expansion-panel-header>
+                        <div class="row">
+                            <div class="col-md-2">
+                                <app-select-aguila [columnas]="colTipoVehiculo" [datos]="getTipoVehiculo() | async"
+                                    (objetoSeleccionado)="this.tipoVehiculo = $event" (focusout)="limpiarDatos()"
+                                    [itemSelect]="getTipoVehiculoSelect()" [nombre]="'Tipo de Vehiculo'">
+                                </app-select-aguila>
+                            </div>
+                            <div class="col-md-2">
+                                <mat-form-field appearance="legacy" class="w-100" (focusout)="limpiarDatos()">
+                                    <mat-label>Equipo Activo:</mat-label>
+                                    <mat-select [(value)]="queryFilters[0].parametro">
+                                        <mat-option [value]="''">Todos </mat-option>
+                                        <mat-option [value]="true">Si </mat-option>
+                                        <mat-option [value]="false">No </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+                            <div class="col-md-2">
+                                <mat-form-field appearance="legacy" class="w-100" (focusout)="limpiarDatos()">
+                                    <mat-label>Equipo Propio:</mat-label>
+                                    <mat-select [(value)]="queryFilters[1].parametro">
+                                        <mat-option [value]="''">Todos </mat-option>
+                                        <mat-option [value]="true">Si </mat-option>
+                                        <mat-option [value]="false">No </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+                            <div class="col-md-2">
+                                <app-select-aguila [columnas]="colEstadosActivo" [datos]="listaEstados"
+                                    (objetoSeleccionado)="queryFilters[2].parametro = $event.id"
+                                    (focusout)="limpiarDatos()" [itemSelect]="queryFilters[2].parametro"
+                                    [nombre]="'Estado:'">
+                                </app-select-aguila>
+                            </div>
+                            <div class="col-md-2">
+                                <mat-form-field appearance="legacy" class="w-100" (focusout)="limpiarDatos()">
+                                    <mat-label>Flota:</mat-label>
+                                    <mat-select [(value)]="queryFilters[3].parametro">
+                                        <mat-option [value]="''">Todos </mat-option>
+                                        <mat-option *ngFor="let item of listaFlota" [matTooltip]="item.descripcion"
+                                            [value]="item.valor">
+                                            {{item.valor}}
+                                        </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+                            <div class="col-md-2">
+                                <mat-form-field appearance="legacy" class="w-100" (focusout)="limpiarDatos()">
+                                    <mat-label>Admin. Global:</mat-label>
+                                    <mat-select [(value)]="queryFilters[16].parametro"
+                                        [disabled]="!opcionDisponible('Global')">
+                                        <mat-option [value]="true">Si</mat-option>
+                                        <mat-option [value]="false">No</mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+                            <ng-container *ngIf="this.tipoVehiculo != null">
+                                <div class="col-md-2" *ngIf="mostrarCampo('distancia')">
+                                    <mat-form-field appearance="legacy" class="w-100" (focusout)="limpiarDatos()">
+                                        <mat-label>Distancia:</mat-label>
+                                        <mat-select [(value)]="queryFilters[4].parametro">
+                                            <mat-option *ngFor="let item of listaDistancia"
+                                                [matTooltip]="item.descripcion" [value]="item.valor">
+                                                {{item.valor}}
+                                            </mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+                                </div>
+                                <div class="col-md-2" *ngIf="mostrarCampo('potencia')">
+                                    <mat-form-field appearance="legacy" class="w-100" (focusout)="limpiarDatos()">
+                                        <mat-label>Potencia:</mat-label>
+                                        <mat-select [(value)]="queryFilters[5].parametro">
+                                            <mat-option *ngFor="let item of listaPotencia"
+                                                [matTooltip]="item.descripcion" [value]="item.valor">
+                                                {{item.valor}}
+                                            </mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+                                </div>
+                                <div class="col-md-2" *ngIf="mostrarCampo('tornamesaGraduable')">
+                                    <mat-form-field appearance="legacy" class="w-100" (focusout)="limpiarDatos()">
+                                        <mat-label>Tornamesa Graduable:</mat-label>
+                                        <mat-select [(value)]="queryFilters[6].parametro">
+                                            <mat-option *ngFor="let item of listaTornamesaGraduable"
+                                                [matTooltip]="item.descripcion" [value]="item.valor">
+                                                {{item.valor}}
+                                            </mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+                                </div>
+                                <div class="col-md-2" *ngIf="mostrarCampo('capacidadCarga')">
+                                    <mat-form-field appearance="legacy" class="w-100" (focusout)="limpiarDatos()">
+                                        <mat-label>Capacidad de Carga:</mat-label>
+                                        <mat-select [(value)]="queryFilters[7].parametro">
+                                            <mat-option *ngFor="let item of listaCapacidadCargaCamion"
+                                                [matTooltip]="item.descripcion" [value]="item.valor">
+                                                {{item.valor}}
+                                            </mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+                                </div>
+                                <div class="col-md-2" *ngIf="mostrarCampo('carroceria')">
+                                    <mat-form-field appearance="legacy" class="w-100" (focusout)="limpiarDatos()">
+                                        <mat-label>Carroceria:</mat-label>
+                                        <mat-select [(value)]="queryFilters[8].parametro">
+                                            <mat-option *ngFor="let item of listaCarroceria"
+                                                [matTooltip]="item.descripcion" [value]="item.valor">
+                                                {{item.valor}}
+                                            </mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+                                </div>
+                                <div class="col-md-2" *ngIf="mostrarCampo('tipoCarga')">
+                                    <mat-form-field appearance="legacy" class="w-100" (focusout)="limpiarDatos()">
+                                        <mat-label>Tipo de Carga:</mat-label>
+                                        <mat-select [(value)]="queryFilters[9].parametro">
+                                            <mat-option *ngFor="let item of listaTipoCarga"
+                                                [matTooltip]="item.descripcion" [value]="item.valor">
+                                                {{item.valor}}
+                                            </mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+                                </div>
+                                <div class="col-md-2" *ngIf="mostrarCampo('tipoVehiculo')">
+                                    <mat-form-field appearance="legacy" class="w-100" (focusout)="limpiarDatos()">
+                                        <mat-label>Tipo de Vehiculo:</mat-label>
+                                        <mat-select [(value)]="queryFilters[10].parametro">
+                                            <mat-option *ngFor="let item of listaTipoVehiculo"
+                                                [matTooltip]="item.descripcion" [value]="item.valor">
+                                                {{item.valor}}
+                                            </mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+                                </div>
+                                <div class="col-md-2" *ngIf="mostrarCampo('capacidadMontacarga')">
+                                    <mat-form-field appearance="legacy" class="w-100" (focusout)="limpiarDatos()">
+                                        <mat-label>Capacidad de Carga:</mat-label>
+                                        <mat-select [(value)]="queryFilters[11].parametro">
+                                            <mat-option *ngFor="let item of listaCapacidadMontaCarga"
+                                                [matTooltip]="item.descripcion" [value]="item.valor">
+                                                {{item.valor}}
+                                            </mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+                                </div>
+                                <div class="col-md-2" *ngIf="mostrarCampo('tipoMotor')">
+                                    <mat-form-field appearance="legacy" class="w-100" (focusout)="limpiarDatos()">
+                                        <mat-label>Tipo de Motor:</mat-label>
+                                        <mat-select [(value)]="queryFilters[12].parametro">
+                                            <mat-option *ngFor="let item of listaTipoMotor"
+                                                [matTooltip]="item.descripcion" [value]="item.valor">
+                                                {{item.valor}}
+                                            </mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+                                </div>
+                                <div class="col-md-2" *ngIf="mostrarCampo('tipoMaquina')">
+                                    <mat-form-field appearance="legacy" class="w-100" (focusout)="limpiarDatos()">
+                                        <mat-label>Tipo de Maquinaria:</mat-label>
+                                        <mat-select [(value)]="queryFilters[13].parametro">
+                                            <mat-option *ngFor="let item of listaTipoMaquinaria"
+                                                [matTooltip]="item.descripcion" [value]="item.valor">
+                                                {{item.valor}}
+                                            </mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+                                </div>
+                            </ng-container>
+                            <div class="col-sm-12 p-0 m-0 pr-15">
+                                <div class="box-paginador slide-in-left">
+                                    <div class="box-right">
+                                        <button class="txt-c-titulo p-0 mr-5" mat-flat-button [matTooltip]="''"
+                                            (click)="cargarPagina(1)">
+                                            <mat-icon class="rotate-in-center">refresh</mat-icon>
+                                            Consultar Datos
+                                        </button>
+                                        <button class="txt-c-danger p-0 mr-5" mat-flat-button [matTooltip]="''"
+                                            (click)="limpiarFiltros()">
+                                            <mat-icon class="wobble-hor-bottom">delete_outline</mat-icon>
+                                            Limpiar Filtros
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </mat-expansion-panel>
+                </mat-accordion>
+            </div>
+            <app-tabla-grid-aguila [datos]="getDatos() | async" [columnas]="columnas" [agrupaciones]="true"
+                [listaOpciones]="getOpcionesTabla() |async" [paginador]="getPaginador() |async" [exportar]="true"
+                (eventMenu)="eventoMenuOpciones($event)" (eventPaginador)="eventoPaginador($event)"
+                (eventExcel)="generarExcel($event)" (eventPdf)="generarPdf($event)">
+            </app-tabla-grid-aguila>
+        </mat-card-content>
+    </mat-card>
+</div>

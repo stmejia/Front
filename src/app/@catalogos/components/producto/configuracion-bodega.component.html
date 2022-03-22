@@ -1,0 +1,84 @@
+<div>
+    <h3 class="p-0 m-0 txt-c-titulo mb-5">Configuración en bodega</h3>
+    <mat-divider></mat-divider>
+    <div class="div-center w-100 mt-10" *ngIf="cargandoDatos">
+        <mat-spinner></mat-spinner>
+    </div>
+    <div *ngIf="!cargandoDatos">
+        <div class="card p-10 mt-10">
+            <h5 class="p-0 m-0 txt-c-titulo">Código:{{producto.codigo}} --- Descripción:{{producto.descripcion}}</h5>
+        </div>
+
+        <div class="col-md-12">
+            <app-select-aguila [columnas]="colEstacionTrabajo" [datos]="estacionesTrabajo"
+                (itemSeleccionado)="selectBodega($event)" [nombre]="'Bodega'"
+                [itemSelect]="this.form.controls['idBodega'].value">
+            </app-select-aguila>
+        </div>
+
+        <form [formGroup]="form" *ngIf="mostrarCampos">
+            <div class="card p-10 m-5">
+                <h6 class="txt-c-titulo">Ubicación en bodega</h6>
+                <div class="row">
+                    <div class="col-sm-3">
+                        <mat-form-field appearance="legacy" class="w-100">
+                            <mat-label>Pasillo:</mat-label>
+                            <input matInput type="number" formControlName="pasillo" />
+                            <mat-error>{{ '' }}</mat-error>
+                        </mat-form-field>
+                    </div>
+                    <div class="col-sm-3">
+                        <mat-form-field appearance="legacy" class="w-100">
+                            <mat-label>Estante:</mat-label>
+                            <input matInput type="number" formControlName="estante" />
+                            <mat-error>{{ '' }}</mat-error>
+                        </mat-form-field>
+                    </div>
+                    <div class="col-sm-3">
+                        <mat-form-field appearance="legacy" class="w-100">
+                            <mat-label>Nivel:</mat-label>
+                            <input matInput type="number" formControlName="nivel" />
+                            <mat-error>{{ '' }}</mat-error>
+                        </mat-form-field>
+                    </div>
+                    <div class="col-sm-3">
+                        <mat-form-field appearance="legacy" class="w-100">
+                            <mat-label>Lugar:</mat-label>
+                            <input matInput type="number" formControlName="lugar" />
+                            <mat-error>{{ '' }}</mat-error>
+                        </mat-form-field>
+                    </div>
+                </div>
+            </div>
+            <div class="card p-10 m-5">
+                <h6 class="txt-c-titulo">Maximos y Minimos</h6>
+                <div class="row">
+                    <div class="col-sm-4 mx-auto">
+                        <mat-form-field appearance="legacy" class="w-100">
+                            <mat-label>Maximo:</mat-label>
+                            <input matInput type="number" formControlName="maximo" />
+                            <mat-error>{{ '' }}</mat-error>
+                        </mat-form-field>
+                    </div>
+                    <div class="col-sm-4 mx-auto">
+                        <mat-form-field appearance="legacy" class="w-100">
+                            <mat-label>Minimo:</mat-label>
+                            <input matInput type="number" formControlName="minimo" />
+                            <mat-error>{{ '' }}</mat-error>
+                        </mat-form-field>
+                    </div>
+                </div>
+            </div>
+        </form>
+        <div class="box-paginador slide-in-left">
+            <div class="box-right">
+                <button class="mr-5" mat-flat-button color="warn" mat-dialog-close>
+                    <mat-icon class="rotate-in-center">clear</mat-icon> Cancelar
+                </button>
+                <button class="mr-5" mat-flat-button color="primary" *ngIf="mostrarCampos" (click)="guardarRegistro()">
+                    <mat-icon class="wobble-hor-bottom">save_alt</mat-icon>Guardar
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

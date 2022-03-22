@@ -1,0 +1,95 @@
+<ng-container *ngIf="!cargandoDatos">
+    <app-header-component [header]="header" (eventos)="eventosHeader($event)">
+    </app-header-component>
+</ng-container>
+
+<!-- Contenido de la página -->
+<div class="box">
+    <mat-card class="mat-elevation-z6 slide-in-bottom" *ngIf="!cargandoDatos">
+        <mat-card-content>
+            <div class="row">
+                <div class="col-md-4">
+                    <mat-form-field appearance="legacy" class="w-100">
+                        <mat-label>{{'Buscar Recurso'}}</mat-label>
+                        <input #inputControlador matInput type="text" placeholder="Controlador"
+                            (focusout)="buscarRecurso(inputControlador)" />
+                    </mat-form-field>
+                </div>
+                <div class="col-md-8">
+                    <div class="centrado">
+                        <h5 *ngIf="recurso"> {{recurso.nombre}}</h5>
+                        <h5 *ngIf="!recurso" class="">*Recurso Requerido</h5>
+                    </div>
+                </div>
+            </div>
+            <!-- Formulario -->
+            <form [formGroup]="form">
+                <div class="row">
+                    <div class="col-12">
+                        <mat-form-field appearance="legacy" class="w-100">
+                            <mat-label>Propiedad</mat-label>
+                            <input matInput type="text" formControlName="propiedad" />
+                        </mat-form-field>
+                    </div>
+                    <div class="col-12">
+                        <mat-form-field appearance="legacy" class="w-100">
+                            <mat-label>Servidor</mat-label>
+                            <input matInput placeholder="Local" formControlName="servidor">
+                        </mat-form-field>
+                    </div>
+                    <div class="col-12">
+                        <mat-form-field appearance="legacy" class="w-100">
+                            <mat-label>Carpeta</mat-label>
+                            <input matInput placeholder="fotos/imagenes/.." formControlName="carpeta">
+                        </mat-form-field>
+                    </div>
+                    <div class="col-12">
+                        <mat-form-field appearance="legacy" class="w-100">
+                            <mat-label>Peso Máximo Mb</mat-label>
+                            <input matInput type="number" placeholder="Peso máximo" formControlName="pesoMaxMb">
+                            <span matSuffix>Mb</span>
+                        </mat-form-field>
+                    </div>
+                    <div class="col-12">
+                        <mat-form-field appearance="legacy" class="w-100">
+                            <mat-label>No. Máximo De Imagenes</mat-label>
+                            <input matInput type="number" formControlName="noMaxImagenes">
+                        </mat-form-field>
+                    </div>
+                    <div class="col-12">
+                        <mat-form-field appearance="legacy" class="w-100">
+                            <mat-label>Imagen Default</mat-label>
+                            <input matInput type="text" formControlName="defaultImagen" />
+                        </mat-form-field>
+                    </div>
+                    <div class="col-12">
+                        <mat-form-field appearance="legacy" class="w-100">
+                            <mat-label>Eliminación Física</mat-label>
+                            <mat-select formControlName="eliminacionFisica">
+                                <mat-option [value]="true"> {{'Activo'}} </mat-option>
+                                <mat-option [value]="false"> {{'Bloqueado'}}
+                                </mat-option>
+                            </mat-select>
+                            <mat-error>{{ codErrores.eliminacionFisica }}</mat-error>
+                        </mat-form-field>
+                    </div>
+                    <div class="col-12">
+                        <mat-form-field appearance="legacy" class="w-100">
+                            <mat-label>Múltiples Imágenes</mat-label>
+                            <mat-select formControlName="multiplesImagenes">
+                                <mat-option [value]="true"> {{'Activo'}} </mat-option>
+                                <mat-option [value]="false"> {{'Bloqueado'}}
+                                </mat-option>
+                            </mat-select>
+                            <mat-error>{{ codErrores.multiplesImagenes }}</mat-error>
+                        </mat-form-field>
+                    </div>
+                </div>
+            </form>
+            <!-- Imagen de Perfil -->
+            <app-select-images-files [imagenRecurso]="form.value" [titulo]="'Imagen Por Defecto'"
+                (listaImagenes)="getImagenes($event)">
+            </app-select-images-files>
+        </mat-card-content>
+    </mat-card>
+</div>

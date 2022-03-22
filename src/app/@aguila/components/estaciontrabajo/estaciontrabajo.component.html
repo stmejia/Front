@@ -1,0 +1,67 @@
+<ng-container *ngIf="!cargandoDatos">
+    <app-header-component [header]="header" (eventos)="eventosHeader($event)">
+    </app-header-component>
+</ng-container>
+
+<!-- Contenido de la Pagina -->
+<div class="box">
+    <div class="div-center w-100 mt-10" *ngIf="cargandoDatos">
+        <mat-spinner></mat-spinner>
+    </div>
+    <mat-card class="mat-elevation-z6 slide-in-bottom" *ngIf="!cargandoDatos">
+        <mat-card-content>
+            <!-- Formulario -->
+            <form [formGroup]="form">
+                <div class="row">
+                    <div class="col-12">
+                        <mat-form-field appearance="legacy" class="w-100">
+                            <mat-label>Código</mat-label>
+                            <input matInput type="text" formControlName="codigo" />
+                            <mat-error>{{ codErrores.codigo }}</mat-error>
+                        </mat-form-field>
+                    </div>
+                    <div class="col-12">
+                        <mat-form-field appearance="legacy" class="w-100">
+                            <mat-label>Nombre</mat-label>
+                            <input matInput type="text" formControlName="nombre" />
+                            <mat-error>{{ codErrores.nombre }}</mat-error>
+                        </mat-form-field>
+                    </div>
+                    <div class="col-12">
+                        <mat-form-field appearance="legacy" class="w-100">
+                            <mat-label>Tipo</mat-label>
+                            <mat-select formControlName="tipo">
+                                <mat-option value="Oficina"> Oficina </mat-option>
+                                <mat-option value="Bodega"> Bodega </mat-option>
+                                <mat-option value="Caja"> Caja </mat-option>
+                            </mat-select>
+                            <mat-error>{{ codErrores.tipo }}</mat-error>
+                        </mat-form-field>
+                    </div>
+                    <div class="col-12">
+                        <mat-form-field appearance="legacy" class="w-100">
+                            <mat-label>Estado</mat-label>
+                            <mat-select formControlName="activa">
+                                <mat-option value="" selected></mat-option>
+                                <mat-option [value]="true"> Activo </mat-option>
+                                <mat-option [value]="false">Bloqueado </mat-option>
+                            </mat-select>
+                            <mat-error>{{ codErrores.activa }}</mat-error>
+                        </mat-form-field>
+                    </div>
+                    <div class="col-12">
+                        <mat-form-field appearance="legacy" class="w-100">
+                            <mat-label>Sucursal</mat-label>
+                            <mat-select formControlName="sucursalId">
+                                <mat-option *ngFor="let item of listaDeSucursales" [value]="item.id">
+                                    {{ item.nombre }}
+                                </mat-option>
+                            </mat-select>
+                            <mat-error>{{ codErrores.sucursalId }}</mat-error>
+                        </mat-form-field>
+                    </div>
+                </div>
+            </form>
+        </mat-card-content>
+    </mat-card>
+</div>

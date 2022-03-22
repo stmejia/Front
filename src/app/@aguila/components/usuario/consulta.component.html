@@ -1,0 +1,204 @@
+<mat-card mat-card-content class="mat-elevation-z0" *ngIf="true">
+  <div class="row p-0 m-0">
+    <!-- Nombre de Componente -->
+    <div class="col-md-4 col-sm-6 m-0 p-0">
+      <h4 class="txt-c-titulo p-0 m-0 tracking-in-expand">{{false || 'Consultas de Usuarios'}}</h4>
+    </div>
+    <!-- Opciones -->
+    <div class="col-md-8 col-sm-6 p-0 m-0">
+      <div class="box-paginador slide-in-left">
+        <div class="box-right">
+          <button class="txt-c-danger d-block mx-auto p-0 mr-10" mat-flat-button type="button"
+            [matTooltip]="false || 'Regresar a la página anterior'" (click)="regresar()">
+            <mat-icon>clear</mat-icon>
+            {{false || 'Regresar'}}
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</mat-card>
+
+<div class="box">
+  <div class="div-center w-100" *ngIf="false">
+    <mat-spinner></mat-spinner>
+  </div>
+  <mat-card class="mat-elevation-z6 p-0 slide-in-bottom">
+    <div class="p-10">
+      <div class="card">
+        <mat-accordion>
+          <mat-expansion-panel expanded>
+            <mat-expansion-panel-header>
+              <mat-panel-title class="div-center-v">
+                <mat-icon>filter_alt</mat-icon>
+                <h6 class="m-0 p-0">
+                  {{false || 'Parametros de consulta'}}
+                </h6>
+              </mat-panel-title>
+            </mat-expansion-panel-header>
+            <div class="card">
+              <form [formGroup]="datos">
+                <div class="row">
+                  <!-- Estaciones de Trabajo -->
+                  <div class="col-md-5 col-sm-5">
+                    <mat-form-field appearance="legacy" class="w-100">
+                      <mat-label>{{textos && textos.lblEstacionTrabajo || 'Estación de Trabajo'}}</mat-label>
+                      <mat-select disableRipple formControlName="idEstacion">
+                        <mat-option *ngFor="let estacion of estacionesTrabajo" [value]="estacion.id">
+                          {{ estacion.nombre }}
+                        </mat-option>
+                      </mat-select>
+                      <mat-error>{{false || 'Selecciona una estacion de trabajo'}}</mat-error>
+                    </mat-form-field>
+                  </div>
+                  <!-- Recursos -->
+                  <div class="col-md-5 col-sm-5">
+                    <mat-form-field appearance="legacy" class="w-100">
+                      <mat-label>{{textos && textos.tltRecursos || 'Recursos'}}</mat-label>
+                      <mat-select disableRipple formControlName="idRecurso">
+                        <mat-option *ngFor="let recurso of recursos" [value]="recurso.id">
+                          {{ recurso.nombre }}
+                        </mat-option>
+                      </mat-select>
+                    </mat-form-field>
+                  </div>
+                  <!-- Elementos por Pagina -->
+                  <div class="col-md-2 col-sm-2">
+                    <mat-form-field appearance="legacy" class="w-100">
+                      <mat-label>{{false || 'Elementos por Página'}}</mat-label>
+                      <input type="number" matInput formControlName="elementosPagina" min="1" max="200" required>
+                      <mat-error>{{false || 'Ingrese un valor de 1 a 200'}}</mat-error>
+                    </mat-form-field>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </mat-expansion-panel>
+        </mat-accordion>
+      </div>
+      <div class="box-paginador m-10">
+        <div class="box-right">
+          <button mat-raised-button color="primary" (click)="consultar(1)">
+            <mat-icon>ballot</mat-icon>
+            {{false || 'Consultar'}}
+          </button>
+        </div>
+      </div>
+      <mat-divider></mat-divider>
+      <div class="pt-10">
+          <!-- Buscador y Paginador -->
+        <div class="row pl-10 pr-5" *ngIf="paginador.totalCount">
+          <!-- Buscador -->
+          <!-- <div class="col-md-4 col-sm-4 p-0" [formGroup]="datos">
+            <mat-form-field class="w-100">
+              <mat-label>{{textos && textos.lblBuscar || 'Buscar'}}</mat-label>
+              <input matInput (keyup.enter)="filtrarPagina()" formControlName="filtroNombre"
+                [disabled]="!configService.opcionDisponible(usuarioService.Recurso.id,'Consultar')"
+                [matTooltip]="textos && textos.tlpEnterBuscar || 'Pulsa ENTER para buscar'" />
+              <button mat-button matSuffix mat-icon-button (click)="filtrarPagina()">
+                <mat-icon matSuffix>search</mat-icon>
+              </button>
+            </mat-form-field>
+          </div> -->
+          <!--Paginador-->
+          <div class="col-md-8 col-sm-8 p-0">
+            <div class="box-paginador">
+              <div class="box-right card pl-5 pr-5">
+                <p class="p-0 m-0 mr-5">
+                  {{paginador.pageSize * paginador.currentPage - paginador.pageSize + 1}}-
+                  {{ paginador.pageSize * paginador.currentPage }} {{textos && textos.lblDe||'de'}}
+                  {{ paginador.totalCount }}
+                </p>
+                <button class="pagina" *ngIf="1 !== paginador.currentPage" mat-icon-button
+                  disabled="{{ 1 == paginador.currentPage }}" (click)="consultar(1)"
+                  [matTooltip]="textos && textos.tlpPrimeraPagina||'Primera Página'">
+                  <mat-icon>first_page</mat-icon>
+                </button>
+                <button class="pagina" *ngIf="paginador.hasPreviousPage" mat-icon-button
+                  disabled="{{ !paginador.hasPreviousPage }}" (click)="consultar(paginador.currentPage - 1)"
+                  [matTooltip]="textos && textos.tlpPaginaAnterior||'Página Anterior'">
+                  <mat-icon>keyboard_arrow_left</mat-icon>
+                </button>
+                <button class="pagina" mat-icon-button *ngFor="let item of paginador.paginas"
+                  [ngClass]="{ 'txt-c-titulo': paginador.currentPage == item }" (click)="consultar(item)"
+                  [matTooltip]="(textos && textos.tlpPagina||'Página') + ' ' +item">
+                  {{ item }}
+                </button>
+                <button class="pagina" *ngIf="paginador.hasNextPage" mat-icon-button
+                  disabled="{{ !paginador.hasNextPage }}" (click)="consultar(paginador.currentPage + 1)"
+                  [matTooltip]="textos && textos.tlpPaginaSiguiente || 'Página Siguiente'">
+                  <mat-icon>keyboard_arrow_right</mat-icon>
+                </button>
+                <button class="pagina" *ngIf="paginador.totalPages !== paginador.currentPage" mat-icon-button
+                  disabled="{{ paginador.totalPages == paginador.currentPage }}"
+                  (click)="consultar(paginador.totalPages)"
+                  [matTooltip]="textos && textos.tlpUltimaPagina || 'Ultima Página'">
+                  <mat-icon>last_page</mat-icon>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="table-responsive">
+          <table class="table">
+            <thead class="thead">
+              <tr class="tr">
+                <th class="th">
+                  <mat-icon>settings</mat-icon>
+                </th>
+                <th class="th">
+                  <mat-icon>account_circle</mat-icon>
+                </th>
+                <th class="th">{{false || 'Usuario'}}</th>
+                <th class="th">{{false||'Nombre'}}</th>
+                <th class="th">{{false || 'Correo Electronico'}}</th>
+                <th class="th">{{false || 'Estado'}}</th>
+              </tr>
+            </thead>
+            <tbody class="tbody">
+              <tr class="tr" *ngFor="let usuario of usuarios">
+                <td class="td">
+                  <button mat-icon-button [matMenuTriggerFor]="menu"
+                    [matTooltip]="textos && textos.tlpOpciones ||'Opciones'">
+                    <mat-icon>more_vert</mat-icon>
+                  </button>
+                  <mat-menu #menu="matMenu">
+                    <!-- <button mat-menu-item
+                      [disabled]="!configService.opcionDisponible(usuarioService.Recurso.id,'AsignarPermisos')"
+                      (click)="eliminarAsignacion(usuario)">
+                      <mat-icon>admin_panel_settings</mat-icon>
+                      {{textos && textos.tlpEliminarEstacion || 'Eliminar'}}
+                    </button> -->
+                  </mat-menu>
+                </td>
+                <td class="td">
+                  <img class="img-perfil mx-auto d-block" [src]="getImagen(usuario)" alt="Imagen Perfil"
+                    (click)="sweetService.sweetImagen(getImagen(usuario))"
+                    [matTooltip]="textos && textos.tlpClickVisualizar||'Click para visualizar'">
+                </td>
+                <td class="td">{{usuario.username}}</td>
+                <td class="td">{{usuario.nombre}}</td>
+                <td class="td">{{usuario.email}}</td>
+                <td class="td">
+                  <span class="td-m">{{textos && textos.lblEstado || 'Estado'}}</span>
+                  <div class="div-center-h">
+                    <img class="icono-25" *ngIf="usuario.activo" oncontextmenu="return false"
+                      src="assets/iconos/checked.png" alt="IconoCheck">
+                    <img class="icono-25" *ngIf="!usuario.activo" oncontextmenu="return false"
+                      src="assets/iconos/checked_red.png" alt="IconoCheck">
+                  </div>
+                </td>
+              </tr>
+              <!-- Fila que se muetra cuando no hay datos en la tabla -->
+              <tr class="tr" *ngIf="usuarios.length < 1">
+                <td class="text-center td" colspan="6">
+                  {{textos && textos.msjSinDatos || 'No hay datos para mostrar'}}
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </mat-card>
+</div>

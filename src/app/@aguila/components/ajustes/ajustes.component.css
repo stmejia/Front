@@ -1,0 +1,11 @@
+.mat-divider {
+  display: block;
+  border-top-width: 5px;
+  border-top-style: solid;
+}
+
+::ng-deep .mat-expansion-panel-body {
+  padding: 5px !important;
+}
+
+

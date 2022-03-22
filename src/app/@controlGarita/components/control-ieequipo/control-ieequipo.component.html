@@ -1,0 +1,133 @@
+<ng-container *ngIf="!cargando">
+    <app-header-component [header]="(configuracionComponent | async).header" (eventos)="eventosHeader($event)">
+    </app-header-component>
+</ng-container>
+
+<div class="box">
+    <div class="div-center w-100 mt-10" *ngIf="cargando">
+        <mat-spinner></mat-spinner>
+    </div>
+
+    <mat-card class="mat-elevation-z12" *ngIf="!cargando">
+        <div class="row" *ngIf="!form.controls['empresa'].valid">
+            <div class="col-sm-12">
+                <h3 class="text-center txt-c-titulo">Seleccione La Empresa</h3>
+            </div>
+            <div class="col-6">
+                <img class="img-fluid img-mw-100 mx-auto d-block" src="./assets/img/clt_logo.png" alt="Logo CLT"
+                    (click)="form.controls['empresa'].setValue('CLT')">
+            </div>
+            <div class="col-6">
+                <img class="img-fluid img-mw-100 mx-auto d-block" src="./assets/img/syt_logo.png" alt="Logo CLT"
+                    (click)="form.controls['empresa'].setValue('SYT')">
+            </div>
+        </div>
+        <form [formGroup]="form" *ngIf="form.controls['empresa'].valid">
+            <div class="row">
+                <div class="col-sm-12">
+                    <h3 class="text-center txt-c-titulo">Ingresando Equipo A {{form.controls['empresa'].value}}</h3>
+                </div>
+                <div class="col-sm-4 col-md-3">
+                    <mat-form-field class="w-100">
+                        <mat-label>Movimiento:</mat-label>
+                        <mat-select formControlName="movimiento">
+                            <mat-option value="INGRESO">Ingreso</mat-option>
+                            <mat-option value="SALIDA">Salida</mat-option>
+                        </mat-select>
+                        <mat-error>{{ codErrores.movimiento }}</mat-error>
+                    </mat-form-field>
+                </div>
+                <div class="col-sm-8 col-md-9">
+                    <mat-form-field class="w-100">
+                        <mat-label>Piloto:</mat-label>
+                        <input matInput type="text" placeholder="" formControlName="piloto" />
+                        <mat-error>{{ codErrores.piloto }}</mat-error>
+                    </mat-form-field>
+                </div>
+                <div class="col-sm-4 col-md-3">
+                    <mat-form-field class="w-100">
+                        <mat-label>No. Marchamo:</mat-label>
+                        <input matInput type="number" placeholder="" formControlName="marchamo" />
+                        <mat-error>{{ codErrores.marchamo }}</mat-error>
+                    </mat-form-field>
+                </div>
+                <div class="col-sm-4 col-md-3">
+                    <mat-form-field class="w-100">
+                        <mat-label>Origen / Destino:</mat-label>
+                        <input matInput type="text" placeholder="" formControlName="origendestino" />
+                        <mat-error>{{ codErrores.marchamo }}</mat-error>
+                    </mat-form-field>
+                </div>
+                <div class="col-sm-2 col-md-3">
+                    <mat-checkbox class="m-10" formControlName="atc">ATC</mat-checkbox>
+                </div>
+                <div class="col-sm-2 col-md-3">
+                    <mat-checkbox class="m-10" formControlName="lleno">Lleno</mat-checkbox>
+                </div>
+            </div>
+        </form>
+        <div class="card-glass" *ngIf="form.controls['empresa'].valid">
+            <div class="row">
+                <div class="col-sm-12 col-lg-5">
+                    <form [formGroup]="formEquipo">
+                        <div class="row">
+                            <div class="col-12">
+                                <h5 class="w-100 txt-c-titulo text-center">
+                                    Agregar Equipo
+                                </h5>
+                            </div>
+                            <div class="col-sm-4 col-md-3">
+                                <mat-form-field class="w-100">
+                                    <mat-label>Tipo De Equipo:</mat-label>
+                                    <mat-select formControlName="tipoEquipo">
+                                        <mat-option *ngFor="let tipo of tiposEquipos" [value]="tipo.tipo">
+                                            {{tipo.nombre}}
+                                        </mat-option>
+                                    </mat-select>
+                                    <mat-error>*Campo Requerido</mat-error>
+                                </mat-form-field>
+                            </div>
+                            <div class="col-sm-8 col-md-9">
+                                <mat-form-field class="w-100">
+                                    <mat-label>Codigo:</mat-label>
+                                    <input matInput type="text" placeholder="" formControlName="codigo" />
+                                    <mat-error>*Campo Requerido</mat-error>
+                                </mat-form-field>
+                            </div>
+                            <div class="col-sm-4 col-md-3">
+                                <mat-form-field class="w-100">
+                                    <mat-label>Tamaño De Equipo:</mat-label>
+                                    <mat-select formControlName="tamanoEquipo">
+                                        <mat-option *ngFor="let tipo of tamanoEquipos" [value]="tipo.tipo">
+                                            {{tipo.nombre}}
+                                        </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+                            <!-- <div class="col-sm-8 col-md-9">
+                                <mat-checkbox class="m-10" formControlName="propio">Es Propio</mat-checkbox>
+                            </div> -->
+                            <div class="col-sm-12">
+                                <div class="grid-botones">
+                                    <button *ngIf="false" class="ml-5 mr-5" mat-raised-button color="warn">
+                                        <mat-icon>cancel</mat-icon> Cancelar
+                                    </button>
+                                    <button class="ml-5 mr-5" mat-raised-button color="primary"
+                                        (click)="agregarEquipo()">
+                                        <mat-icon>add_circle_outline</mat-icon> Agregar
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="col-sm-12 col-lg-7">
+                    <app-aguila-tabla [columnas]="columnasListaEquipos"
+                        [listaDatos]="listaEquiposPrincipal.asObservable()| async" [listaOpciones]="listaOptEquipos"
+                        [exportar]="false" (eventMenu)="eventoMenuOpciones($event)">
+                    </app-aguila-tabla>
+                </div>
+            </div>
+        </div>
+    </mat-card>
+</div>

@@ -1,0 +1,675 @@
+<ng-container *ngIf="!cargando">
+    <app-header-component [header]="(configuracionComponent | async).header" (eventos)="eventosHeader($event)">
+    </app-header-component>
+</ng-container>
+
+<div class="box">
+    <div class="div-center w-100 mt-10" *ngIf="cargando">
+        <mat-spinner></mat-spinner>
+    </div>
+
+    <mat-card class="mat-elevation-z12 slide-in-bottom" *ngIf="!cargando">
+        <mat-vertical-stepper>
+            <!-- Recepcion De Equipo -->
+            <mat-step [stepControl]="formCondicionActivo.controls['idActivo']" errorMessage="Campo Requerido">
+                <ng-template matStepLabel>Recepción De Equipo</ng-template>
+                <div>
+                    <div class="card p-5">
+                        <app-input-equipo-remolque [filtrosComponent]="filtrosEquipo"
+                            [filtrosAplicar]="filtrosAplicarEquipo" [columnas]="columnasEquipo"
+                            (getItem)="getEquipo($event)">
+                        </app-input-equipo-remolque>
+                    </div>
+                </div>
+                <button mat-button matStepperNext color="primary">Siguiente</button>
+            </mat-step>
+            <!-- Datos Del Piloto -->
+            <mat-step [stepControl]="formCondicionActivo.controls['idEmpleado']" errorMessage="Campo Requerido">
+                <ng-template matStepLabel>Piloto</ng-template>
+                <div>
+                    <div class="card p-5">
+                        <app-input-empleado [filtrosComponent]="filtrosEmpleados"
+                            [filtroAplicar]="filtrosAplicarEmpleados" [tituloModal]="'Seleccione un piloto'"
+                            [columnas]="columnasEmpleado" (getItem)="getEmpleado($event)">
+                        </app-input-empleado>
+                    </div>
+                    <div class="mt-10" *ngIf="formCondicionActivo.controls['empleados'].value">
+                        <h6 class="p-0 m-0"><b>Nombre:
+                            </b>{{this.formCondicionActivo.controls['empleados'].value.nombres}}
+                            {{this.formCondicionActivo.controls['empleados'].value.apellidos}}
+                        </h6>
+                        <h6 class="p-0 m-0"><b>CUI:
+                            </b>{{this.formCondicionActivo.controls['empleados'].value.codigo}}
+                        </h6>
+                    </div>
+                </div>
+                <button mat-button matStepperPrevious color="warn">Anterior</button>
+                <button mat-button matStepperNext color="primary">Siguiente</button>
+            </mat-step>
+            <!-- Detalle De Condicion -->
+            <mat-step [stepControl]="form" errorMessage="Campos Requeridos">
+                <ng-template matStepLabel>Detalle De Condición</ng-template>
+                <div>
+                    <form [formGroup]="form">
+                        <div class="row">
+                            <div class="col-12 card">
+                                <h4 class="text-bold w-100 text-center p-0 m-0">Luces</h4>
+                                <div class="row p-0 m-0">
+                                    <div class="col-sm-4">
+                                        <div class="row borde-bottom pb-5">
+                                            <div class="col-4 p-0 m-0">
+                                                <mat-label class="text-bold">A:</mat-label>
+                                            </div>
+                                            <div class="col-8 p-0 m-0">
+                                                <mat-radio-group formControlName="lucesA">
+                                                    <mat-radio-button *ngFor="let estado of listaBooleanos"
+                                                        [value]="estado.valor">
+                                                        {{estado.nombre}}</mat-radio-button>
+                                                </mat-radio-group>
+                                            </div>
+                                            <div class="col-12 p-0 m-0">
+                                                <mat-error class="w-100 text-right"
+                                                    *ngIf="!form.controls['lucesA'].valid">
+                                                    *Campo
+                                                    requerido
+                                                </mat-error>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <div class="row borde-bottom pb-5">
+                                            <div class="col-4 p-0 m-0">
+                                                <mat-label class="text-bold">B:</mat-label>
+                                            </div>
+                                            <div class="col-8 p-0 m-0">
+                                                <mat-radio-group formControlName="lucesB">
+                                                    <mat-radio-button *ngFor="let estado of listaBooleanos"
+                                                        [value]="estado.valor">
+                                                        {{estado.nombre}}</mat-radio-button>
+                                                </mat-radio-group>
+                                            </div>
+                                            <div class="col-12 p-0 m-0">
+                                                <mat-error class="w-100 text-right"
+                                                    *ngIf="!form.controls['lucesB'].valid">
+                                                    *Campo
+                                                    requerido
+                                                </mat-error>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <div class="row borde-bottom pb-5">
+                                            <div class="col-4 p-0 m-0">
+                                                <mat-label class="text-bold">C:</mat-label>
+                                            </div>
+                                            <div class="col-8 p-0 m-0">
+                                                <mat-radio-group formControlName="lucesC">
+                                                    <mat-radio-button *ngFor="let estado of listaBooleanos"
+                                                        [value]="estado.valor">
+                                                        {{estado.nombre}}</mat-radio-button>
+                                                </mat-radio-group>
+                                            </div>
+                                            <div class="col-12 p-0 m-0">
+                                                <mat-error class="w-100 text-right"
+                                                    *ngIf="!form.controls['lucesC'].valid">
+                                                    *Campo
+                                                    requerido
+                                                </mat-error>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <div class="row borde-bottom pb-5">
+                                            <div class="col-4 p-0 m-0">
+                                                <mat-label class="text-bold">D:</mat-label>
+                                            </div>
+                                            <div class="col-8 p-0 m-0">
+                                                <mat-radio-group formControlName="lucesD">
+                                                    <mat-radio-button *ngFor="let estado of listaBooleanos"
+                                                        [value]="estado.valor">
+                                                        {{estado.nombre}}</mat-radio-button>
+                                                </mat-radio-group>
+                                            </div>
+                                            <div class="col-12 p-0 m-0">
+                                                <mat-error class="w-100 text-right"
+                                                    *ngIf="!form.controls['lucesD'].valid">
+                                                    *Campo
+                                                    requerido
+                                                </mat-error>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <div class="row borde-bottom pb-5">
+                                            <div class="col-4 p-0 m-0">
+                                                <mat-label class="text-bold">E:</mat-label>
+                                            </div>
+                                            <div class="col-8 p-0 m-0">
+                                                <mat-radio-group formControlName="lucesE">
+                                                    <mat-radio-button *ngFor="let estado of listaBooleanos"
+                                                        [value]="estado.valor">
+                                                        {{estado.nombre}}</mat-radio-button>
+                                                </mat-radio-group>
+                                            </div>
+                                            <div class="col-12 p-0 m-0">
+                                                <mat-error class="w-100 text-right"
+                                                    *ngIf="!form.controls['lucesE'].valid">
+                                                    *Campo
+                                                    requerido
+                                                </mat-error>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <div class="row borde-bottom pb-5">
+                                            <div class="col-4 p-0 m-0">
+                                                <mat-label class="text-bold">F:</mat-label>
+                                            </div>
+                                            <div class="col-8 p-0 m-0">
+                                                <mat-radio-group formControlName="lucesF">
+                                                    <mat-radio-button *ngFor="let estado of listaBooleanos"
+                                                        [value]="estado.valor">
+                                                        {{estado.nombre}}</mat-radio-button>
+                                                </mat-radio-group>
+                                            </div>
+                                            <div class="col-12 p-0 m-0">
+                                                <mat-error class="w-100 text-right"
+                                                    *ngIf="!form.controls['lucesF'].valid">
+                                                    *Campo
+                                                    requerido
+                                                </mat-error>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <div class="row borde-bottom pb-5">
+                                            <div class="col-4 p-0 m-0">
+                                                <mat-label class="text-bold">PI:</mat-label>
+                                            </div>
+                                            <div class="col-8 p-0 m-0">
+                                                <mat-radio-group formControlName="pi">
+                                                    <mat-radio-button *ngFor="let estado of listaBooleanos"
+                                                        [value]="estado.valor">
+                                                        {{estado.nombre}}</mat-radio-button>
+                                                </mat-radio-group>
+                                            </div>
+                                            <div class="col-12 p-0 m-0">
+                                                <mat-error class="w-100 text-right" *ngIf="!form.controls['pi'].valid">
+                                                    *Campo
+                                                    requerido
+                                                </mat-error>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <div class="row borde-bottom pb-5">
+                                            <div class="col-4 p-0 m-0">
+                                                <mat-label class="text-bold">SI:</mat-label>
+                                            </div>
+                                            <div class="col-8 p-0 m-0">
+                                                <mat-radio-group formControlName="si">
+                                                    <mat-radio-button *ngFor="let estado of listaBooleanos"
+                                                        [value]="estado.valor">
+                                                        {{estado.nombre}}</mat-radio-button>
+                                                </mat-radio-group>
+                                            </div>
+                                            <div class="col-12 p-0 m-0">
+                                                <mat-error class="w-100 text-right" *ngIf="!form.controls['si'].valid">
+                                                    *Campo
+                                                    requerido
+                                                </mat-error>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <div class="row borde-bottom pb-5">
+                                            <div class="col-4 p-0 m-0">
+                                                <mat-label class="text-bold">PD:</mat-label>
+                                            </div>
+                                            <div class="col-8 p-0 m-0">
+                                                <mat-radio-group formControlName="pd">
+                                                    <mat-radio-button *ngFor="let estado of listaBooleanos"
+                                                        [value]="estado.valor">
+                                                        {{estado.nombre}}</mat-radio-button>
+                                                </mat-radio-group>
+                                            </div>
+                                            <div class="col-12 p-0 m-0">
+                                                <mat-error class="w-100 text-right" *ngIf="!form.controls['pd'].valid">
+                                                    *Campo
+                                                    requerido
+                                                </mat-error>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <div class="row borde-bottom pb-5">
+                                            <div class="col-4 p-0 m-0">
+                                                <mat-label class="text-bold">SD:</mat-label>
+                                            </div>
+                                            <div class="col-8 p-0 m-0">
+                                                <mat-radio-group formControlName="sd">
+                                                    <mat-radio-button *ngFor="let estado of listaBooleanos"
+                                                        [value]="estado.valor">
+                                                        {{estado.nombre}}</mat-radio-button>
+                                                </mat-radio-group>
+                                            </div>
+                                            <div class="col-12 p-0 m-0">
+                                                <mat-error class="w-100 text-right" *ngIf="!form.controls['sd'].valid">
+                                                    *Campo
+                                                    requerido
+                                                </mat-error>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 card">
+                                <h4 class="text-bold w-100 text-center p-0 m-0">Cintas Reflecticas</h4>
+                                <div class="row p-0 m-0">
+                                    <div class="col-sm-6 col-md-4">
+                                        <div class="row borde-bottom pb-5">
+                                            <div class="col-4 p-0 m-0">
+                                                <mat-label class="text-bold txt-puntos">Laterales:</mat-label>
+                                            </div>
+                                            <div class="col-8 p-0 m-0">
+                                                <mat-radio-group formControlName="cintaReflectivaLat">
+                                                    <mat-radio-button *ngFor="let estado of listaEstados"
+                                                        [value]="estado.valor" [matTooltip]="estado.nombre">
+                                                        {{estado.valor}}</mat-radio-button>
+                                                </mat-radio-group>
+                                            </div>
+                                            <div class="col-12 p-0 m-0">
+                                                <mat-error class="w-100 text-right"
+                                                    *ngIf="!form.controls['cintaReflectivaLat'].value">
+                                                    *Campo
+                                                    requerido
+                                                </mat-error>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6 col-md-4">
+                                        <div class="row borde-bottom pb-5">
+                                            <div class="col-4 p-0 m-0">
+                                                <mat-label class="text-bold">Frontales:</mat-label>
+                                            </div>
+                                            <div class="col-8 p-0 m-0">
+                                                <mat-radio-group formControlName="cintaReflectivaFront">
+                                                    <mat-radio-button *ngFor="let estado of listaEstados"
+                                                        [value]="estado.valor" [matTooltip]="estado.nombre">
+                                                        {{estado.valor}}</mat-radio-button>
+                                                </mat-radio-group>
+                                            </div>
+                                            <div class="col-12 p-0 m-0">
+                                                <mat-error class="w-100 text-right"
+                                                    *ngIf="!form.controls['cintaReflectivaFront'].value">
+                                                    *Campo
+                                                    requerido
+                                                </mat-error>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6 col-md-4">
+                                        <div class="row borde-bottom pb-5">
+                                            <div class="col-4 p-0 m-0">
+                                                <mat-label class="text-bold">Traseras:</mat-label>
+                                            </div>
+                                            <div class="col-8 p-0 m-0">
+                                                <mat-radio-group formControlName="cintaReflectivaTra">
+                                                    <mat-radio-button *ngFor="let estado of listaEstados"
+                                                        [value]="estado.valor" [matTooltip]="estado.nombre">
+                                                        {{estado.valor}}</mat-radio-button>
+                                                </mat-radio-group>
+                                            </div>
+                                            <div class="col-12 p-0 m-0">
+                                                <mat-error class="w-100 text-right"
+                                                    *ngIf="!form.controls['cintaReflectivaTra'].value">
+                                                    *Campo
+                                                    requerido
+                                                </mat-error>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 card">
+                                <h4 class="text-bold w-100 text-center p-0 m-0">Otros Aspectos</h4>
+                                <div class="row p-0 m-0">
+                                    <div class="col-md-6 col-sm-6">
+                                        <div class="row p-0 m-0 borde-bottom pb-5">
+                                            <div class="col-4 p-0 m-0">
+                                                <mat-label class="text-bold">Guarda Fangos G:</mat-label>
+                                            </div>
+                                            <div class="col-8 p-0 m-0">
+                                                <mat-radio-group formControlName="guardaFangosG">
+                                                    <mat-radio-button *ngFor="let estado of listaEstados"
+                                                        [value]="estado.valor">
+                                                        {{estado.nombre}}</mat-radio-button>
+                                                    <mat-error *ngIf="!form.controls['guardaFangosG'].value">*Campor
+                                                        requerido
+                                                    </mat-error>
+                                                </mat-radio-group>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-sm-6">
+                                        <div class="row p-0 m-0 borde-bottom pb-5">
+                                            <div class="col-4 p-0 m-0">
+                                                <mat-label class="text-bold">Guarda Fangos I:</mat-label>
+                                            </div>
+                                            <div class="col-8 p-0 m-0">
+                                                <mat-radio-group formControlName="guardaFangosI">
+                                                    <mat-radio-button *ngFor="let estado of listaEstados"
+                                                        [value]="estado.valor">
+                                                        {{estado.nombre}}</mat-radio-button>
+                                                    <mat-error *ngIf="!form.controls['guardaFangosI'].value">*Campor
+                                                        requerido
+                                                    </mat-error>
+                                                </mat-radio-group>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-sm-6">
+                                        <div class="row p-0 m-0 borde-bottom pb-5">
+                                            <div class="col-4 p-0 m-0">
+                                                <mat-label class="text-bold">Fricciones:</mat-label>
+                                            </div>
+                                            <div class="col-8 p-0 m-0">
+                                                <mat-radio-group formControlName="fricciones">
+                                                    <mat-radio-button *ngFor="let estado of listaEstadosBM"
+                                                        [value]="estado.valor">
+                                                        {{estado.nombre}}</mat-radio-button>
+                                                    <mat-error *ngIf="!form.controls['fricciones'].value">*Campor
+                                                        requerido
+                                                    </mat-error>
+                                                </mat-radio-group>
+                                            </div>
+                                            <div class="col-4 p-0 m-0" *ngIf="form.controls['fricciones'].value == 'M'">
+
+                                            </div>
+                                            <div class="col-8 p-0 m-0" *ngIf="form.controls['fricciones'].value == 'M'">
+                                                <input type="text" class="w-100 input-label" placeholder="Llanta"
+                                                    formControlName="friccionesLlantas">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-sm-6">
+                                        <div class="row p-0 m-0 borde-bottom pb-5">
+                                            <div class="col-4 p-0 m-0">
+                                                <mat-label class="text-bold">Bumper:</mat-label>
+                                            </div>
+                                            <div class="col-8 p-0 m-0">
+                                                <mat-radio-group formControlName="bumper">
+                                                    <mat-radio-button *ngFor="let estado of listaEstados"
+                                                        [value]="estado.valor">
+                                                        {{estado.nombre}}</mat-radio-button>
+                                                    <mat-error *ngIf="!form.controls['bumper'].value">*Campor requerido
+                                                    </mat-error>
+                                                </mat-radio-group>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-sm-6">
+                                        <div class="row p-0 m-0 borde-bottom pb-5">
+                                            <div class="col-4 p-0 m-0">
+                                                <mat-label class="text-bold">Manitas 1:</mat-label>
+                                            </div>
+                                            <div class="col-8 p-0 m-0">
+                                                <mat-radio-group formControlName="manitas1">
+                                                    <mat-radio-button *ngFor="let estado of listaEstados"
+                                                        [value]="estado.valor">
+                                                        {{estado.nombre}}</mat-radio-button>
+                                                    <mat-error *ngIf="!form.controls['manitas1'].value">*Campor
+                                                        requerido
+                                                    </mat-error>
+                                                </mat-radio-group>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-sm-6">
+                                        <div class="row p-0 m-0 borde-bottom pb-5">
+                                            <div class="col-4 p-0 m-0">
+                                                <mat-label class="text-bold">Manitas 2:</mat-label>
+                                            </div>
+                                            <div class="col-8 p-0 m-0">
+                                                <mat-radio-group formControlName="manitas2">
+                                                    <mat-radio-button *ngFor="let estado of listaEstados"
+                                                        [value]="estado.valor">
+                                                        {{estado.nombre}}</mat-radio-button>
+                                                    <mat-error *ngIf="!form.controls['manitas2'].value">*Campor
+                                                        requerido
+                                                    </mat-error>
+                                                </mat-radio-group>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-sm-6">
+                                        <div class="row p-0 m-0 borde-bottom pb-5">
+                                            <div class="col-4 p-0 m-0">
+                                                <mat-label class="text-bold">Patas:</mat-label>
+                                            </div>
+                                            <div class="col-8 p-0 m-0">
+                                                <mat-radio-group formControlName="patas">
+                                                    <mat-radio-button *ngFor="let estado of listaEstados"
+                                                        [value]="estado.valor">
+                                                        {{estado.nombre}}</mat-radio-button>
+                                                    <mat-error *ngIf="!form.controls['patas'].value">*Campor requerido
+                                                    </mat-error>
+                                                </mat-radio-group>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-sm-6">
+                                        <div class="row p-0 m-0 borde-bottom pb-5">
+                                            <div class="col-4 p-0 m-0">
+                                                <mat-label class="text-bold">Ganchos:</mat-label>
+                                            </div>
+                                            <div class="col-8 p-0 m-0">
+                                                <mat-radio-group formControlName="ganchos">
+                                                    <mat-radio-button *ngFor="let estado of listaEstados"
+                                                        [value]="estado.valor">
+                                                        {{estado.nombre}}</mat-radio-button>
+                                                    <mat-error *ngIf="!form.controls['ganchos'].value">*Campor requerido
+                                                    </mat-error>
+                                                </mat-radio-group>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-sm-6">
+                                        <div class="row p-0 m-0 borde-bottom pb-5">
+                                            <div class="col-4 p-0 m-0">
+                                                <mat-label class="text-bold">Balancines:</mat-label>
+                                            </div>
+                                            <div class="col-8 p-0 m-0">
+                                                <mat-radio-group formControlName="balancines">
+                                                    <mat-radio-button *ngFor="let estado of listaEstadosBM"
+                                                        [value]="estado.valor">
+                                                        {{estado.nombre}}</mat-radio-button>
+                                                    <mat-error *ngIf="!form.controls['balancines'].value">*Campor
+                                                        requerido
+                                                    </mat-error>
+                                                </mat-radio-group>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-sm-6">
+                                        <div class="row p-0 m-0 borde-bottom pb-5">
+                                            <div class="col-4 p-0 m-0">
+                                                <mat-label class="text-bold">H. De Resorte:</mat-label>
+                                            </div>
+                                            <div class="col-8 p-0 m-0">
+                                                <mat-radio-group formControlName="hojasResortes">
+                                                    <mat-radio-button *ngFor="let estado of listaEstadosBM"
+                                                        [value]="estado.valor">
+                                                        {{estado.nombre}}</mat-radio-button>
+                                                    <mat-error *ngIf="!form.controls['hojasResortes'].value">*Campor
+                                                        requerido
+                                                    </mat-error>
+                                                </mat-radio-group>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-sm-6">
+                                        <div class="row p-0 m-0 borde-bottom pb-5">
+                                            <div class="col-4 p-0 m-0">
+                                                <mat-label class="text-bold">Placa Del Patín:</mat-label>
+                                            </div>
+                                            <div class="col-8 p-0 m-0">
+                                                <mat-radio-group formControlName="placaPatin">
+                                                    <mat-radio-button *ngFor="let estado of listaBooleanos"
+                                                        [value]="estado.valor">
+                                                        {{estado.nombre}}</mat-radio-button>
+                                                    <mat-error *ngIf="!form.controls['placaPatin'].valid">*Campor
+                                                        requerido
+                                                    </mat-error>
+                                                </mat-radio-group>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <button mat-button matStepperPrevious color="warn">Anterior</button>
+                <button mat-button matStepperNext color="primary">Siguiente</button>
+            </mat-step>
+            <!-- Condicion Llantas -->
+            <mat-step [stepControl]="form.controls['condicionesLlantas']" errorMessage="Campo Requerido">
+                <ng-template matStepLabel>Condición De Llantas</ng-template>
+                <div>
+                    <app-condicion-llanta [maxLlanta]="getNumeroLlantas()" [titulo]="'Inspección De Llanta'"
+                        [prefijo]="getPrefijo()" (condicionesLlantas)="getCondicionesLlantas($event)"
+                        [llantas]="form.controls['condicionesLlantas'].value">
+                    </app-condicion-llanta>
+                </div>
+                <button mat-button matStepperPrevious color="warn">Anterior</button>
+                <button mat-button matStepperNext color="primary">Siguiente</button>
+            </mat-step>
+            <!-- Condicion Llantas Repuesto -->
+            <mat-step [stepControl]="form.controls['condicionesLlantasRepuesto']" errorMessage="Campo Requerido">
+                <ng-template matStepLabel>Condición De Llantas De Repuesto</ng-template>
+                <div>
+                    <app-condicion-llanta [maxLlanta]="2" [titulo]="'Inspección De Llanta Repuesto'" [prefijo]="''"
+                        (condicionesLlantas)="getCondicionesLlantasR($event)"
+                        [llantas]="form.controls['condicionesLlantasRepuesto'].value">
+                    </app-condicion-llanta>
+                </div>
+                <button mat-button matStepperPrevious color="warn">Anterior</button>
+                <button mat-button matStepperNext color="primary">Siguiente</button>
+            </mat-step>
+            <!-- Anotaciones -->
+            <mat-step [stepControl]="formCondicionActivo" errorMessage="Campos Requeridos">
+                <ng-template matStepLabel>Anotaciones</ng-template>
+                <div>
+                    <form [formGroup]="formCondicionActivo">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <mat-form-field class="w-100">
+                                    <mat-label>Tipo De Condicion</mat-label>
+                                    <mat-select formControlName="movimiento">
+                                        <mat-option value="Ingreso">Ingreso</mat-option>
+                                        <mat-option value="Salida">Salida</mat-option>
+                                    </mat-select>
+                                    <mat-error>*Campo Requerido </mat-error>
+                                </mat-form-field>
+                            </div>
+                            <div class="col-md-4">
+                                <mat-form-field class="w-100">
+                                    <mat-label>¿Esta Cargado?</mat-label>
+                                    <mat-select formControlName="cargado">
+                                        <mat-option [value]="true">Si</mat-option>
+                                        <mat-option [value]="false">No</mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+                            <div class="col-md-4" *ngIf="formCondicionActivo.controls['movimiento'].valid">
+                                <mat-form-field class="w-100">
+                                    <mat-label>Estado: </mat-label>
+                                    <mat-select formControlName="idEstado">
+                                        <mat-option *ngFor="let estado of getListaEstados()" [value]="estado.id">
+                                            {{estado.nombre}}</mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+                            <div class="col-md-3">
+                                <mat-form-field class="w-100">
+                                    <mat-label>Fecha De Condición</mat-label>
+                                    <input matInput [ngxMatDatetimePicker]="picker" placeholder="Fecha De Condición"
+                                        formControlName="fecha">
+                                    <mat-datepicker-toggle matSuffix [for]="picker">
+                                    </mat-datepicker-toggle>
+                                    <ngx-mat-datetime-picker #picker [showSpinners]="true">
+                                    </ngx-mat-datetime-picker>
+                                </mat-form-field>
+                            </div>
+                            <div class="col-md-3">
+                                <mat-form-field class="w-100">
+                                    <mat-label>¿Equipo Disponible?</mat-label>
+                                    <mat-select formControlName="disponible">
+                                        <mat-option [value]="true">Si</mat-option>
+                                        <mat-option [value]="false">No</mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+                            <div class="col-md-6">
+                                <mat-form-field class="w-100">
+                                    <mat-label>Observaciones</mat-label>
+                                    <textarea type="text" matInput formControlName="observaciones"> </textarea>
+                                    <button matSuffix mat-icon-button
+                                        *ngIf="formCondicionActivo.controls['observaciones'].value"
+                                        (click)="formCondicionActivo.controls['observaciones'].setValue('')">
+                                        <mat-icon>close</mat-icon>
+                                    </button>
+                                </mat-form-field>
+                            </div>
+                            <div class="col-md-6">
+                                <mat-form-field class="w-100">
+                                    <mat-label>Inspección De Seguridad</mat-label>
+                                    <mat-select formControlName="inspecVeriOrden">
+                                        <mat-option [value]="true">Verificación En Orden</mat-option>
+                                        <mat-option [value]="false">Presenta Irregularidades o Ilìcitos</mat-option>
+                                    </mat-select>
+                                    <mat-error>*Campor requerido</mat-error>
+                                </mat-form-field>
+                            </div>
+                            <div class="col-md-6"
+                                *ngIf="(formCondicionActivo.controls['inspecVeriOrden'].value == true) ? false : true">
+                                <mat-form-field class="w-100">
+                                    <mat-label>Irregularidades Observaciones:</mat-label>
+                                    <textarea type="text" matInput formControlName="irregularidadesObserv"> </textarea>
+                                    <button matSuffix mat-icon-button
+                                        *ngIf="formCondicionActivo.controls['irregularidadesObserv'].value"
+                                        (click)="formCondicionActivo.controls['irregularidadesObserv'].setValue('')">
+                                        <mat-icon>close</mat-icon>
+                                    </button>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <button mat-button matStepperPrevious color="warn">Anterior</button>
+                <button mat-button matStepperNext color="primary">Siguiente</button>
+            </mat-step>
+            <!-- Fotografias -->
+            <mat-step>
+                <ng-template matStepLabel>Fotografias De Inspección</ng-template>
+                <div>
+                    <app-imagenes [imagenRecurso]="formCondicionActivo.controls['fotos'].value"
+                        [imagenRecursoConfiguracion]="imgRecursoFotos"
+                        (imagenRecursoChange)="formCondicionActivo.controls['fotos'].setValue($event)"></app-imagenes>
+                </div>
+                <button mat-button matStepperPrevious color="warn">Anterior</button>
+                <button mat-button matStepperNext color="primary">Siguiente</button>
+            </mat-step>
+            <!-- Firma -->
+            <mat-step>
+                <ng-template matStepLabel>Firma De Enterado</ng-template>
+                <div>
+                    <app-firma (base64)="getFirma($event)"></app-firma>
+                </div>
+                <!-- Firma De Enterado -->
+                <button mat-button matStepperPrevious color="warn">Anterior</button>
+            </mat-step>
+        </mat-vertical-stepper>
+    </mat-card>
+</div>

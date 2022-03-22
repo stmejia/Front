@@ -1,0 +1,121 @@
+<div class="contenedor side-bar h-100" style="max-width: 255px; min-width: 255px;" *ngIf="usuario.id">
+
+  <!-- Vista del Logo de la empresa donde se esta trabajando, bg-primary-dark -->
+  <div fxLayout="column" class="bg-primary-dark" fxLayoutGap="10px">
+    <div class="p-15">
+      <img class="img-sidebar d-block mx-auto" [src]="img" />
+    </div>
+    <h6 class="p-0 m-0 pl-5 div-center-h txt-black-t" *ngIf="usuario.id && estacion">
+      {{estacion.estacionTrabajo.sucursal.empresa.nombre}}
+    </h6>
+    <mat-divider class="m-0 p-0"></mat-divider>
+    <div class="">
+      <mat-icon class="mx-auto d-block mt-5">{{getIconoModulo()}}</mat-icon>
+      <h6 class="p-0 m-0 text-center txt-black-t mt-5">{{(getModulo() | async).nombre}}</h6>
+      <mat-divider class="m-0 p-0"></mat-divider>
+    </div>
+  </div>
+
+  <!-- Menu del Modulo -->
+  <mat-nav-list class="list" *ngIf="menuItems">
+    <div class="" *ngFor="let item of menuItems; first as isFirst">
+
+      <!-- Nombre del Modulo -->
+      <a class="mat-elevation-z0" mat-list-item *ngIf="item.type === 'link' && !item.add" [routerLink]="item.ruta"
+        routerLinkActive="selected" (click)="clickItem.emit(item)">
+        <mat-icon matListIcon>{{ item.icon }}</mat-icon>
+        <span>{{ item.name }}</span>
+      </a>
+
+      <!-- Items del Menu -->
+      <div class="row m-0 p-0" *ngIf="item.type === 'link' && item.add">
+        <div class="col-9 m-0 p-0">
+          <a class="mat-elevation-z0" mat-list-item [routerLink]="item.ruta" routerLinkActive="selected"
+            (click)="clickItem.emit(item)">
+            <mat-icon matListIcon>{{ item.icon }}</mat-icon>
+            <span>{{ item.name }}</span>
+          </a>
+        </div>
+        <div class="col-3 m-0 p-0 div-center" *ngIf="item.add">
+          <a class="mat-elevation-z0 m-0 p-0 div-center-v" mat-list-item [routerLink]="item.ruta.concat([''])"
+            routerLinkActive="selected" (click)="clickItem.emit(item)">
+            <mat-icon class="rotate-in-center m-0 p-0" matListIcon>add_circle_outline</mat-icon>
+          </a>
+        </div>
+      </div>
+
+      <!-- Menu Desplegable -->
+      <mat-accordion class="" *ngIf="item.type === 'menu'">
+        <div class="">
+          <mat-expansion-panel>
+            <mat-expansion-panel-header>
+              <mat-panel-title>
+                <mat-icon matListIcon>{{ item.icon }}</mat-icon>
+                <span class="pl-15">{{ item.name }}</span>
+              </mat-panel-title>
+            </mat-expansion-panel-header>
+            <div class="pl-10">
+              <div *ngFor="let sub of item.children">
+                <div class="row m-0 p-0" *ngIf="sub.add">
+                  <div class="col-9 m-0 p-0">
+                    <a class="mat-elevation-z0" mat-list-item [routerLink]="sub.ruta" routerLinkActive="selected" (click)="clickItem.emit(item)">
+                      <mat-icon matListIcon>{{ sub.icon }}</mat-icon>
+                      <span>{{ sub.name }}</span>
+                    </a>
+                  </div>
+                  <div class="col-3 m-0 p-0">
+                    <a class="mat-elevation-z0" mat-list-item [routerLink]="sub.ruta.concat([''])"
+                      routerLinkActive="selected">
+                      <mat-icon class="rotate-in-center" matListIcon>add_circle_outline</mat-icon>
+                    </a>
+                  </div>
+                </div>
+                <div *ngIf="!sub.add">
+                  <a class="item-list" mat-list-item [routerLink]="sub.ruta" routerLinkActive="selected" (click)="clickItem.emit(item)">
+                    <mat-icon matListIcon>{{ sub.icon }}</mat-icon>
+                    <span>{{ sub.name }}</span>
+                  </a>
+                </div>
+              </div>
+              <mat-divider class="m-0 p-0"></mat-divider>
+            </div>
+          </mat-expansion-panel>
+        </div>
+      </mat-accordion>
+
+
+    </div>
+  </mat-nav-list>
+  <mat-divider class="mt-10"></mat-divider>
+
+  <!-- Logo de Aguila e Informacion Adicional -->
+  <img class="img-sidebar d-block mx-auto" src="assets/img/LogoApp.png" alt="Logo App">
+  <div class="card mr-15 ml-15 mb-15">
+    <h6 class="text-center text-bold m-0">Aguila App</h6>
+    <p class="text-center m-0">©NELOGISA</p>
+  </div>
+</div>
+
+<!-- Sidebar Publico -->
+<div class="contenedor side-bar h-100" style="max-width: 255px; min-width: 255px;" *ngIf="!usuario.id">
+  <div fxLayout="column" class="bg-primary-dark" fxLayoutGap="10px">
+    <img class="img-sidebar d-block mx-auto" src="assets/img/LogoApp.png" alt="Logo App">
+    <div class="card mr-15 ml-15 mb-15">
+      <h6 class="text-center text-bold m-0">Aguila App</h6>
+      <p class="text-center m-0">©NELOGISA</p>
+    </div>
+    <mat-divider class="mt-10"></mat-divider>
+  </div>
+
+  <mat-nav-list class="list" *ngIf="menuItems">
+    <div class="" *ngFor="let item of menuItems; first as isFirst">
+      <a class="mat-elevation-z0" mat-list-item *ngIf="item.type === 'link'" [routerLink]="['/', item.urlp, item.url]"
+        routerLinkActive="selected">
+        <mat-icon matListIcon>{{ item.icon }}</mat-icon>
+        <span>{{ item.name }}</span>
+      </a>
+    </div>
+  </mat-nav-list>
+  <mat-divider class="mt-10"></mat-divider>
+  <img class="mx-auto d-block icono-w100 mt-15" src="assets/iconos/favicon.png" alt="iconoAguila">
+</div>

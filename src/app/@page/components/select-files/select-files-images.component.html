@@ -1,0 +1,27 @@
+<div class="row card-glass mt-10">
+    <div class="col-sm-12" *ngIf="!imagenRecurso">
+        <h3 class="txt-c-titulo text-center">Sin Imagen Recurso Configuracion</h3>
+    </div>
+    <div class="col-12">
+        <ng-container *ngIf="imagenes.length>0">
+            <div class="gridImagenes">
+                <div class="imagen" *ngFor="let imagen of imagenes">
+                    <img [src]="imagen.subirImagenBase64" matTooltip="Click para visualizar"
+                        (click)="mostrarImagen(imagen)" alt="Imagen">
+                    <h6 class="txt-c-titulo p-0 m-0">{{imagen.nombre}}</h6>
+                    <p class="p-0 m-0">{{imagen.descripcion}}</p>
+                </div>
+            </div>
+        </ng-container>
+    </div>
+    <div class="col-12" *ngIf="imagenRecurso">
+        <div class="centrar">
+            <h4 class="txt-c-titulo text-center" *ngIf="titulo.length>0">{{titulo}}</h4>
+            <button type="button" mat-raised-button color="primary" (click)="fileInput.click()">
+                {{imagenRecurso.multiplesImagenes ? 'Seleccionar Archivos' : 'Seleccionar Archivo'}}
+            </button>
+        </div>
+        <input hidden type="file" #fileInput mat-flat-button accept="image/*" excludeAcceptAllOption="false"
+            [multiple]="imagenRecurso.multiplesImagenes" (change)="seleccionarArchivo($event)">
+    </div>
+</div>

@@ -1,0 +1,346 @@
+<ng-container *ngIf="!cargando">
+    <app-header-component [header]="(configuracionComponent | async).header" (eventos)="eventosHeader($event)">
+    </app-header-component>
+</ng-container>
+
+<div class="box">
+    <div class="div-center w-100 mt-10" *ngIf="cargando">
+        <mat-spinner></mat-spinner>
+    </div>
+
+    <mat-card class="mat-elevation-z12 slide-in-bottom" *ngIf="!cargando">
+        <mat-card-content>
+            <div class="row" *ngIf="!isNuevo()">
+                <div class="col-sm-6">
+                    <h3 class="txt-c-titulo">CUI: {{form.controls['activoOperacion'].value.codigo}}</h3>
+                </div>
+                <div class="col-sm-6">
+                    <h3 class="txt-c-titulo">COC: {{form.controls['activoOperacion'].value.coc}}</h3>
+                </div>
+            </div>
+            <mat-accordion multi>
+                <mat-expansion-panel class="card" expanded>
+                    <mat-expansion-panel-header>
+                        <mat-panel-title>
+                            <h5 class="m-0 p-0 txt-c-titulo">Detalles de Equipo Remolque</h5>
+                        </mat-panel-title>
+                    </mat-expansion-panel-header>
+                    <div class="card">
+                        <app-activo-operacion [objeto]="form.controls['activoOperacion'].value"
+                            [errores]="erroresActivoOperacion"
+                            (activoOperacion)="form.controls['activoOperacion'].setValue($event)">
+                        </app-activo-operacion>
+                    </div>
+                </mat-expansion-panel>
+                <mat-expansion-panel class="card" expanded>
+                    <mat-expansion-panel-header>
+                        <mat-panel-title>
+                            <h5 class="m-0 p-0 txt-c-titulo">Caracteristicas de Equipo Remolque</h5>
+                        </mat-panel-title>
+                    </mat-expansion-panel-header>
+                    <div class="card">
+                        <form [formGroup]="form">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <app-select-aguila [columnas]="colTipoEquipoRemolque"
+                                        [datos]="getTipoEquipoRemolque() | async"
+                                        (itemSeleccionado)="this.form.controls['idTipoEquipoRemolque'].setValue($event)"
+                                        (objetoSeleccionado)="this.tipoEquipoRemolque = $event"
+                                        [nombre]="'Tipo de Equipo Remolque'"
+                                        [itemSelect]="this.form.controls['idTipoEquipoRemolque'].value">
+                                    </app-select-aguila>
+                                </div>
+                                <div class="col-md-3">
+                                    <mat-form-field appearance="legacy" class="w-100">
+                                        <mat-label>Placa:</mat-label>
+                                        <input matInput type="text" formControlName="placa" />
+                                        <mat-error>{{ codErrores.placa }}</mat-error>
+                                    </mat-form-field>
+                                </div>
+                                <div class="col-md-3">
+                                    <mat-form-field appearance="legacy" class="w-100">
+                                        <mat-label>Tarjeta de Circulación:</mat-label>
+                                        <input matInput type="text" formControlName="tarjetaCirculacion" />
+                                        <mat-error>{{ codErrores.tarjetaCirculacion }}</mat-error>
+                                    </mat-form-field>
+                                </div>
+
+                                <!-- --------------------------------------------------- -->
+                                <!-- --------------------------------------------------- -->
+                                <ng-container *ngIf="form.controls['idTipoEquipoRemolque'].valid">
+                                    <div class="col-md-2" *ngIf="mostrarCampo('noEjes')">
+                                        <mat-form-field appearance="legacy" class="w-100">
+                                            <mat-label>No. de Ejes:</mat-label>
+                                            <mat-select formControlName="noEjes">
+                                                <mat-option *ngFor="let item of listaNoEjes"
+                                                    [matTooltip]="item.descripcion" [value]="item.valor">
+                                                    {{item.valor}}
+                                                </mat-option>
+                                            </mat-select>
+                                            <mat-error>{{codErrores}}</mat-error>
+                                        </mat-form-field>
+                                    </div>
+                                    <div class="col-md-2" *ngIf="mostrarCampo('tandemCorredizo')">
+                                        <mat-form-field appearance="legacy" class="w-100">
+                                            <mat-label>Tandem Corredizo:</mat-label>
+                                            <mat-select formControlName="tandemCorredizo">
+                                                <mat-option *ngFor="let item of listaTandemCorredizo"
+                                                    [matTooltip]="item.descripcion" [value]="item.valor">
+                                                    {{item.valor}}
+                                                </mat-option>
+                                            </mat-select>
+                                            <mat-error>{{codErrores}}</mat-error>
+                                        </mat-form-field>
+                                    </div>
+                                    <div class="col-md-2" *ngIf="mostrarCampo('chasisExtensible')">
+                                        <mat-form-field appearance="legacy" class="w-100">
+                                            <mat-label>Chasis Extensible:</mat-label>
+                                            <mat-select formControlName="chasisExtensible">
+                                                <mat-option *ngFor="let item of listaChasisExtensible"
+                                                    [matTooltip]="item.descripcion" [value]="item.valor">
+                                                    {{item.valor}}
+                                                </mat-option>
+                                            </mat-select>
+                                            <mat-error>{{codErrores}}</mat-error>
+                                        </mat-form-field>
+                                    </div>
+                                    <div class="col-md-2" *ngIf="mostrarCampo('tipoCuello')">
+                                        <mat-form-field appearance="legacy" class="w-100">
+                                            <mat-label>Tipo de Cuello:</mat-label>
+                                            <mat-select formControlName="tipoCuello">
+                                                <mat-option *ngFor="let item of listaTipoCuello"
+                                                    [matTooltip]="item.descripcion" [value]="item.valor">
+                                                    {{item.valor}}
+                                                </mat-option>
+                                            </mat-select>
+                                            <mat-error>{{codErrores}}</mat-error>
+                                        </mat-form-field>
+                                    </div>
+                                    <div class="col-md-2" *ngIf="mostrarCampo('acopleGenset')">
+                                        <mat-form-field appearance="legacy" class="w-100">
+                                            <mat-label>Acople Genset:</mat-label>
+                                            <mat-select formControlName="acopleGenset">
+                                                <mat-option *ngFor="let item of listaAcopleGenset"
+                                                    [matTooltip]="item.descripcion" [value]="item.valor">
+                                                    {{item.valor}}
+                                                </mat-option>
+                                            </mat-select>
+                                            <mat-error>{{codErrores}}</mat-error>
+                                        </mat-form-field>
+                                    </div>
+                                    <div class="col-md-2" *ngIf="mostrarCampo('acopleDolly')">
+                                        <mat-form-field appearance="legacy" class="w-100">
+                                            <mat-label>Acople Dolly:</mat-label>
+                                            <mat-select formControlName="acopleDolly">
+                                                <mat-option *ngFor="let item of listaAcopleDolly"
+                                                    [matTooltip]="item.descripcion" [value]="item.valor">
+                                                    {{item.valor}}
+                                                </mat-option>
+                                            </mat-select>
+                                            <mat-error>{{codErrores}}</mat-error>
+                                        </mat-form-field>
+                                    </div>
+                                    <div class="col-md-2" *ngIf="mostrarCampo('medidaPlataforma')">
+                                        <mat-form-field appearance="legacy" class="w-100">
+                                            <mat-label>Medida de Plataforma:</mat-label>
+                                            <mat-select formControlName="medidaPlataforma">
+                                                <mat-option *ngFor="let item of listaMedidaPlataforma"
+                                                    [matTooltip]="item.descripcion" [value]="item.valor">
+                                                    {{item.valor}}
+                                                </mat-option>
+                                            </mat-select>
+                                            <mat-error>{{codErrores}}</mat-error>
+                                        </mat-form-field>
+                                    </div>
+                                    <div class="col-md-2" *ngIf="mostrarCampo('plataformaExtensible')">
+                                        <mat-form-field appearance="legacy" class="w-100">
+                                            <mat-label>Plataforma Extensible:</mat-label>
+                                            <mat-select formControlName="chasisExtensible">
+                                                <mat-option *ngFor="let item of listaPlataformaExtensible"
+                                                    [matTooltip]="item.descripcion" [value]="item.valor">
+                                                    {{item.valor}}
+                                                </mat-option>
+                                            </mat-select>
+                                            <mat-error>{{codErrores}}</mat-error>
+                                        </mat-form-field>
+                                    </div>
+                                    <div class="col-md-2" *ngIf="mostrarCampo('pechera')">
+                                        <mat-form-field appearance="legacy" class="w-100">
+                                            <mat-label>Pechera:</mat-label>
+                                            <mat-select formControlName="pechera">
+                                                <mat-option *ngFor="let item of listaPechera"
+                                                    [matTooltip]="item.descripcion" [value]="item.valor">
+                                                    {{item.valor}}
+                                                </mat-option>
+                                            </mat-select>
+                                            <mat-error>{{codErrores}}</mat-error>
+                                        </mat-form-field>
+                                    </div>
+                                    <div class="col-md-2" *ngIf="mostrarCampo('medidaLB')">
+                                        <mat-form-field appearance="legacy" class="w-100">
+                                            <mat-label>Medida:</mat-label>
+                                            <mat-select formControlName="medidaLB">
+                                                <mat-option *ngFor="let item of listaMedidaLB"
+                                                    [matTooltip]="item.descripcion" [value]="item.valor">
+                                                    {{item.valor}}
+                                                </mat-option>
+                                            </mat-select>
+                                            <mat-error>{{codErrores}}</mat-error>
+                                        </mat-form-field>
+                                    </div>
+                                    <div class="col-md-2" *ngIf="mostrarCampo('capacidaCargaLB')">
+                                        <mat-form-field appearance="legacy" class="w-100">
+                                            <mat-label>Capacidad de Carga:</mat-label>
+                                            <mat-select formControlName="capacidadCargaLB">
+                                                <mat-option *ngFor="let item of listaCapacidadCargaLB"
+                                                    [matTooltip]="item.descripcion" [value]="item.valor">
+                                                    {{item.valor}}
+                                                </mat-option>
+                                            </mat-select>
+                                            <mat-error>{{codErrores}}</mat-error>
+                                        </mat-form-field>
+                                    </div>
+                                    <div class="col-md-2" *ngIf="mostrarCampo('lbExtensible')">
+                                        <mat-form-field appearance="legacy" class="w-100">
+                                            <mat-label>Extensible:</mat-label>
+                                            <mat-select formControlName="chasisExtensible">
+                                                <mat-option *ngFor="let item of listaLbExtensible"
+                                                    [matTooltip]="item.descripcion" [value]="item.valor">
+                                                    {{item.valor}}
+                                                </mat-option>
+                                            </mat-select>
+                                            <mat-error>{{codErrores}}</mat-error>
+                                        </mat-form-field>
+                                    </div>
+                                    <div class="col-md-2" *ngIf="mostrarCampo('alturaContenedor')">
+                                        <mat-form-field appearance="legacy" class="w-100">
+                                            <mat-label>Altura de Contenedor:</mat-label>
+                                            <mat-select formControlName="alturaContenedor">
+                                                <mat-option *ngFor="let item of listaAlturaContenedor"
+                                                    [matTooltip]="item.descripcion" [value]="item.valor">
+                                                    {{item.valor}}
+                                                </mat-option>
+                                            </mat-select>
+                                            <mat-error>{{codErrores}}</mat-error>
+                                        </mat-form-field>
+                                    </div>
+                                    <div class="col-md-2" *ngIf="mostrarCampo('tipoContenedor')">
+                                        <mat-form-field appearance="legacy" class="w-100">
+                                            <mat-label>Tipo de Contenedor:</mat-label>
+                                            <mat-select formControlName="tipoContenedor">
+                                                <mat-option *ngFor="let item of listaTipoContenedor"
+                                                    [matTooltip]="item.descripcion" [value]="item.valor">
+                                                    {{item.valor}}
+                                                </mat-option>
+                                            </mat-select>
+                                            <mat-error>{{codErrores}}</mat-error>
+                                        </mat-form-field>
+                                    </div>
+                                    <div class="col-md-2" *ngIf="mostrarCampo('marcaUR')">
+                                        <mat-form-field appearance="legacy" class="w-100">
+                                            <mat-label>Marca UR:</mat-label>
+                                            <mat-select formControlName="marcaUR">
+                                                <mat-option *ngFor="let item of listaMarcaUR"
+                                                    [matTooltip]="item.descripcion" [value]="item.valor">
+                                                    {{item.valor}}
+                                                </mat-option>
+                                            </mat-select>
+                                            <mat-error>{{codErrores}}</mat-error>
+                                        </mat-form-field>
+                                    </div>
+                                    <div class="col-md-2" *ngIf="mostrarCampo('ejeCorredizo')">
+                                        <mat-form-field appearance="legacy" class="w-100">
+                                            <mat-label>Eje Corredizo:</mat-label>
+                                            <mat-select formControlName="tandemCorredizo">
+                                                <mat-option *ngFor="let item of listaEjeCorredizo"
+                                                    [matTooltip]="item.descripcion" [value]="item.valor">
+                                                    {{item.valor}}
+                                                </mat-option>
+                                            </mat-select>
+                                            <mat-error>{{codErrores}}</mat-error>
+                                        </mat-form-field>
+                                    </div>
+                                    <div class="col-md-2" *ngIf="mostrarCampo('largoFurgon')">
+                                        <mat-form-field appearance="legacy" class="w-100">
+                                            <mat-label>Largo de Furgón:</mat-label>
+                                            <mat-select formControlName="largoFurgon">
+                                                <mat-option *ngFor="let item of listaFurgonLargo"
+                                                    [matTooltip]="item.descripcion" [value]="item.valor">
+                                                    {{item.valor}}
+                                                </mat-option>
+                                            </mat-select>
+                                            <mat-error>{{codErrores}}</mat-error>
+                                        </mat-form-field>
+                                    </div>
+                                    <div class="col-md-2" *ngIf="mostrarCampo('medidasFurgon')">
+                                        <mat-form-field appearance="legacy" class="w-100">
+                                            <mat-label>Medidas:</mat-label>
+                                            <mat-select formControlName="medidaPlataforma">
+                                                <mat-option *ngFor="let item of listaMedidasFurgon"
+                                                    [matTooltip]="item.descripcion" [value]="item.valor">
+                                                    {{item.valor}}
+                                                </mat-option>
+                                            </mat-select>
+                                            <mat-error>{{codErrores}}</mat-error>
+                                        </mat-form-field>
+                                    </div>
+                                    <div class="col-md-2" *ngIf="mostrarCampo('suspension')">
+                                        <mat-form-field appearance="legacy" class="w-100">
+                                            <mat-label>Suspension:</mat-label>
+                                            <mat-select formControlName="suspension">
+                                                <mat-option *ngFor="let item of listaSuspension"
+                                                    [matTooltip]="item.descripcion" [value]="item.valor">
+                                                    {{item.valor}}
+                                                </mat-option>
+                                            </mat-select>
+                                            <mat-error>{{codErrores}}</mat-error>
+                                        </mat-form-field>
+                                    </div>
+                                    <div class="col-md-2" *ngIf="mostrarCampo('rieles')">
+                                        <mat-form-field appearance="legacy" class="w-100">
+                                            <mat-label>Rieles:</mat-label>
+                                            <mat-select formControlName="rieles">
+                                                <mat-option *ngFor="let item of listaRieles"
+                                                    [matTooltip]="item.descripcion" [value]="item.valor">
+                                                    {{item.valor}}
+                                                </mat-option>
+                                            </mat-select>
+                                            <mat-error>{{codErrores}}</mat-error>
+                                        </mat-form-field>
+                                    </div>
+                                </ng-container>
+                            </div>
+                        </form>
+                    </div>
+                </mat-expansion-panel>
+                <mat-expansion-panel class="card" expanded>
+                    <mat-expansion-panel-header>
+                        <mat-panel-title>
+                            <h5 class="m-0 p-0 txt-c-titulo">Tarjeta De Circulación</h5>
+                        </mat-panel-title>
+                    </mat-expansion-panel-header>
+                    <div>
+                        <app-imagenes [imagenRecurso]="form.controls['imagenTarjetaCirculacion'].value"
+                            [imagenRecursoConfiguracion]="imgRecursoTarjetaCirculacion"
+                            (imagenRecursoChange)="form.controls['imagenTarjetaCirculacion'].setValue($event)">
+                        </app-imagenes>
+                    </div>
+                </mat-expansion-panel>
+                <mat-expansion-panel class="card" expanded *ngIf="false">
+                    <mat-expansion-panel-header>
+                        <mat-panel-title>
+                            <h5 class="m-0 p-0 txt-c-titulo">Imagenes Del Equipo</h5>
+                        </mat-panel-title>
+                    </mat-expansion-panel-header>
+                    <div>
+                        <app-imagenes [imagenRecurso]="form.controls['activoOperacion'].value.fotos"
+                            [imagenRecursoConfiguracion]="imgRecursoFotos"
+                            (imagenRecursoChange)="form.controls['activoOperacion'].value.fotos.setValue($event)">
+                        </app-imagenes>
+                    </div>
+                </mat-expansion-panel>
+            </mat-accordion>
+        </mat-card-content>
+    </mat-card>
+
+</div>

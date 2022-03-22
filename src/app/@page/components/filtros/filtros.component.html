@@ -1,0 +1,101 @@
+<mat-accordion class="w-100">
+    <mat-expansion-panel expanded>
+        <mat-expansion-panel-header>
+            <mat-panel-title>
+                <h5 class="p-0 m-0 div-center-v">Filtrar Datos</h5>
+            </mat-panel-title>
+        </mat-expansion-panel-header>
+        <div class="row">
+            <div [ngClass]="getCSS()" *ngFor="let filtro of filtros">
+                <!-- Lista -->
+                <div class="div-Filtros" *ngIf="filtro.tipo == 'lista'">
+                    <mat-form-field appearance="legacy" class="w-100" (focusout)="enviarFiltros()">
+                        <mat-label>{{filtro.nombre}}</mat-label>
+                        <mat-select [(value)]="filtro.filters[0].parametro" [disabled]="!filtro.activo">
+                            <mat-option *ngFor="let item of filtro.valores" [value]="item.valor"> {{item.nombre}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                    <span class="txt-c-danger span" *ngIf="filtro.requerido && !filtro.filters[0].parametro ">
+                        *Filtro Requerido</span>
+                </div>
+                <!-- CheckBox -->
+                <div class="div-Filtros" *ngIf="filtro.tipo == 'checkbox'">
+                    <mat-form-field appearance="legacy" class="w-100" (focusout)="enviarFiltros()">
+                        <mat-label>{{filtro.nombre}}</mat-label>
+                        <mat-select [(value)]="filtro.filters[0].parametro" multiple>
+                            <mat-select-trigger>
+                                {{getItemSelectCheckBox(filtro)}}
+                                <span *ngIf="filtro.filters[0].parametro.length > 1"
+                                    class="example-additional-selection">
+                                    (+ {{filtro.filters[0].parametro?.length - 1}} {{filtro.filters[0].parametro?.length
+                                    === 2 ?
+                                    'item' :
+                                    'items'}})
+                                </span>
+                            </mat-select-trigger>
+                            <mat-option *ngFor="let item of filtro.valores" [value]="item.valor"> {{item.nombre}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                <!-- Input -->
+                <div class="div-Filtros" *ngIf="filtro.tipo == 'input'">
+                    <mat-form-field appearance="legacy" class="w-100" (focusout)="enviarFiltros()">
+                        <mat-label>{{filtro.nombre}}</mat-label>
+                        <input matInput type="{{filtro.tipoInput}}" [disabled]="!filtro.activo"
+                            [(ngModel)]="filtro.filters[0].parametro" />
+                    </mat-form-field>
+                    <span class="txt-c-danger span" *ngIf="filtro.requerido && !filtro.filters[0].parametro ">
+                        *Filtro Requerido</span>
+                </div>
+                <!-- Rango Fecha -->
+                <div class="div-Filtros" *ngIf="filtro.tipo == 'rangoFechas'">
+                    <mat-form-field appearance="legacy" appearance="legacy" class="w-100 p-0 m-0"
+                        (focusout)="enviarFiltros()">
+                        <mat-label>{{filtro.nombre}}</mat-label>
+                        <mat-date-range-input [rangePicker]="picker">
+                            <input matStartDate [(ngModel)]="filtro.filters[0].parametro"
+                                [placeholder]="filtro.valores[0].nombre">
+                            <input matEndDate [(ngModel)]="filtro.filters[1].parametro"
+                                [placeholder]="filtro.valores[1].nombre">
+                        </mat-date-range-input>
+                        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                        <mat-date-range-picker #picker></mat-date-range-picker>
+                    </mat-form-field>
+                    <span class="txt-c-danger span"
+                        *ngIf="filtro.requerido && (!filtro.filters[0].parametro || !filtro.filters[1].parametro) ">
+                        *Filtro Requerido</span>
+                </div>
+                <!-- Fecha -->
+                <div class="div-Filtros" *ngIf="filtro.tipo == 'fecha'">
+                    <mat-form-field class="w-100" appearance="legacy" (focusout)="enviarFiltros()">
+                        <mat-label>{{filtro.nombre}}</mat-label>
+                        <input matInput [matDatepicker]="fecha" [(ngModel)]="filtro.filters[0].parametro" />
+                        <mat-datepicker-toggle matSuffix [for]="fecha"></mat-datepicker-toggle>
+                        <mat-datepicker #fecha></mat-datepicker>
+                    </mat-form-field>
+                    <span class="txt-c-danger span"
+                        *ngIf="filtro.requerido && (!filtro.filters[0].parametro || !filtro.filters[1].parametro) ">
+                        *Filtro Requerido</span>
+                </div>
+            </div>
+            <div class="col-sm-12 p-0 m-0 pr-15">
+                <div class="box-paginador slide-in-left">
+                    <div class="box-right">
+                        <button class="txt-c-titulo p-0 mr-5" mat-flat-button [matTooltip]="''"
+                            (click)="aplicarFiltro()">
+                            <mat-icon class="rotate-in-center">refresh</mat-icon>
+                            Consultar Datos
+                        </button>
+                        <button class="txt-c-danger p-0 mr-5" mat-flat-button [matTooltip]="''"
+                            (click)="limpiarFiltros()">
+                            <mat-icon class="wobble-hor-bottom">delete_outline</mat-icon>
+                            Limpiar Filtros
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </mat-expansion-panel>
+</mat-accordion>

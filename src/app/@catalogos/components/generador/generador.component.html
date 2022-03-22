@@ -1,0 +1,223 @@
+<ng-container *ngIf="!cargandoDatos">
+    <app-header-component [header]="header" (eventos)="eventosHeader($event)">
+    </app-header-component>
+  </ng-container>
+
+<div class="box">
+    <div class="div-center w-100 mt-10" *ngIf="cargandoDatos">
+        <mat-spinner></mat-spinner>
+    </div>
+
+    <mat-card class="mat-elevation-z12 slide-in-bottom" *ngIf="!cargandoDatos">
+        <mat-card-content>
+            <div class="row" *ngIf="validarParametro('id')">
+                <div class="col-sm-6">
+                    <h3 class="txt-c-titulo">CUI: {{form.controls['activoOperacion'].value.codigo}}</h3>
+                </div>
+                <div class="col-sm-6">
+                    <h3 class="txt-c-titulo">COC: {{form.controls['activoOperacion'].value.coc}}</h3>
+                </div>
+            </div>
+            <mat-accordion multi>
+                <mat-expansion-panel class="card" expanded>
+                    <mat-expansion-panel-header>
+                        <mat-panel-title>
+                            <h5 class="m-0 p-0 txt-c-titulo">Detalles de Generador</h5>
+                        </mat-panel-title>
+                    </mat-expansion-panel-header>
+                    <div class="card">
+                        <app-activo-operacion [objeto]="form.controls['activoOperacion'].value"
+                            [errores]="codErrores"
+                            (activoOperacion)="form.controls['activoOperacion'].setValue($event)">
+                        </app-activo-operacion>
+                    </div>
+                </mat-expansion-panel>
+                <mat-expansion-panel class="card">
+                    <mat-expansion-panel-header>
+                        <mat-panel-title>
+                            <h5 class="m-0 p-0 txt-c-titulo">Caracteristicas de Generador</h5>
+                        </mat-panel-title>
+                    </mat-expansion-panel-header>
+                    <div class="card">
+                        <form [formGroup]="form">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <mat-form-field appearance="legacy" class="w-100">
+                                        <mat-label>Tipo Generador</mat-label>
+                                    <mat-select formControlName="idTipoGenerador">
+                                        <mat-option *ngFor="let tg of listaTipoGenerador" [value]="tg.id">{{tg.codigo}} - {{tg.descripcion}}</mat-option>
+                                    </mat-select>
+                                    </mat-form-field>
+                                </div>
+                                <div class="col-md-2">
+                                    <mat-form-field appearance="legacy" class="w-100">
+                                        <mat-label>Tipo de Instalacion:</mat-label>
+                                        <mat-select formControlName="tipoInstalacion">
+                                            <mat-option *ngFor="let item of listaCocTipoInstalacion"
+                                                [matTooltip]="item.descripcion" [value]="item.valor">
+                                                {{item.valor}}
+                                            </mat-option>
+                                        </mat-select>
+                                        <mat-error>{{codErrores.tipoInstalacion}}</mat-error>
+                                    </mat-form-field>
+                                </div>
+                                <div class="col-md-2">
+                                    <mat-form-field appearance="legacy" class="w-100">
+                                        <mat-label>Marca de Generador:</mat-label>
+                                        <mat-select formControlName="marcaGenerador">
+                                            <mat-option *ngFor="let item of listaCocMarcaGenerador"
+                                                [matTooltip]="item.descripcion" [value]="item.valor">
+                                                {{item.valor}}
+                                            </mat-option>
+                                        </mat-select>
+                                        <mat-error>{{codErrores.marcaGenerador}}</mat-error>
+                                    </mat-form-field>
+                                </div>
+                                <div class="col-md-3">
+                                    <mat-form-field appearance="legacy" class="w-100">
+                                        <mat-label>Apto Para CA:</mat-label>
+                                        <mat-select formControlName="aptoParaCA">
+                                            <mat-option [value]="'1'">
+                                                Si
+                                            </mat-option>
+                                            <mat-option [value]="'0'">
+                                                No
+                                            </mat-option>
+                                        </mat-select>
+                                        <mat-error>{{codErrores.aptoCA}}</mat-error>
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </mat-expansion-panel>
+                <mat-expansion-panel class="card">
+                    <mat-expansion-panel-header>
+                        <mat-panel-title>
+                            <h5 class="m-0 p-0 txt-c-titulo">Ficha Técnica</h5>
+                        </mat-panel-title>
+                    </mat-expansion-panel-header>
+                    <div class="card">
+                        <form [formGroup]="form">
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <mat-form-field appearance="legacy" class="w-100">
+                                        <mat-label>Capacidad (Galones):</mat-label>
+                                        <input matInput type="text" formControlName="capacidadGalones" />
+                                        <mat-error>{{ codErrores.capacidadGalones }}</mat-error>
+                                    </mat-form-field>
+                                </div>
+                                <div class="col-md-3">
+                                    <mat-form-field appearance="legacy" class="w-100">
+                                        <mat-label>Tipo de Enfriamiento:</mat-label>
+                                        <mat-select formControlName="tipoEnfriamiento">
+                                            <mat-option [value]="'AGUA'">
+                                                AGUA
+                                            </mat-option>
+                                            <mat-option [value]="'AIRE'">
+                                                AIRE
+                                            </mat-option>
+                                        </mat-select>
+                                        <mat-error>{{codErrores.tipoEnfriamiento}}</mat-error>
+                                    </mat-form-field>
+                                </div>
+                                <div class="col-md-3">
+                                    <mat-form-field appearance="legacy" class="w-100">
+                                        <mat-label>Número de Cilindros:</mat-label>
+                                        <input matInput type="number" formControlName="numeroCilindros" />
+                                        <mat-error>{{ codErrores.numeroCilindros }}</mat-error>
+                                    </mat-form-field>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <mat-form-field appearance="legacy" class="w-100">
+                                        <mat-label>Código Anterior:</mat-label>
+                                        <input matInput type="text" formControlName="codigoAnterior" />
+                                        <mat-error>{{ codErrores.capacidadGalones }}</mat-error>
+                                    </mat-form-field>
+                                </div>
+                                <div class="col-md-4">
+                                    <mat-form-field appearance="legacy" class="w-100">
+                                        <mat-label>Tipo De Motor:</mat-label>
+                                        <input matInput type="text" formControlName="tipoMotor" />
+                                        <mat-error>{{ codErrores.capacidadGalones }}</mat-error>
+                                    </mat-form-field>
+                                </div>
+                                <div class="col-md-4">
+                                    <mat-form-field appearance="legacy" class="w-100">
+                                        <mat-label>Velocidad:</mat-label>
+                                        <input matInput type="text" formControlName="velocidad" />
+                                        <mat-error>{{ codErrores.capacidadGalones }}</mat-error>
+                                    </mat-form-field>
+                                </div>
+                                <div class="col-md-4">
+                                    <mat-form-field appearance="legacy" class="w-100">
+                                        <mat-label>Potencia De Motor:</mat-label>
+                                        <input matInput type="text" formControlName="potenciaMotor" />
+                                        <mat-error>{{ codErrores.capacidadGalones }}</mat-error>
+                                    </mat-form-field>
+                                </div>
+                                <div class="col-md-4">
+                                    <mat-form-field appearance="legacy" class="w-100">
+                                        <mat-label>Modelo De Generador:</mat-label>
+                                        <input matInput type="text" formControlName="modeloGenerador" />
+                                        <mat-error>{{ codErrores.capacidadGalones }}</mat-error>
+                                    </mat-form-field>
+                                </div>
+                                <div class="col-md-4">
+                                    <mat-form-field appearance="legacy" class="w-100">
+                                        <mat-label>Serie De Generador:</mat-label>
+                                        <input matInput type="text" formControlName="serieGenerador" />
+                                        <mat-error>{{ codErrores.capacidadGalones }}</mat-error>
+                                    </mat-form-field>
+                                </div>
+                                <div class="col-md-4">
+                                    <mat-form-field appearance="legacy" class="w-100">
+                                        <mat-label>Potencia Gen Set:</mat-label>
+                                        <input matInput type="text" formControlName="potenciaGenerador" />
+                                        <mat-error>{{ codErrores.capacidadGalones }}</mat-error>
+                                    </mat-form-field>
+                                </div>
+                                <div class="col-md-4">
+                                    <mat-form-field appearance="legacy" class="w-100">
+                                        <mat-label>Tensión A Plena Carga:</mat-label>
+                                        <input matInput type="text" formControlName="tensionGenerador" />
+                                        <mat-error>{{ codErrores.capacidadGalones }}</mat-error>
+                                    </mat-form-field>
+                                </div>
+                                <div class="col-md-4">
+                                    <mat-form-field appearance="legacy" class="w-100">
+                                        <mat-label>Tipo De Aceite:</mat-label>
+                                        <input matInput type="text" formControlName="tipoAceite" />
+                                        <mat-error>{{ codErrores.capacidadGalones }}</mat-error>
+                                    </mat-form-field>
+                                </div>
+                                <div class="col-md-4">
+                                    <mat-form-field appearance="legacy" class="w-100">
+                                        <mat-label>Tipo De Generador:</mat-label>
+                                        <input matInput type="text" formControlName="tipoGeneradorGen" />
+                                        <mat-error>{{ codErrores.capacidadGalones }}</mat-error>
+                                    </mat-form-field>
+                                </div>
+                                <div class="col-md-4">
+                                    <mat-form-field appearance="legacy" class="w-100">
+                                        <mat-label>No. Motor:</mat-label>
+                                        <input matInput type="text" formControlName="noMotor" />
+                                        <mat-error>{{ codErrores.capacidadGalones }}</mat-error>
+                                    </mat-form-field>
+                                </div>
+                                <div class="col-md-4">
+                                    <mat-form-field appearance="legacy" class="w-100">
+                                        <mat-label>Tipo De Tanque:</mat-label>
+                                        <input matInput type="text" formControlName="tipoTanque" />
+                                        <mat-error>{{ codErrores.capacidadGalones }}</mat-error>
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </mat-expansion-panel>
+            </mat-accordion>
+        </mat-card-content>
+    </mat-card>
+</div>

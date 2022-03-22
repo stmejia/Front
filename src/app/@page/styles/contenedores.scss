@@ -1,0 +1,539 @@
+//Contenedores **********************************************
+
+html,
+body {
+  height: 100%;
+  box-sizing: border-box !important;
+}
+body {
+  box-sizing: border-box !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  height: 100%;
+  min-height: 100%;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+.h-modal {
+  max-height: 500px !important;
+  
+}
+
+//Header Cards
+//debe combinarse con algun fondo de fondos.scss
+
+.header-card {
+  box-sizing: border-box !important;
+  padding-left: 10px !important;
+  padding-right: 10px !important;
+  padding-top: 10px !important;
+  padding-block-end: 10px !important;
+  margin-top: -35px !important;
+  margin-bottom: 5px;
+  border-radius: 10px;
+  text-align: center;
+  text-transform: uppercase !important;
+}
+
+.card {
+  border-radius: 8px 8px 8px 8px;
+}
+
+.card-list {
+  box-sizing: border-box !important;
+  display: flex;
+  padding: 10px;
+  flex-wrap: wrap;
+}
+
+//centrar contenido vertical y horizontalmente
+.div-center {
+  box-sizing: border-box !important;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+//Centra el contenido verticalmente
+.div-center-h {
+  box-sizing: border-box !important;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  //flex-direction: column;
+}
+
+.div-center-v {
+  box-sizing: border-box !important;
+  display: flex;
+  align-items: center;
+}
+
+.div-right {
+  box-sizing: border-box !important;
+  width: 100% !important;
+  display: flex;
+  padding: 5px;
+  flex-wrap: wrap;
+  flex-direction: row-reverse;
+}
+
+.box {
+  box-sizing: border-box !important;
+  position: relative;
+  padding: 5px;
+  width: 100%;
+  height: 100%;
+  min-height: 700px !important;
+}
+
+.flex-box {
+  max-width: 100%;
+  min-height: 500px;
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: column;
+}
+
+.box-paginador {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+}
+
+.box-right {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  border-radius: 15px;
+}
+
+//Filas
+.row {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+//Columnas
+
+//--El tamaño sm es para pantallas pequeñas
+//--El tamaño md es para pantallas medianas
+.col-1,
+.col-2,
+.col-3,
+.col-4,
+.col-5,
+.col-6,
+.col-8,
+.col-9,
+.col-12,
+.col-sm-1,
+.col-sm-2,
+.col-sm-3,
+.col-sm-4,
+.col-sm-5,
+.col-sm-6,
+.col-sm-7,
+.col-sm-8,
+.col-sm-9,
+.col-sm-10,
+.col-sm-11,
+.col-sm-12,
+.col-md-1,
+.col-md-2,
+.col-md-3,
+.col-md-4,
+.col-md-5,
+.col-md-6,
+.col-md-7,
+.col-md-8,
+.col-md-9,
+.col-md-10,
+.col-md-11,
+.col-md-12,
+.col-lg-1,
+.col-lg-2,
+.col-lg-3,
+.col-lg-4,
+.col-lg-5,
+.col-lg-6,
+.col-lg-7,
+.col-lg-8,
+.col-lg-9,
+.col-lg-10,
+.col-lg-11,
+.col-lg-12 {
+  position: relative;
+  width: 100%;
+  padding: 10px;
+  box-sizing: border-box;
+}
+
+.col {
+  position: relative;
+  width: auto;
+  padding: 10px;
+  box-sizing: border-box;
+}
+
+@media (max-width: 6000px) {
+  .col-1 {
+    max-width: 8.333333%;
+  }
+  .col-2 {
+    max-width: 16.666666%;
+  }
+  .col-3 {
+    max-width: 25%;
+  }
+  .col-4 {
+    max-width: 33.333333%;
+  }
+  .col-5 {
+    max-width: 41.666666%;
+  }
+  .col-6 {
+    max-width: 50%;
+  }
+  .col-8 {
+    max-width: 66.666667%;
+  }
+  .col-9 {
+    max-width: 75%;
+  }
+}
+
+//Tamaño minimo de celular
+/* @media (min-width: 500px){
+  .col-3 {
+    max-width: 25%;
+  }
+  .col-4 {
+    max-width: 33.333333%;
+  }
+  .col-6 {
+    max-width: 50%;
+  }
+  .col-8 {
+    max-width: 66.666667%;
+  }
+  .col-9 {
+    max-width: 75%;
+  }
+} */
+
+//Vista Celular
+@media (max-width: 576px) {
+  .vista-m {
+    display: none !important;
+  }
+
+  .box-paginador {
+    justify-content: flex-start;
+  }
+
+  .icono-m-mr-5 {
+    margin-right: 5px !important;
+  }
+}
+
+@media (min-width: 576px) {
+  .col-sm-1 {
+    max-width: 8.333333%;
+  }
+  .col-sm-2 {
+    max-width: 16.666667%;
+  }
+  .col-sm-3 {
+    max-width: 25%;
+  }
+  .col-sm-4 {
+    max-width: 33.333333%;
+  }
+  .col-sm-5 {
+    max-width: 41.666667%;
+  }
+  .col-sm-6 {
+    max-width: 50%;
+  }
+  .col-sm-7 {
+    max-width: 58.333333%;
+  }
+  .col-sm-8 {
+    max-width: 66.666667%;
+  }
+  .col-sm-9 {
+    max-width: 75%;
+  }
+  .col-sm-10 {
+    max-width: 83.333333%;
+  }
+  .col-sm-11 {
+    max-width: 91.666667%;
+  }
+  .col-sm-12 {
+    max-width: 100%;
+  }
+  .card-u {
+    width: 50% !important;
+  }
+}
+
+@media (min-width: 768px) {
+  .col-md-1 {
+    max-width: 8.333333%;
+  }
+  .col-md-2 {
+    max-width: 16.666667%;
+  }
+  .col-md-3 {
+    max-width: 25%;
+  }
+  .col-md-4 {
+    max-width: 33.333333%;
+  }
+  .col-md-5 {
+    max-width: 41.666667%;
+  }
+  .col-md-6 {
+    max-width: 50%;
+  }
+  .col-md-7 {
+    max-width: 58.333333%;
+  }
+  .col-md-8 {
+    max-width: 66.666667%;
+  }
+  .col-md-9 {
+    max-width: 75%;
+  }
+  .col-md-10 {
+    max-width: 83.333333%;
+  }
+  .col-md-11 {
+    max-width: 91.666667%;
+  }
+  .col-md-12 {
+    max-width: 100%;
+  }
+  .card-u {
+    width: 30% !important;
+  }
+}
+
+@media (min-width: 992px) {
+  .col-lg-auto {
+    flex: 0 0 auto;
+    width: auto;
+  }
+  .col-lg-1 {
+    flex: 0 0 auto;
+    width: 8.33333333%;
+  }
+  .col-lg-2 {
+    flex: 0 0 auto;
+    width: 16.66666667%;
+  }
+  .col-lg-3 {
+    flex: 0 0 auto;
+    width: 25%;
+  }
+  .col-lg-4 {
+    flex: 0 0 auto;
+    width: 33.33333333%;
+  }
+  .col-lg-5 {
+    flex: 0 0 auto;
+    width: 41.66666667%;
+  }
+  .col-lg-6 {
+    flex: 0 0 auto;
+    width: 50%;
+  }
+  .col-lg-7 {
+    flex: 0 0 auto;
+    width: 58.33333333%;
+  }
+  .col-lg-8 {
+    flex: 0 0 auto;
+    width: 66.66666667%;
+  }
+  .col-lg-9 {
+    flex: 0 0 auto;
+    width: 75%;
+  }
+  .col-lg-10 {
+    flex: 0 0 auto;
+    width: 83.33333333%;
+  }
+  .col-lg-11 {
+    flex: 0 0 auto;
+    width: 91.66666667%;
+  }
+  .col-lg-12 {
+    flex: 0 0 auto;
+    width: 100%;
+  }
+}
+
+.float-left {
+  float: left !important;
+}
+
+.float-top {
+  float: inline-start !important;
+}
+
+.float-right {
+  float: right !important;
+}
+
+.d-block {
+  display: block !important;
+}
+
+.card-u {
+  width: 70%;
+}
+
+.sidenav_container {
+  min-width: 60px !important;
+  height: calc(100vh - 200px) !important;
+}
+
+//Diseño de Scroll
+.contenedor {
+  overflow: auto !important;
+  box-sizing: border-box !important;
+}
+
+/* Estilos para motores Webkit y blink (Chrome, Safari, Opera... )*/
+
+.contenedor::-webkit-scrollbar {
+  -webkit-appearance: none !important;
+}
+
+.contenedor::-webkit-scrollbar:vertical {
+  //ancho del scroll en la paginas
+  width: 8px !important;
+}
+
+.contenedor::-webkit-scrollbar-button:increment,
+.contenedor::-webkit-scrollbar-button {
+  display: none !important;
+}
+
+.contenedor::-webkit-scrollbar:horizontal {
+  height: 0px !important;
+}
+
+.contenedor::-webkit-scrollbar-thumb {
+  background-color: #797979 !important;
+  border-radius: 20px !important;
+  border: 1px solid #f1f2f3 !important;
+}
+
+.contenedor::-webkit-scrollbar-track {
+  border-radius: 10px !important;
+}
+
+//Tabla Responsiva
+
+.table-responsive {
+  border-radius: 10px 10px 10px 10px;
+  min-height: 0.01%;
+  overflow-x: auto;
+  overflow-y: auto;
+}
+
+.table .th {
+  text-transform: capitalize;
+  font-size: medium;
+  font-weight: normal;
+}
+
+.table {
+  table-layout: auto;
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.th,
+.td {
+  padding: 5px !important;
+  //min-width: 350px !important;
+}
+
+.td-m {
+  display: none;
+}
+
+@media screen and (max-width: 600px) {
+  //Alinea el contenido a la derecha
+  .td .div-center-v {
+    display: flex;
+    align-items: right;
+    //justify-content: center;
+    flex-direction: row-reverse;
+  }
+
+  .table-responsive {
+    overflow-y: scroll;
+  }
+
+  .td .div-center-h {
+    display: block;
+    justify-content: right;
+    align-items: right;
+  }
+
+  .table .thead {
+    /* border: none;
+    clip: rect(0 0 0 0);
+    height: 1px;
+    margin: -1px;
+    overflow: hidden;
+    padding: 0;
+    position: absolute;
+    width: 1px; */
+    display: none;
+  }
+
+  .table .tbody .td {
+    /* border-bottom: 1px solid #ddd !important; */
+    display: block;
+    font-size: 0.8em;
+    text-align: right !important;
+    overflow: scroll;
+  }
+
+  .td-m {
+    display: block;
+    float: left;
+    font-weight: bold;
+    text-transform: uppercase;
+  }
+
+  .table .td:last-child {
+    border-bottom: 0;
+  }
+}
+
+.error {
+  background-color: red !important;
+  color: white !important;    
+}
+
+.error button {
+  background-color:orangered !important;
+  color: white !important;
+}
+
+.separador {
+  flex: 1 1 auto;
+}

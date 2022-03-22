@@ -1,0 +1,188 @@
+//Margenes
+
+//margenes automaticos a la izquierda y derecha
+.mx-auto {
+  margin-right: auto !important;
+  margin-left: auto !important;
+}
+//Sin margenes
+.m-0 {
+  margin: 0 !important;
+}
+//----- margen de 5 10 y 15 px
+.m-5 {
+  margin: 5px !important;
+}
+.m-10 {
+  margin: 10px !important;
+}
+.m-15 {
+  margin: 15px !important;
+}
+//----- Margenes a la izquierda de 0 5 10 y 15 px
+.ml-auto{
+  margin-left: auto;
+}
+.ml-0 {
+  margin-left: 0 !important;
+}
+.ml-5 {
+  margin-left: 5px !important;
+}
+.ml-10 {
+  margin-left: 10px !important;
+}
+.ml-15 {
+  margin-left: 15px !important;
+}
+//----- Margenes a la derecha de 0 5 10 y 15 px
+.mr-0 {
+  margin-right: 0;
+}
+.mr-5 {
+  margin-right: 5px !important;
+}
+.mr-10 {
+  margin-right: 10px !important;
+}
+.mr-15 {
+  margin-right: 15px;
+}
+//----- Margenes superior de 0 5 10 y 15 px
+.mt-0 {
+  margin-top: 0 !important;
+}
+.mt-5 {
+  margin-top: 5px !important;
+}
+.mt-10 {
+  margin-top: 10px !important;
+}
+.mt-15 {
+  margin-top: 15px !important;
+}
+//----- Margenes inferior de 0 5 10 y 15 px
+.mb-0 {
+  margin-bottom: 0 !important;
+}
+.mb-5 {
+  margin-bottom: 5px !important;
+}
+.mb-10 {
+  margin-bottom: 10px !important;
+}
+.mb-15 {
+  margin-bottom: 15px !important;
+}
+//----- padding de 0 5 10 y 15 px
+.p-0 {
+  padding: 0 !important;
+}
+
+.p-5 {
+  padding: 5px !important;
+}
+
+.p-10 {
+  padding: 10px !important;
+}
+
+.p-15 {
+  padding: 15px !important;
+}
+
+.p-25 {
+  padding: 25px !important;
+}
+//----- Padding a la izquierda de 0 5 10 y 15 px
+.pl-0 {
+  padding-left: 0 !important;
+}
+.pl-5 {
+  padding-left: 5px !important;
+}
+.pl-10 {
+  padding-left: 10px !important;
+}
+.pl-15 {
+  padding-left: 15px !important;
+}
+.pl-20 {
+  padding-left: 20px !important;
+}
+.pl-25 {
+  padding-left: 25px !important;
+}
+//----- Padding a la derecha de 0 5 10 y 15 px
+.pr-0 {
+  padding-right: 0;
+}
+.pr-5 {
+  padding-right: 5px !important;
+}
+.pr-10 {
+  padding-right: 10px !important;
+}
+.pr-15 {
+  padding-right: 15px !important;
+}
+//----- Padding superior de 0 5 10 y 15 px
+.pt-0 {
+  padding-top: 0 !important;
+}
+.pt-5 {
+  padding-top: 5px !important;
+}
+.pt-10 {
+  padding-top: 10px !important;
+}
+.pt-15 {
+  padding-top: 15px !important;
+}
+
+//----- Padding inferior de 0 5 10 y 15 px
+.pb-0 {
+  padding-bottom: 0 !important;
+}
+.pb-5 {
+  padding-bottom: 5px !important;
+}
+.pb-10 {
+  padding-bottom: 10px !important;
+}
+.pb-15 {
+  padding-bottom: 15px !important;
+}
+// ----- Tamaños -----
+.w-100 {
+  box-sizing: border-box !important;
+  width: 100% !important;
+}
+
+.w-80 {
+  width: 80% !important;
+}
+
+.w-auto {
+  width: auto !important;
+}
+.h-100 {
+  height: 100% !important;
+}
+
+.cuerpo {
+  height: 100%-10% !important;
+}
+
+.mw-250 {
+  min-width: 150px !important;
+  max-width: 250px !important;
+}
+
+.fila-formulario {
+  margin: 0px !important;
+  padding-left: 0px !important;
+  padding-right: 0px !important;
+  padding-top: 0px !important;
+  padding-bottom: 5px !important;
+}

@@ -1,0 +1,408 @@
+<ng-container *ngIf="!cargando">
+    <app-header-component [header]="(configuracionComponent | async).header" (eventos)="eventosHeader($event)">
+    </app-header-component>
+</ng-container>
+
+<div class="box">
+    <div class="div-center w-100 mt-10" *ngIf="cargando">
+        <mat-spinner></mat-spinner>
+    </div>
+
+    <mat-card class="mat-elevation-z12 slide-in-bottom" *ngIf="!cargando">
+        <mat-card-content>
+            <div class="row" *ngIf="!isNuevo()">
+                <div class="col-sm-6">
+                    <h3 class="txt-c-titulo">CUI: {{form.controls['activoOperacion'].value.codigo}}</h3>
+                </div>
+                <div class="col-sm-6">
+                    <h3 class="txt-c-titulo">COC: {{form.controls['activoOperacion'].value.coc}}</h3>
+                </div>
+            </div>
+            <mat-accordion multi>
+                <mat-expansion-panel class="card" expanded>
+                    <mat-expansion-panel-header>
+                        <mat-panel-title>
+                            <h5 class="m-0 p-0 txt-c-titulo">Descripción General Del Vehículo (CUI)</h5>
+                        </mat-panel-title>
+                    </mat-expansion-panel-header>
+                    <div class="card">
+                        <form [formGroup]="form">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <app-select-aguila [columnas]="colTipoVehiculo" [datos]="getTipoVehiculo() | async"
+                                        (itemSeleccionado)="this.form.controls['idTipoVehiculo'].setValue($event)"
+                                        (objetoSeleccionado)="this.tipoVehiculo = $event" [nombre]="'Tipo de Vehiculo'"
+                                        [itemSelect]="this.form.controls['idTipoVehiculo'].value">
+                                    </app-select-aguila>
+                                </div>
+                                <div class="col-md-6">
+                                    <form [formGroup]="formActivo">
+                                        <app-select-aguila [columnas]="colTransportes"
+                                            [datos]="getTransportes() | async"
+                                            (itemSeleccionado)="this.formActivo.controls['idTransporte'].setValue($event)"
+                                            [nombre]="'Transporte'"
+                                            [itemSelect]="this.formActivo.controls['idTransporte'].value">
+                                        </app-select-aguila>
+                                    </form>
+                                </div>
+                                <div class="col-md-12 p-0 m-0">
+                                    <form [formGroup]="formActivo">
+                                        <div class="row">
+                                            <div class="col-md-2">
+                                                <mat-form-field appearance="legacy" class="w-100">
+                                                    <mat-label>Correlativo:</mat-label>
+                                                    <input matInput type="number" formControlName="correlativo" />
+                                                    <mat-error>{{ codErroresA.correlativo }}</mat-error>
+                                                </mat-form-field>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <mat-form-field appearance="legacy" class="w-100">
+                                                    <mat-label>No. Serie:</mat-label>
+                                                    <input matInput type="text" formControlName="serie" />
+                                                    <mat-error>{{ codErroresA.serie }}</mat-error>
+                                                </mat-form-field>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <mat-form-field appearance="legacy" class="w-100">
+                                                    <mat-label>Modelo (año):</mat-label>
+                                                    <input matInput type="number" formControlName="modeloAnio" />
+                                                    <mat-error>{{ codErroresA.modeloAnio }}</mat-error>
+                                                </mat-form-field>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <mat-form-field appearance="legacy" class="w-100">
+                                                    <mat-label>VIN:</mat-label>
+                                                    <input matInput type="text" formControlName="vin" />
+                                                    <mat-error>{{ codErroresA.vin }}</mat-error>
+                                                </mat-form-field>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <mat-form-field appearance="legacy" class="w-100">
+                                                    <mat-label>Marca:</mat-label>
+                                                    <input matInput type="text" formControlName="marca" />
+                                                    <mat-error>{{ codErroresA.marca }}</mat-error>
+                                                </mat-form-field>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                                <div class="col-md-3">
+                                    <mat-form-field appearance="legacy" class="w-100">
+                                        <mat-label>No. Placa:</mat-label>
+                                        <input matInput type="text" formControlName="placa" />
+                                        <mat-error>{{ codErrores.placa }}</mat-error>
+                                    </mat-form-field>
+                                </div>
+                                <div class="col-md-3">
+                                    <mat-form-field appearance="legacy" class="w-100">
+                                        <mat-label>Poliza De Seguro:</mat-label>
+                                        <input matInput type="text" formControlName="polizaSeguro" />
+                                        <mat-error>{{ codErrores.placa }}</mat-error>
+                                    </mat-form-field>
+                                </div>
+                                <div class="col-md-3">
+                                    <mat-form-field appearance="legacy" class="w-100">
+                                        <mat-label>No. Tarjeta De Circulación:</mat-label>
+                                        <input matInput type="text" formControlName="tarjetaCirculacion" />
+                                        <mat-error>{{ codErrores.motor }}</mat-error>
+                                    </mat-form-field>
+                                </div>
+                                <div class="col-md-3">
+                                    <mat-form-field appearance="legacy" class="w-100">
+                                        <mat-label>No. Llantas:</mat-label>
+                                        <input matInput type="number" formControlName="llantas" />
+                                        <mat-error>{{ codErrores.llantas }}</mat-error>
+                                    </mat-form-field>
+                                </div>
+                                <div class="col-md-6">
+                                    <form [formGroup]="formActivo">
+                                        <mat-form-field appearance="legacy" class="w-100">
+                                            <mat-label>Observaciones:</mat-label>
+                                            <input matInput type="text" formControlName="descripcion" />
+                                            <mat-error>{{ codErroresA.descripcion }}</mat-error>
+                                        </mat-form-field>
+                                    </form>
+                                </div>
+                                <div class="col-md-3">
+                                    <form [formGroup]="formActivo">
+                                        <mat-form-field class="w-100" appearance="legacy">
+                                            <mat-label>Fecha de Baja:</mat-label>
+                                            <input matInput [matDatepicker]="fechaBaja" formControlName="fechaBaja" />
+                                            <mat-datepicker-toggle matSuffix [for]="fechaBaja"></mat-datepicker-toggle>
+                                            <mat-datepicker #fechaBaja></mat-datepicker>
+                                        </mat-form-field>
+                                    </form>
+                                </div>
+                                <div class="col-md-3">
+                                    <form [formGroup]="formActivo">
+                                        <mat-form-field appearance="legacy" class="w-100">
+                                            <mat-label>Fecha de Creación</mat-label>
+                                            <input matInput [matDatepicker]="dpC" formControlName="fechaCreacion" />
+                                            <mat-datepicker-toggle matSuffix [for]="dpC"></mat-datepicker-toggle>
+                                            <mat-datepicker #dpC></mat-datepicker>
+                                        </mat-form-field>
+                                    </form>
+                                </div>
+                                <div class="col-md-3" *ngIf="false">
+                                    <mat-form-field appearance="legacy" class="w-100">
+                                        <mat-label>No. Motor:</mat-label>
+                                        <input matInput type="text" formControlName="motor" />
+                                        <mat-error>{{ codErrores.motor }}</mat-error>
+                                    </mat-form-field>
+                                </div>
+                                <div class="col-md-3" *ngIf="false">
+                                    <mat-form-field appearance="legacy" class="w-100">
+                                        <mat-label>No. Ejes:</mat-label>
+                                        <input matInput type="number" formControlName="ejes" />
+                                        <mat-error>{{ codErrores.ejes }}</mat-error>
+                                    </mat-form-field>
+                                </div>
+                                <div class="col-md-3" *ngIf="false">
+                                    <mat-form-field appearance="legacy" class="w-100">
+                                        <mat-label>Tamaño de Motor:</mat-label>
+                                        <input matInput type="text" formControlName="tamanoMotor" />
+                                        <mat-error>{{ codErrores.tamanoMotor }}</mat-error>
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </mat-expansion-panel>
+                <mat-expansion-panel class="card" expanded>
+                    <mat-expansion-panel-header>
+                        <mat-panel-title>
+                            <h5 class="m-0 p-0 txt-c-titulo">CaracterÍsticas del Vehículo (COC)</h5>
+                        </mat-panel-title>
+                    </mat-expansion-panel-header>
+                    <div class="card">
+                        <form [formGroup]="form">
+                            <div class="row">
+                                <!-- --------------------------------------------------- -->
+                                <!-- --------------------------------------------------- -->
+                                <ng-container *ngIf="form.controls['idTipoVehiculo'].valid">
+                                    <div class="col-md-2" *ngIf="mostrarCampo('distancia')">
+                                        <mat-form-field appearance="legacy" class="w-100">
+                                            <mat-label>Distancia:</mat-label>
+                                            <mat-select formControlName="distancia">
+                                                <mat-option *ngFor="let item of listaDistancia"
+                                                    [matTooltip]="item.descripcion" [value]="item.valor">
+                                                    {{item.valor}}
+                                                </mat-option>
+                                            </mat-select>
+                                            <mat-error>{{codErrores.distancia}}</mat-error>
+                                        </mat-form-field>
+                                    </div>
+                                    <div class="col-md-2" *ngIf="mostrarCampo('potencia')">
+                                        <mat-form-field appearance="legacy" class="w-100">
+                                            <mat-label>Potencia:</mat-label>
+                                            <mat-select formControlName="potencia">
+                                                <mat-option *ngFor="let item of listaPotencia"
+                                                    [matTooltip]="item.descripcion" [value]="item.valor">
+                                                    {{item.valor}}
+                                                </mat-option>
+                                            </mat-select>
+                                            <mat-error>{{codErrores.potencia}}</mat-error>
+                                        </mat-form-field>
+                                    </div>
+                                    <div class="col-md-2" *ngIf="mostrarCampo('tornamesaGraduable')">
+                                        <mat-form-field appearance="legacy" class="w-100">
+                                            <mat-label>Tornamesa Graduable:</mat-label>
+                                            <mat-select formControlName="tornamesaGraduable">
+                                                <mat-option *ngFor="let item of listaTornamesaGraduable"
+                                                    [matTooltip]="item.descripcion" [value]="item.valor">
+                                                    {{item.valor}}
+                                                </mat-option>
+                                            </mat-select>
+                                            <mat-error>{{codErrores.tornamesaGraduable}}</mat-error>
+                                        </mat-form-field>
+                                    </div>
+                                    <div class="col-md-2" *ngIf="mostrarCampo('tipoMovimiento')">
+                                        <mat-form-field appearance="legacy" class="w-100">
+                                            <mat-label>Tipo De Movimiento:</mat-label>
+                                            <mat-select formControlName="tipoMovimiento">
+                                                <mat-option *ngFor="let item of listaTipoMovimiento"
+                                                    [matTooltip]="item.descripcion" [value]="item.valor">
+                                                    {{item.valor}}
+                                                </mat-option>
+                                            </mat-select>
+                                            <mat-error>{{codErrores.tipoMovimiento}}</mat-error>
+                                        </mat-form-field>
+                                    </div>
+                                    <div class="col-md-2" *ngIf="mostrarCampo('dobleRemolque')">
+                                        <mat-form-field appearance="legacy" class="w-100">
+                                            <mat-label>Doble Remolque:</mat-label>
+                                            <mat-select formControlName="dobleRemolque">
+                                                <mat-option *ngFor="let item of listaDobleRemolque"
+                                                    [matTooltip]="item.descripcion" [value]="item.valor">
+                                                    {{item.valor}}
+                                                </mat-option>
+                                            </mat-select>
+                                            <mat-error>{{codErrores.dobleRemolque}}</mat-error>
+                                        </mat-form-field>
+                                    </div>
+                                    <div class="col-md-2" *ngIf="mostrarCampo('aptoParaCentroAmerica')">
+                                        <mat-form-field appearance="legacy" class="w-100">
+                                            <mat-label>Apto Para Centroamérica:</mat-label>
+                                            <mat-select formControlName="aptoParaCentroAmerica">
+                                                <mat-option *ngFor="let item of listaAptoParaCentroAmerica"
+                                                    [matTooltip]="item.descripcion" [value]="item.valor">
+                                                    {{item.valor}}
+                                                </mat-option>
+                                            </mat-select>
+                                            <mat-error>{{codErrores.aptoParaCentroAmerica}}</mat-error>
+                                        </mat-form-field>
+                                    </div>
+                                    <div class="col-md-2" *ngIf="mostrarCampo('capacidadCarga')">
+                                        <mat-form-field appearance="legacy" class="w-100">
+                                            <mat-label>Capacidad De Carga:</mat-label>
+                                            <mat-select formControlName="capacidadCarga">
+                                                <mat-option *ngFor="let item of listaCapacidadCarga"
+                                                    [matTooltip]="item.descripcion" [value]="item.valor">
+                                                    {{item.valor}}
+                                                </mat-option>
+                                            </mat-select>
+                                            <mat-error>{{codErrores.capacidadCarga}}</mat-error>
+                                        </mat-form-field>
+                                    </div>
+                                    <div class="col-md-2" *ngIf="mostrarCampo('carroceria')">
+                                        <mat-form-field appearance="legacy" class="w-100">
+                                            <mat-label>Carroceria:</mat-label>
+                                            <mat-select formControlName="carroceria">
+                                                <mat-option *ngFor="let item of listaCarroceria"
+                                                    [matTooltip]="item.descripcion" [value]="item.valor">
+                                                    {{item.valor}}
+                                                </mat-option>
+                                            </mat-select>
+                                            <mat-error>{{codErrores.carroceria}}</mat-error>
+                                        </mat-form-field>
+                                    </div>
+                                    <div class="col-md-2" *ngIf="mostrarCampo('tipoCarga')">
+                                        <mat-form-field appearance="legacy" class="w-100">
+                                            <mat-label>Tipo De Carga:</mat-label>
+                                            <mat-select formControlName="tipoCarga">
+                                                <mat-option *ngFor="let item of listaTipoCarga"
+                                                    [matTooltip]="item.descripcion" [value]="item.valor">
+                                                    {{item.valor}}
+                                                </mat-option>
+                                            </mat-select>
+                                            <mat-error>{{codErrores.tipoCarga}}</mat-error>
+                                        </mat-form-field>
+                                    </div>
+                                    <div class="col-md-2" *ngIf="mostrarCampo('medidaFurgon')">
+                                        <mat-form-field appearance="legacy" class="w-100">
+                                            <mat-label>Medida De Furgón:</mat-label>
+                                            <mat-select formControlName="medidaFurgon">
+                                                <mat-option *ngFor="let item of listaMedidaFurgon"
+                                                    [matTooltip]="item.descripcion" [value]="item.valor">
+                                                    {{item.valor}}
+                                                </mat-option>
+                                            </mat-select>
+                                            <mat-error>{{codErrores.medidaFurgon}}</mat-error>
+                                        </mat-form-field>
+                                    </div>
+                                    <div class="col-md-2" *ngIf="mostrarCampo('tipoVehiculo')">
+                                        <mat-form-field appearance="legacy" class="w-100">
+                                            <mat-label>Tipo de Vehiculo:</mat-label>
+                                            <mat-select formControlName="tipoVehiculo">
+                                                <mat-option *ngFor="let item of listaTipoVehiculo"
+                                                    [matTooltip]="item.descripcion" [value]="item.valor">
+                                                    {{item.valor}}
+                                                </mat-option>
+                                            </mat-select>
+                                            <mat-error>{{codErrores.tipoVehiculo}}</mat-error>
+                                        </mat-form-field>
+                                    </div>
+                                    <div class="col-md-2" *ngIf="mostrarCampo('capacidadMontacarga')">
+                                        <mat-form-field appearance="legacy" class="w-100">
+                                            <mat-label>Capacidad de Carga:</mat-label>
+                                            <mat-select formControlName="capacidadCarga">
+                                                <mat-option *ngFor="let item of listaCapacidad"
+                                                    [matTooltip]="item.descripcion" [value]="item.valor">
+                                                    {{item.valor}}
+                                                </mat-option>
+                                            </mat-select>
+                                            <mat-error>{{codErrores.capacidadCarga}}</mat-error>
+                                        </mat-form-field>
+                                    </div>
+                                    <div class="col-md-2" *ngIf="mostrarCampo('tipoMotor')">
+                                        <mat-form-field appearance="legacy" class="w-100">
+                                            <mat-label>Tipo de Motor:</mat-label>
+                                            <mat-select formControlName="tipoMotor">
+                                                <mat-option *ngFor="let item of listaTipoMotor"
+                                                    [matTooltip]="item.descripcion" [value]="item.valor">
+                                                    {{item.valor}}
+                                                </mat-option>
+                                            </mat-select>
+                                            <mat-error>{{codErrores.tipoMotor}}</mat-error>
+                                        </mat-form-field>
+                                    </div>
+                                    <div class="col-md-2" *ngIf="mostrarCampo('tipoMaquina')">
+                                        <mat-form-field appearance="legacy" class="w-100">
+                                            <mat-label>Tipo de Maquinaria:</mat-label>
+                                            <mat-select formControlName="tipoVehiculo">
+                                                <mat-option *ngFor="let item of listaTipoMaquinaria"
+                                                    [matTooltip]="item.descripcion" [value]="item.valor">
+                                                    {{item.valor}}
+                                                </mat-option>
+                                            </mat-select>
+                                            <mat-error>{{codErrores.tipoVehiculo}}</mat-error>
+                                        </mat-form-field>
+                                    </div>
+                                </ng-container>
+                                <div class="col-md-2">
+                                    <form [formGroup]="formActivo">
+                                        <mat-form-field appearance="legacy" class="w-100">
+                                            <mat-label>Flota:</mat-label>
+                                            <mat-select formControlName="flota">
+                                                <mat-option *ngFor="let item of listaFlota"
+                                                    [matTooltip]="item.descripcion" [value]="item.valor">
+                                                    {{item.valor}}
+                                                </mat-option>
+                                            </mat-select>
+                                            <mat-error></mat-error>
+                                        </mat-form-field>
+                                    </form>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </mat-expansion-panel>
+                <mat-expansion-panel class="card" expanded>
+                    <mat-expansion-panel-header>
+                        <mat-panel-title>
+                            <h5 class="m-0 p-0 txt-c-titulo">Tarjeta De Circulación</h5>
+                        </mat-panel-title>
+                    </mat-expansion-panel-header>
+                    <div>
+                        <app-imagenes [imagenRecurso]="form.controls['imagenTarjetaCirculacion'].value"
+                            [imagenRecursoConfiguracion]="imgRecursoTarjetaCirculacion"
+                            (imagenRecursoChange)="form.controls['imagenTarjetaCirculacion'].setValue($event)">
+                        </app-imagenes>
+                    </div>
+                </mat-expansion-panel>
+                <mat-expansion-panel class="card" expanded>
+                    <mat-expansion-panel-header>
+                        <mat-panel-title>
+                            <h5 class="m-0 p-0 txt-c-titulo">Imagenes Del Vehículo</h5>
+                        </mat-panel-title>
+                    </mat-expansion-panel-header>
+                    <div>
+                        <app-imagenes [imagenRecurso]="formActivo.controls['fotos'].value"
+                            [imagenRecursoConfiguracion]="imgRecursoFotos"
+                            (imagenRecursoChange)="formActivo.controls['fotos'].setValue($event)"></app-imagenes>
+                    </div>
+                </mat-expansion-panel>
+                <mat-expansion-panel class="card" *ngIf="false">
+                    <mat-expansion-panel-header>
+                        <mat-panel-title>
+                            <h5 class="m-0 p-0 txt-c-titulo">Especificaciones Técnicas Del Vehiculo</h5>
+                        </mat-panel-title>
+                    </mat-expansion-panel-header>
+                    <div class="card">
+
+                    </div>
+                </mat-expansion-panel>
+            </mat-accordion>
+        </mat-card-content>
+    </mat-card>
+</div>

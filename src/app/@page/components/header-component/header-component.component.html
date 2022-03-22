@@ -1,0 +1,19 @@
+<mat-card mat-card-content class="mat-elevation-z0 borde-bottom borde-5">
+  <div class="header-component">
+    <h4 class="txt-c-titulo p-0 m-0 tracking-in-expand">{{header.titulo}}</h4>
+    <span class="separador"></span>
+    <div class="buttons-containers">
+      <ng-container *ngFor="let opcion of header.opciones">
+        <button class="txt-c-titulo p-0 mr-5" mat-flat-button
+          [ngClass]="{'txt-c-titulo': opcion.color == 'primary', 'txt-c-danger': opcion.color =='warn'}"
+          [matTooltip]="opcion.toolTip" (click)="emitirEvento(opcion)" [disabled]="!opcion.disponible">
+          <mat-icon [ngClass]="{
+          'rotate-in-center': opcion.icono =='refresh' || opcion.icono =='add_circle_outline' || opcion.icono =='clear' || opcion.icono =='navigate_next',
+          'wobble-hor-bottom': opcion.icono =='save_alt' || opcion.icono == 'logout'
+        }">{{opcion.icono}}</mat-icon>
+          {{opcion.nombre}}
+        </button>
+      </ng-container>
+    </div>
+  </div>
+</mat-card>

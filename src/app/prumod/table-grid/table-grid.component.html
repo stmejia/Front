@@ -1,0 +1,289 @@
+<div class="box">
+  <div class="mat-elevation-z12 m-10 p-10">
+    <div class="box-list card" id="lista1" cdkDropList #listaGrupos="cdkDropList" [cdkDropListData]="grupos"
+      [cdkDropListConnectedTo]="[doneList]" cdkDropListOrientation="horizontal" (cdkDropListDropped)="drop($event)">
+      <mat-chip-list>
+        <mat-chip cdkDrag *ngFor="let item of grupos" color="accent" selected>
+          {{item.nombre}}
+        </mat-chip>
+      </mat-chip-list>
+    </div>
+    <!-- Barra de Herramientas -->
+    <div class="row">
+      <div class="col-sm-12">
+        <div class="box-paginador">
+          <div class="box-right">
+            <!-- Mostrar/ Ocultar Columnas -->
+            <button class="mr-10" mat-raised-button color="accent" (click)="generarXLSX()">
+              <mat-icon>table_chart</mat-icon>
+              <span>XLSX</span>
+            </button>
+
+            <button class="mr-10" mat-raised-button color="accent" (click)="generarPDF()">
+              <mat-icon>picture_as_pdf</mat-icon>
+              <span>PDF</span>
+            </button>
+
+            <div>
+              <button mat-raised-button color="primary" [matMenuTriggerFor]="listaColumn">
+                <mat-icon>view_column</mat-icon>
+                <span>Columnas</span>
+              </button>
+              <mat-menu #listaColumn="matMenu">
+                <mat-list cdkDropList [cdkDropListData]="columnas" (cdkDropListDropped)="drop($event)">
+                  <mat-list-item *ngFor="let colum of columnas" cdkDrag (click)="$event.stopPropagation()">
+                    <mat-checkbox [(ngModel)]="colum.visible">
+                      {{colum.nombre}}
+                    </mat-checkbox>
+                  </mat-list-item>
+                </mat-list>
+              </mat-menu>
+            </div>
+            <div *ngIf="false">
+              <button mat-button [matMenuTriggerFor]="listaColumnF">
+                <mat-icon>filter_list</mat-icon>
+                <span>Filtros</span>
+              </button>
+              <mat-menu #listaColumnF="matMenu">
+                <mat-accordion displayMode="flat" (click)="$event.stopPropagation()">
+                  <mat-expansion-panel *ngFor="let colum of columnas">
+                    <mat-expansion-panel-header>
+                      <mat-panel-title>
+                        {{colum.nombre}}
+                      </mat-panel-title>
+                    </mat-expansion-panel-header>
+                    <div>
+                      <mat-list>
+                        <mat-list-item *ngFor="let dato of datos">
+                          <mat-checkbox [(ngModel)]="colum.visible">
+                            {{dato[colum.targetId]}}
+                          </mat-checkbox>
+                        </mat-list-item>
+                      </mat-list>
+                    </div>
+                  </mat-expansion-panel>
+                </mat-accordion>
+              </mat-menu>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tabla de Contenido -->
+    <div class="table-responsive mt-10" style="max-height: 400px;">
+      <table class="table" id="listaEncabezado" #doneList="cdkDropList" [cdkDropListData]="columnas"
+        [cdkDropListConnectedTo]="[listaGrupos]" cdkDropList cdkDropListOrientation="horizontal"
+        (cdkDropListDropped)="drop($event)">
+        <!-- Encabezados de Tabla -->
+        <thead class="thead">
+          <tr class="tr">
+            <ng-container *ngFor="let columna of columnas">
+              <th class="cursor th" *ngIf="columna.visible" cdkDrag (click)="ordenarColumna(columna)">
+                <div class="div-center-h">
+                  <p class="m-0 p-0 div-center-v text-center">
+                    {{ columna.nombre }}
+                    <mat-icon *ngIf="columna.orden==false">keyboard_arrow_down</mat-icon>
+                    <mat-icon *ngIf="columna.orden==true">keyboard_arrow_up</mat-icon>
+                  </p>
+                </div>
+              </th>
+            </ng-container>
+          </tr>
+        </thead>
+        <!-- Cuerpo de la Tabla -->
+        <tbody class="tbody" *ngIf="mostrarTabla">
+          <tr class="tr scale-in-ver-top" *ngFor="let item of getDatos()|async">
+            <ng-container *ngFor="let columna of columnas">
+              <ng-container *ngIf="columna.texto">
+                <td class="td text-center" *ngIf="columna.visible">
+                  <span class="td-m">{{columna.nombre}}</span>
+                  {{ item[columna.targetId] }}
+                </td>
+              </ng-container>
+              <ng-container *ngIf="columna.img">
+                <td class="td" *ngIf="columna.visible">
+                  <span class="td-m">{{columna.nombre}}</span>
+                  <img class="icono-w50" [src]="item[columna.targetId]" alt="imagen">
+                </td>
+              </ng-container>
+            </ng-container>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Animacion de Carga Spinner -->
+    <div class="w-100 div-center-h mt-10" *ngIf="cargando">
+      <mat-spinner></mat-spinner>
+    </div>
+    <!--Agrupación-->
+    <div class="mt-10">
+      <mat-accordion multi>
+        <div *ngFor="let arbol of dataArbol">
+          <!-- ----- Agrupacion Nivel 1 ----- -->
+          <mat-expansion-panel class="card" *ngIf="arbol" expanded>
+            <mat-expansion-panel-header>
+              <mat-panel-title class="text-bold">
+                {{ arbol.nombre }}
+              </mat-panel-title>
+            </mat-expansion-panel-header>
+            <div>
+              <!-- ----- Agrupacion Nivel 2 ----- -->
+              <div *ngIf="arbol.children">
+                <mat-expansion-panel class="card" *ngFor="let children of arbol.children" expanded>
+                  <mat-expansion-panel-header>
+                    <mat-panel-title>
+                      {{ children.nombre }}
+                    </mat-panel-title>
+                  </mat-expansion-panel-header>
+                  <div>
+                    <!-- ----- Agrupacion Nivel 3 -->
+                    <div *ngIf="children.children">
+                      <mat-expansion-panel class="card" *ngFor="let children of children.children" expanded>
+                        <mat-expansion-panel-header>
+                          <mat-panel-title>
+                            {{ children.nombre }}
+                          </mat-panel-title>
+                        </mat-expansion-panel-header>
+                        <div>
+                          <!-- <div *ngIf="children.children">
+                        <mat-expansion-panel>
+                          <mat-expansion-panel-header>
+                            <mat-panel-title>
+                              {{
+                                arbol.children[0].children[0].children[0].nombre
+                              }}
+                            </mat-panel-title>
+                            <mat-panel-description>
+                              Nivel 4
+                            </mat-panel-description>
+                          </mat-expansion-panel-header>
+                          <div>
+                            <div
+                              *ngIf="
+                                !arbol.children[0].children[0].children[0]
+                                  .children
+                              "
+                            >
+                              <p
+                                *ngFor="
+                                  let item of arbol.children[0].children[0]
+                                    .children[0].data
+                                "
+                              >
+                                {{ item.name }}
+                              </p>
+                            </div>
+                          </div>
+                        </mat-expansion-panel>
+                      </div> -->
+                          <!-- ----- Contenido del Nivel 3 -----  -->
+                          <div class="table-responsive" *ngIf="!children.children">
+                            <table class="w-100 table">
+                              <thead class="thead">
+                                <tr class="tr">
+                                  <ng-template ngFor let-columna [ngForOf]="columnas">
+                                    <th class="th" scope="col" *ngIf="columna.visible">
+                                      {{ columna.nombre }}
+                                    </th>
+                                  </ng-template>
+                                </tr>
+                              </thead>
+                              <tbody class="tbody">
+                                <tr class="tr" *ngFor="let item of children.data">
+                                  <ng-template ngFor let-columna [ngForOf]="columnas">
+                                    <ng-container *ngIf="columna.texto">
+                                      <td class="td text-center" *ngIf="columna.visible">
+                                        {{ item[columna.targetId] }}
+                                      </td>
+                                    </ng-container>
+
+                                    <ng-container *ngIf="columna.img">
+                                      <td class="td" *ngIf="columna.visible">
+                                        <span class="td-m">{{columna.nombre}}</span>
+                                        <img class="icono-w50" [src]="item[columna.targetId]" alt="imagen">
+                                      </td>
+                                    </ng-container>
+                                  </ng-template>
+                                </tr>
+                              </tbody>
+                            </table>
+                          </div>
+                        </div>
+                      </mat-expansion-panel>
+                    </div>
+                    <!-- ----- Contenido del Nivel 2 ----- -->
+                    <div class="table-responsive" *ngIf="!children.children">
+                      <table class="w-100 table">
+                        <thead class="thead">
+                          <tr class="tr">
+                            <ng-template ngFor let-columna [ngForOf]="columnas">
+                              <th class="th text-center" scope="col" *ngIf="columna.visible">
+                                {{ columna.nombre }}
+                              </th>
+                            </ng-template>
+                          </tr>
+                        </thead>
+                        <tbody class="tbody">
+                          <tr class="tr" *ngFor="let item of children.data">
+                            <ng-template ngFor let-columna [ngForOf]="columnas">
+                              <ng-container *ngIf="columna.texto">
+                                <td class="td text-center" *ngIf="columna.visible">
+                                  {{ item[columna.targetId] }}
+                                </td>
+                              </ng-container>
+
+                              <ng-container *ngIf="columna.img">
+                                <td class="td" *ngIf="columna.visible">
+                                  <span class="td-m">{{columna.nombre}}</span>
+                                  <img class="icono-w50" [src]="item[columna.targetId]" alt="imagen">
+                                </td>
+                              </ng-container>
+                            </ng-template>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </mat-expansion-panel>
+              </div>
+              <!-- ----- Contenido de Nivel 1 ----- -->
+              <div class="table-responsive" *ngIf="!arbol.children">
+                <table class="w-100 table">
+                  <thead class="thead">
+                    <tr class="tr">
+                      <ng-template ngFor let-columna [ngForOf]="columnas">
+                        <th class="th" scope="col" *ngIf="columna.visible">
+                          {{ columna.nombre }}
+                        </th>
+                      </ng-template>
+                    </tr>
+                  </thead>
+                  <tbody class="tbody">
+                    <tr scope="row tr" *ngFor="let item of arbol.data">
+                      <ng-template ngFor let-columna [ngForOf]="columnas">
+                        <ng-container *ngIf="columna.texto">
+                          <td class="td text-center" *ngIf="columna.visible">
+                            {{ item[columna.targetId] }}
+                          </td>
+                        </ng-container>
+
+                        <ng-container *ngIf="columna.img">
+                          <td class="td" *ngIf="columna.visible">
+                            <span class="td-m">{{columna.nombre}}</span>
+                            <img class="icono-w50" [src]="item[columna.targetId]" alt="imagen">
+                          </td>
+                        </ng-container>
+                      </ng-template>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </mat-expansion-panel>
+        </div>
+      </mat-accordion>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,98 @@
+<mat-accordion multi>
+    <div *ngFor="let arbol of listaArbol">
+        <mat-expansion-panel class="card" *ngIf="arbol" expanded>
+            <mat-expansion-panel-header>
+                <mat-panel-title class="text-bold">
+                    {{ arbol.nombre }}
+                </mat-panel-title>
+            </mat-expansion-panel-header>
+            <div>
+                <div *ngIf="arbol.children">
+
+                </div>
+                <div class="table-responsive" *ngIf="!arbol.children">
+                    <table class="table">
+                        <thead class="thead">
+                            <tr class="tr">
+                                <!--Columnas -->
+                                <ng-container *ngFor="let columna of columnas">
+                                    <th cdkDrag class="th cursor" [ngClass]="getCssAligment(columna)"
+                                        *ngIf="columna.visible ==true && (columna.tipo == 'texto' || columna.tipo == 'fecha' || columna.tipo == 'boolean')">
+                                        {{columna.titulo}}
+                                    </th>
+                                    <th class="th" cdkDrag
+                                        *ngIf="columna.tipo == 'imagen' || columna.tipo == 'opcion' && columna.visible ==true">
+                                        <mat-icon>{{columna.titulo}}</mat-icon>
+                                    </th>
+                                </ng-container>
+                            </tr>
+                        </thead>
+                        <!-- Cuerpo de Tabla -->
+                        <tbody class="tbody">
+                            <tr class="tr" *ngFor="let item of arbol.data; index as i">
+                                <ng-container *ngFor="let columna of columnas">
+                                    <ng-container *ngIf="columna.visible">
+                                        <!-- Menu Opciones -->
+                                        <td class="td" *ngIf="columna.tipo == 'opcion'">
+                                            <button mat-icon-button [matMenuTriggerFor]="menu"
+                                                [matTooltip]="'Opciones'">
+                                                <mat-icon>more_vert</mat-icon>
+                                            </button>
+                                            <mat-menu #menu="matMenu">
+                                                <ng-container *ngFor="let opcion of listaOpciones">
+                                                    <button mat-menu-item [disabled]="!opcion.disponible"
+                                                        (click)="clickEventoMenuOpciones(opcion.idEvento,item)">
+                                                        <mat-icon>{{opcion.icono}}</mat-icon>
+                                                        {{opcion.nombre}}
+                                                    </button>
+                                                </ng-container>
+                                            </mat-menu>
+                                        </td>
+                                        <!-- Texto -->
+                                        <td class="td" *ngIf="columna.tipo == 'texto'"
+                                            [ngClass]="getCssAligment(columna)">
+                                            <span class="td-m">
+                                                {{columna.titulo}}
+                                            </span>
+                                            {{getDatoObjeto(item,columna.target)}}
+                                        </td>
+                                        <!-- Imagen -->
+                                        <td class="td" *ngIf="columna.tipo == 'imagen'">
+                                            <img class="img-perfil d-block mx-auto"
+                                                [src]="getDatoObjeto(item,columna.target)" alt="Imagen"
+                                                (click)="mostrarImagen(getDatoObjeto(item,columna.target))"
+                                                [matTooltip]="'Click para visualizar'">
+                                        </td>
+                                        <!-- Boolean -->
+                                        <td class="td" *ngIf="columna.tipo == 'boolean'">
+                                            <span class="td-m">{{columna.titulo}}</span>
+                                            <div class="div-center-h">
+                                                <img class="icono-25" *ngIf="getDatoObjeto(item,columna.target) == true"
+                                                    oncontextmenu="return false" src="assets/iconos/checked.png"
+                                                    alt="IconoCheck">
+                                                <img class="icono-25"
+                                                    *ngIf="getDatoObjeto(item,columna.target) == false"
+                                                    oncontextmenu="return false" src="assets/iconos/checked_red.png"
+                                                    alt="IconoCheck">
+                                            </div>
+                                        </td>
+                                        <!-- Fecha -->
+                                        <td class="td" *ngIf="columna.tipo == 'fecha'"
+                                            [ngClass]="getCssAligment(columna)">
+                                            <span class="td-m">{{'Fecha de Creación'}}</span>
+                                            {{getDatoObjeto(item,columna.target) | fecha}}
+                                        </td>
+                                    </ng-container>
+                                </ng-container>
+                        </tbody>
+                    </table>
+                    <ng-container *ngIf="arbol.data.length<1">
+                        <div class="text-center">
+                            <p>No hay datos para mostrar</p>
+                        </div>
+                    </ng-container>
+                </div>
+            </div>
+        </mat-expansion-panel>
+    </div>
+</mat-accordion>

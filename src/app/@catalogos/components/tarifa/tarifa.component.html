@@ -1,0 +1,205 @@
+<ng-container *ngIf="!cargandoDatos">
+    <app-header-component [header]="(configuracionComponent | async).header" (eventos)="eventosHeader($event)">
+    </app-header-component>
+</ng-container>
+
+<div class="box">
+    <div class="div-center w-100 mt-10" *ngIf="cargandoDatos">
+        <mat-spinner></mat-spinner>
+    </div>
+
+    <mat-card class="mat-elevation-z12" *ngIf="!cargandoDatos">
+        <mat-card-content>
+            <form [formGroup]="form">
+                <div class="row">
+                    <div class="col-md-12">
+                        <app-input-servicio [idItem]="form.controls['idServicio'].value" [titulo]="'Servicio'"
+                            (getItem)="selectServicio($event)"></app-input-servicio>
+                    </div>
+                </div>
+                <div class="card card p-5 mt-10">
+                    <div class="row">
+                        <div class="col-md-3 card">
+                            <mat-form-field appearance="legacy" class="w-100">
+                                <mat-label>Código de Tarifa:</mat-label>
+                                <input matInput type="text" formControlName="codigo" />
+                                <mat-error>{{ codErrores.codigo }}</mat-error>
+                            </mat-form-field>
+                        </div>
+                        <div class="col-md-3">
+                            <mat-form-field appearance="legacy" class="w-100">
+                                <mat-label>Segmento:</mat-label>
+                                <mat-select formControlName="segmento">
+                                    <mat-option *ngFor="let item of listaSegmento" [matTooltip]="item.descripcion"
+                                        [value]="item.valor">
+                                        {{item.valor}}
+                                    </mat-option>
+                                </mat-select>
+                                <mat-error>{{codErrores.segmento}}</mat-error>
+                            </mat-form-field>
+                        </div>
+                        <div class="col-md-3">
+                            <mat-form-field appearance="legacy" class="w-100">
+                                <mat-label>Combustible (Gls):</mat-label>
+                                <input matInput type="text" formControlName="combustibleGls" />
+                                <mat-error>{{ codErrores.combustibleGls }}</mat-error>
+                            </mat-form-field>
+                        </div>
+                        <div class="col-md-3">
+                            <mat-form-field appearance="legacy" class="w-100">
+                                <mat-label>Precio de Venta:</mat-label>
+                                <input matInput type="text" formControlName="precio" />
+                                <mat-error>{{ codErrores.precio }}</mat-error>
+                            </mat-form-field>
+                        </div>
+                        <div class="col-md-3">
+                            <mat-form-field appearance="legacy" class="w-100">
+                                <mat-label>Recorrido Con Carga (Km):</mat-label>
+                                <input matInput type="number" formControlName="kmRecorridosCargado" />
+                                <mat-error>{{ codErrores.kmRecorridosCargado }}</mat-error>
+                            </mat-form-field>
+                        </div>
+                        <div class="col-md-3">
+                            <mat-form-field appearance="legacy" class="w-100">
+                                <mat-label>Recorrido Sin Carga (Km):</mat-label>
+                                <input matInput type="number" formControlName="kmRecorridosVacio" />
+                                <mat-error>{{ codErrores.kmRecorridosVacio }}</mat-error>
+                            </mat-form-field>
+                        </div>
+                        <div class="col-md-3">
+                            <mat-form-field appearance="legacy" class="w-100">
+                                <mat-label>¿Es Especializado?:</mat-label>
+                                <mat-select formControlName="esEspecializado">
+                                    <mat-option [matTooltip]="''" [value]="true">
+                                        Si
+                                    </mat-option>
+                                    <mat-option [matTooltip]="''" [value]="false">
+                                        No
+                                    </mat-option>
+                                </mat-select>
+                                <mat-error>{{codErrores.esEspecializado}}</mat-error>
+                            </mat-form-field>
+                        </div>
+                        <div class="col-md-3">
+                            <mat-form-field appearance="legacy" class="w-100">
+                                <mat-label>Valido Hasta</mat-label>
+                                <input matInput [matDatepicker]="fechaCreacion" formControlName="fechaVigencia" />
+                                <mat-datepicker-toggle matSuffix [for]="fechaCreacion"></mat-datepicker-toggle>
+                                <mat-datepicker #fechaCreacion></mat-datepicker>
+                                <mat-error>{{codErrores.fechaVigencia}}</mat-error>
+                            </mat-form-field>
+                        </div>
+                        <div class="col-sm-4">
+                            <mat-form-field appearance="legacy" class="w-100">
+                                <mat-label>Tipo De Carga:</mat-label>
+                                <mat-select formControlName="tipoCarga">
+                                    <mat-option *ngFor="let item of listaTipoCarga" [matTooltip]="item.descripcion"
+                                        [value]="item.valor">
+                                        {{item.valor}}
+                                    </mat-option>
+                                </mat-select>
+                                <mat-error>{{codErrores.tipoCarga}}</mat-error>
+                            </mat-form-field>
+                        </div>
+                        <div class="col-sm-4">
+                            <mat-form-field appearance="legacy" class="w-100">
+                                <mat-label>Tipo De Movimiento:</mat-label>
+                                <mat-select formControlName="tipoMovimiento">
+                                    <mat-option *ngFor="let item of listaTipoMovimiento" [matTooltip]="item.descripcion"
+                                        [value]="item.valor">
+                                        {{item.valor}}
+                                    </mat-option>
+                                </mat-select>
+                                <mat-error>{{codErrores.tipoMovimiento}}</mat-error>
+                            </mat-form-field>
+                        </div>
+                        <div class="col-sm-4">
+                            <mat-form-field appearance="legacy" class="w-100">
+                                <mat-label>Tipo de Viaje:</mat-label>
+                                <mat-select formControlName="tipoViaje">
+                                    <mat-option *ngFor="let item of listaTipoViaje" [matTooltip]="item.descripcion"
+                                        [value]="item.valor">
+                                        {{item.valor}}
+                                    </mat-option>
+                                </mat-select>
+                                <mat-error>{{codErrores.tipoViaje}}</mat-error>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card p-5 mt-10" *ngIf="mostrarRutas">
+                    <div class="row">
+                        <div class="col-sm-12 p-0 m-0">
+                            <h4 class="text-center txt-c-titulo p-0 m-0">Ubicaciones</h4>
+                        </div>
+                        <div class="col-sm-6 div-center-v">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <p class="p-0 m-0 text-bold text-right">Recolección Vacio: <button mat-icon-button
+                                            color="primary" matTooltip="Buscar registro en una lista"
+                                            (click)="abrirModalUbicacionOrigen()">
+                                            <mat-icon>open_in_new</mat-icon>
+                                        </button></p>
+                                </div>
+                                <div class="col-md-8">
+                                    <p>{{getUbicacionString(ubicacionOrigen)}}</p>
+                                </div>
+                                <div class="col-md-4 text-right">
+                                    <p class="p-0 m-0 text-bold">Ruta Con Carga: <button mat-icon-button color="primary"
+                                            matTooltip="Buscar registro en una lista" (click)="abrirModalRutas()">
+                                            <mat-icon>open_in_new</mat-icon>
+                                        </button></p>
+                                </div>
+                                <div class="col-md-8">
+                                    <p *ngIf="ruta">{{ruta.vUbicacionOrigen}} -
+                                        {{ruta.vUbicacionDestino}}
+                                    </p>
+                                </div>
+                                <div class="col-md-4 text-right">
+                                    <p class="p-0 m-0 text-bold">Entraga Vacio: <button mat-icon-button color="primary"
+                                            matTooltip="Buscar registro en una lista"
+                                            (click)="abrirModalUbicacionDestino()">
+                                            <mat-icon>open_in_new</mat-icon>
+                                        </button></p>
+                                </div>
+                                <div class="col-md-8">
+                                    <p>{{getUbicacionString(ubicacionDestino)}}</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="">
+                                <app-mapa [titulo]="''" [modo]="'rutas'" [ubicaciones]="ubicaciones">
+                                </app-mapa>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card p-5 mt-10" *ngIf="!isNuevo()">
+                    <div class="row">
+                        <div class="col-md-8 p-0 m-0">
+                            <h4 class="txt-c-titulo p-0 m-0 ml-15">Clientes</h4>
+                        </div>
+                        <div class="col-md-4 p-0 m-0">
+                            <div class="div-right">
+                                <button mat-raised-button color="primary" (click)="abrirModalClienteTarifa()"
+                                    [disabled]="!opcionDisponible('Asignar Cliente')">
+                                    <mat-icon class="rotate-in-center">add_circle_outline</mat-icon>
+                                    Nuevo
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="p-5">
+                        <app-tabla-aguila [columnas]="colClientetarifa" [listaDatos]="getClienteTarifa() | async"
+                            [paginador]="getPaginadorCT() | async" (eventPaginador)="eventoPaginadorCT($event)">
+                        </app-tabla-aguila>
+                    </div>
+                </div>
+            </form>
+        </mat-card-content>
+    </mat-card>
+</div>

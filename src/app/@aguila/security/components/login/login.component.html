@@ -1,0 +1,115 @@
+<div class="div-center bg-b-3 h-100 w-100 p-25">
+  <div class="row">
+    <div class="col-md-6">
+      <img
+        class="img-fluid img-logo d-block mx-auto"
+        src="https://img.icons8.com/emoji/500/000000/eagle--v2.png"
+      />
+    </div>
+    <div class="col-md-6">
+      <mat-card class="mat-elevation-z24">
+        <h1 class="text-bold">Iniciar Sesión</h1>
+        <h6 mat-card-subtitle>Ingrese sus credenciales para acceder</h6>
+        <form class="row" [formGroup]="formLogin" (ngSubmit)="login()">
+          <div class="col-md-11">
+            <mat-form-field class="w-100" appearance="outline">
+              <mat-label>Usuario</mat-label>
+              <input class="txt-mayuscula" matInput placeholder="" #inputText formControlName="username"/>
+              <mat-icon matSuffix>face</mat-icon>
+              <mat-error>{{codErrores.username}}</mat-error>
+            </mat-form-field>
+            <mat-form-field class="w-100" appearance="outline" *ngIf="requisito">
+              <mat-label>Contraseña Anterior:</mat-label>
+              <input
+                matInput
+                [type]="hide ? 'password' : 'text'"
+                formControlName="passwordAnterior"
+                autocomplete="on"
+              />
+              <mat-error> {{codErrores.passwordAnterior}} </mat-error>
+              <button
+                mat-icon-button
+                matSuffix
+                type="button"
+                (click)="hide = !hide"
+                [attr.aria-label]="'Hide password'"
+                [attr.aria-pressed]="hide"
+              >
+                <mat-icon>{{
+                  hide ? "visibility_off" : "visibility"
+                }}</mat-icon>
+              </button>
+            </mat-form-field>
+            <mat-form-field class="w-100" appearance="outline">
+              <mat-label>Contraseña:</mat-label>
+              <input
+                matInput
+                [type]="hide ? 'password' : 'text'"
+                formControlName="password"
+                autocomplete="on"
+              />
+              <mat-error> {{codErrores.password}} </mat-error>
+              <button
+                mat-icon-button
+                matSuffix
+                type="button"
+                (click)="hide = !hide"
+                [attr.aria-label]="'Hide password'"
+                [attr.aria-pressed]="hide"
+              >
+                <mat-icon>{{
+                  hide ? "visibility_off" : "visibility"
+                }}</mat-icon>
+              </button>
+            </mat-form-field>
+            <mat-form-field class="w-100" appearance="outline" *ngIf="requisito">
+              <mat-label>Confirmar Contraseña:</mat-label>
+              <input
+                matInput
+                [type]="hide ? 'password' : 'text'"
+                formControlName="passwordConfirmacion"
+                autocomplete="on"
+              />
+              <mat-error> {{codErrores.passwordConfirmacion}} </mat-error>
+              <button
+                mat-icon-button
+                matSuffix
+                type="button"
+                (click)="hide = !hide"
+                [attr.aria-label]="'Hide password'"
+                [attr.aria-pressed]="hide"
+              >
+                <mat-icon>{{
+                  hide ? "visibility_off" : "visibility"
+                }}</mat-icon>
+              </button>
+            </mat-form-field>
+
+            <div #recaptcha ></div>
+
+            <div class="float-right mt-15">
+              <button
+                mat-raised-button
+                class="m-5"
+                type="button"
+                color="warn"
+                (click)="btnRegresar()"
+              >
+                <mat-icon>cancel</mat-icon> Regresar
+              </button>
+              <button
+                mat-raised-button
+                class="m-5"
+                color="primary"
+                type="submit"
+                [disabled]="!formLogin.valid"
+              >
+                <mat-icon matSuffix>login</mat-icon> Ingresar
+              </button>
+            </div>
+          </div>
+        </form>
+      </mat-card>
+    </div>
+  </div>
+</div>

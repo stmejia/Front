@@ -1,0 +1,89 @@
+<h3 class="text-bold m-0 p-0 txt-c-titulo text-center" mat-dialog-title>{{data.titulo}}</h3>
+<div mat-dialog-content>
+    <div class="div-center w-100 mt-10" *ngIf="cargandoDatos">
+        <mat-spinner></mat-spinner>
+    </div>
+    <form [formGroup]="form" *ngIf="!cargandoDatos">
+        <div class="row">
+            <div class="col-md-12" *ngIf="data.tipo == 'tarifa'">
+                <div class="card p-5">
+                    <h4 class="m-0 p-0 txt-c-titulo">Tarifa</h4>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <p class="text-bold m-0 p-0 txt-c-titulo">Código: </p>
+                            <p class="m-0 p-0">{{data.objeto.codigo}}</p>
+                        </div>
+                        <div class="col-md-4">
+                            <p class="text-bold m-0 p-0 txt-c-titulo">Segmento: </p>
+                            <p class="m-0 p-0">{{data.objeto.segmento}}</p>
+                        </div>
+                        <div class="col-md-4">
+                            <p class="text-bold m-0 p-0 txt-c-titulo">Precio: </p>
+                            <p class="m-0 p-0">{{data.objeto.precio}}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12" *ngIf="data.tipo == 'cliente'">
+                <div class="card p-5">
+                    <h4 class="m-0 p-0 txt-c-titulo">Cliente</h4>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <p class="text-bold m-0 p-0 txt-c-titulo">Código: </p>
+                            <p class="m-0 p-0">{{data.objeto.codigo}}</p>
+                        </div>
+                        <div class="col-md-4">
+                            <p class="text-bold m-0 p-0 txt-c-titulo">Nombre: </p>
+                            <p class="m-0 p-0">{{data.objeto.entidadComercial.nombre}}</p>
+                        </div>
+                        <div class="col-md-4">
+                            <p class="text-bold m-0 p-0 txt-c-titulo">Razon Social: </p>
+                            <p class="m-0 p-0">{{data.objeto.entidadComercial.razonSocial}}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12" *ngIf="data.tipo == 'tarifa'">
+                <app-input-cliente [idItem]="form.controls['idCliente'].value" [titulo]="'Cliente'"
+                    (getItem)="selectCliente($event)"></app-input-cliente>
+            </div>
+            <div class="col-md-12" *ngIf="data.tipo == 'cliente'">
+                <app-input-tarifa [idItem]="form.controls['idTarifa'].value" [titulo]="'Tarifa'"
+                    (getItem)="selectTarifa($event)"></app-input-tarifa>
+            </div>
+            <div class="col-md-12">
+                <div class="row card">
+                    <div class="col-md-12">
+                        <h4 class="m-0 p-0 txt-c-titulo">Tarifa Personalizada</h4>
+                    </div>
+                    <div class="col-md-6">
+                        <mat-form-field appearance="legacy" class="w-100">
+                            <mat-label>Precio:</mat-label>
+                            <input matInput type="text" formControlName="precio" />
+                            <mat-error>{{ codErrores.precio }}</mat-error>
+                        </mat-form-field>
+                    </div>
+                    <div class="col-md-6">
+                        <mat-form-field appearance="legacy" class="w-100">
+                            <mat-label>Valido Hasta</mat-label>
+                            <input matInput [matDatepicker]="fechaCreacion" formControlName="vigenciaHasta" />
+                            <mat-datepicker-toggle matSuffix [for]="fechaCreacion"></mat-datepicker-toggle>
+                            <mat-datepicker #fechaCreacion></mat-datepicker>
+                            <mat-error>{{codErrores.vigenciaHasta}}</mat-error>
+                        </mat-form-field>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<div mat-dialog-actions align="end">
+    <button type="button" color="warn" mat-button mat-dialog-close>
+        <mat-icon class="rotate-in-center">clear</mat-icon>
+        Cancelar
+    </button>
+    <button type="button" color="primary" mat-button (click)="guardar()">
+        <mat-icon class="wobble-hor-bottom">save_alt</mat-icon>
+        Guardar
+    </button>
+</div>

@@ -1,0 +1,89 @@
+@import "./variables.scss";
+//Textos **********************************************
+
+//Texto alineado a la izquierda
+.text-left {
+  text-align: left !important;
+}
+//Texto alineado a la derecha
+.text-right {
+  text-align: right !important;
+}
+//Texto alineado al centro
+.text-center {
+  text-align: center !important;
+}
+//Texto Justificado
+.text-justify {
+  text-align: justify !important;
+}
+//Texto en Negrita
+.text-bold {
+  font-weight: 500 !important;
+}
+//-----Tamaño de Textos
+h1,
+.h1 {
+  font-size: 2.25rem !important;
+}
+
+h2,
+.h2 {
+  font-size: 2rem !important;
+}
+
+h3,
+.h3 {
+  font-size: 1.75rem !important;
+}
+
+h4,
+.h4 {
+  font-size: 1.5rem !important;
+}
+
+h5,
+.h5 {
+  font-size: 1.25rem !important;
+}
+
+h6,
+.h6 {
+  font-size: 1rem !important;
+}
+//-----
+//----- Color de Textos-----//
+
+.txt-c-danger {
+  color: $danger !important;
+}
+
+.txt-black-t {
+  background-color: rgba($color: #000000, $alpha: 0.5);
+  color: white;
+}
+
+.txt-blanco {
+  color: white !important;
+}
+
+.txt-no-selection {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -khtml-user-select: none;
+  -ms-user-select: none;
+}
+
+.mat-tooltip {
+  font-size: small !important;
+}
+
+.txt-mayuscula {
+  text-transform: uppercase !important;
+}
+
+.txt-puntos {
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}

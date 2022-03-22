@@ -1,0 +1,39 @@
+<mat-dialog-content>
+    <!-- && hasPermission -->
+    <zxing-scanner *ngIf="dataValido() && (hasPermission|async) && (!reintentar)" [formats]="allowedFormats"
+        [(device)]="currentDevice" [torch]="torchEnabled" (scanSuccess)="codigoEscaneado($event)"
+        (camerasFound)="onCamerasFound($event)" (torchCompatible)="onTorchCompatible($event)"
+        (permissionResponse)="onHasPermission($event)">
+    </zxing-scanner>
+
+    <h4 class="text-center text-bold txt-c-danger" *ngIf="!hasPermission">No es posible tener acceso a la cámara, revise
+        la configuracion del dispositivo </h4>
+
+    <h4 class="text-center text-bold txt-c-danger" *ngIf="!dataValido()">La configuración no es correcta.</h4>
+
+    <h4 class="text-center text-bold txt-c-danger" *ngIf="hasDevices === false">No se encontraron dispositivos
+        multimedia </h4>
+
+    <h4 class="text-center text-bold txt-c-danger" *ngIf="hasDevices === undefined">No se encontraron dispositivos. Esto
+        puede deberse a algún error de seguridad.</h4>
+
+    <mat-form-field class="w-100">
+        <select matNativeControl matInput (change)="onDeviceSelectChange($event.target.value)">
+            <option value="" [selected]="!currentDevice">No Device Selected</option>
+            <option *ngFor="let device of availableDevices" [value]="device.deviceId"
+                [selected]="currentDevice && device.deviceId === currentDevice.deviceId">{{device.label}}</option>
+        </select>
+    </mat-form-field>
+    <button mat-stroked-button color="accent" class="w-100" *ngIf="torchAvailable$ | async" (click)="toggleTorch()">
+        <mat-icon>{{torchEnabled? 'flashlight_off' : 'flashlight_on' }}</mat-icon>
+        Linterna
+    </button>
+    <button mat-raised-button color="primary" class="w-100" *ngIf="reintentar" (click)="reintentar = false">
+        <mat-icon>refresh</mat-icon>
+        Volver A Intentar
+    </button>
+    <h5 *ngIf="!dataValido()" class="text-center text-bold">Datos insuficientes para iniciar el escáner</h5>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+    <button mat-button mat-dialog-close color="warn">Cancelar</button>
+</mat-dialog-actions>

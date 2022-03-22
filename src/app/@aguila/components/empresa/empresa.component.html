@@ -1,0 +1,110 @@
+<ng-container *ngIf="!cargandoDatos">
+  <app-header-component [header]="header" (eventos)="eventosHeader($event)">
+  </app-header-component>
+</ng-container>
+
+<!-- Contenido de la Pagina -->
+<div class="box">
+  <div class="div-center w-100 mt-10" *ngIf="cargandoDatos">
+    <mat-spinner></mat-spinner>
+  </div>
+
+  <mat-card class="mat-elevation-z12" *ngIf="!cargandoDatos">
+    <mat-card-content>
+      <!-- Formulario -->
+      <form [formGroup]="form">
+        <div class="row">
+          <div class="col-lg-6">
+            <div class="card p-10">
+              <h5 class="txt-c-titulo text-center">Datos De La Empresa</h5>
+              <mat-form-field appearance="legacy" class="w-100">
+                <mat-label>Código</mat-label>
+                <input matInput type="number" formControlName="codigo" />
+                <mat-error>{{ codErrores.codigo }}</mat-error>
+              </mat-form-field>
+              <mat-form-field appearance="legacy" class="w-100">
+                <mat-label>NIT</mat-label>
+                <input matInput formControlName="nit" />
+                <mat-error>{{ codErrores.nit }}</mat-error>
+              </mat-form-field>
+              <mat-form-field appearance="legacy" class="w-100">
+                <mat-label>Nombre</mat-label>
+                <input matInput formControlName="nombre" />
+                <mat-error>{{ codErrores.nombre }}</mat-error>
+              </mat-form-field>
+              <mat-form-field class="w-100">
+                <mat-label>¿Empresa Activa?:</mat-label>
+                <mat-select formControlName="activ">
+                  <mat-option [value]="true">Si</mat-option>
+                  <mat-option [value]="false">No</mat-option>
+                </mat-select>
+                <mat-error>{{ codErrores.activ }}</mat-error>
+              </mat-form-field>
+              <mat-form-field appearance="legacy" class="w-100">
+                <mat-label>Abreviatura</mat-label>
+                <input style="text-transform: uppercase" matInput formControlName="abreviatura" />
+                <mat-error>{{ codErrores.abreviatura }}</mat-error>
+              </mat-form-field>
+              <mat-form-field appearance="legacy" class="w-100">
+                <mat-label>Aleas</mat-label>
+                <input matInput formControlName="aleas" />
+                <mat-error>{{ codErrores.aleas }}</mat-error>
+              </mat-form-field>
+              <mat-form-field class="w-100">
+                <mat-label>¿Es Empleador?:</mat-label>
+                <mat-select formControlName="esEmpleador">
+                  <mat-option [value]="true">Si</mat-option>
+                  <mat-option [value]="false">No</mat-option>
+                </mat-select>
+                <mat-error>{{ codErrores.esEmpleador }}</mat-error>
+              </mat-form-field>
+              <mat-form-field appearance="legacy" class="w-100">
+                <mat-label>Dirección</mat-label>
+                <input matInput formControlName="direccion" />
+                <mat-error>{{ codErrores.direccion }}</mat-error>
+              </mat-form-field>
+              <mat-form-field appearance="legacy" class="w-100">
+                <mat-label>Página Web</mat-label>
+                <input matInput formControlName="webPage" />
+                <mat-error>{{ codErrores.webPage }}</mat-error>
+              </mat-form-field>
+              <mat-form-field appearance="legacy" class="w-100">
+                <mat-label>Email</mat-label>
+                <input matInput formControlName="email" />
+                <mat-error>{{ codErrores.email }}</mat-error>
+              </mat-form-field>
+              <mat-form-field appearance="legacy" class="w-100">
+                <mat-label>Teléfono</mat-label>
+                <input matInput formControlName="telefono" />
+                <mat-error>{{ codErrores.telefono }}</mat-error>
+              </mat-form-field>
+              <mat-form-field appearance="legacy" class="w-100">
+                <mat-label>Pais</mat-label>
+                <input matInput formControlName="pais" />
+                <mat-error>{{ codErrores.pais }}</mat-error>
+              </mat-form-field>
+              <mat-form-field appearance="legacy" class="w-100">
+                <mat-label>Departamento</mat-label>
+                <input matInput formControlName="departamento" />
+                <mat-error>{{ codErrores.departamento }}</mat-error>
+              </mat-form-field>
+              <mat-form-field appearance="legacy" class="w-100">
+                <mat-label>Municipio</mat-label>
+                <input matInput formControlName="municipio" />
+                <mat-error>{{ codErrores.municipio }}</mat-error>
+              </mat-form-field>
+            </div>
+          </div>
+          <div class="col-lg-6">
+            <div class="card p-10">
+              <h5 class="txt-c-titulo text-center">Logotipo De Empresa</h5>
+              <app-imagenes [imagenRecurso]="form.controls['imagenLogo'].value"
+                [imagenRecursoConfiguracion]="imgRecursoLogo"
+                (imagenRecursoChange)="form.controls['imagenLogo'].setValue($event)"></app-imagenes>
+            </div>
+          </div>
+        </div>
+      </form>
+    </mat-card-content>
+  </mat-card>
+</div>

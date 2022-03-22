@@ -1,0 +1,14 @@
+<app-header [sidenav]="leftSidenav"></app-header>
+<mat-sidenav-container>
+  <!-- style="margin-top: 65px;"  -->
+  <mat-sidenav class="ocultar" #leftSidenav [(mode)]="modo" [(opened)]="estado">
+    <app-sidebar [menuItems]="menuItems" (clickItem)="clickSideBar($event)"></app-sidebar>
+  </mat-sidenav>
+  <mat-sidenav-content>
+    <div>
+      <app-panel-status></app-panel-status>
+      <ng-content ng-content select="router-outlet"></ng-content>
+    </div>
+  </mat-sidenav-content>
+</mat-sidenav-container>
+<app-footer></app-footer>

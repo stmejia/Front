@@ -1,0 +1,124 @@
+@import url("https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700");
+
+@import "~@angular/material/theming";
+@include mat-core();
+
+/* ======== Angular material custom themes ======== */
+$primary: mat-palette($mat-blue, 600);
+$accent: mat-palette($mat-indigo, 500);
+$warn: mat-palette($mat-red);
+
+$default-theme: mat-light-theme($primary, $accent, $warn);
+$default-theme-dark: mat-dark-theme($primary, $accent, $warn);
+
+.default-theme {
+  @include angular-material-theme($default-theme);
+  @include theme($default-theme);
+}
+
+.default-theme-dark {
+  @include angular-material-theme($default-theme-dark);
+  @include theme($default-theme-dark);
+}
+
+/* Tema Teal*/
+$primary-teal: mat-palette($mat-teal, 600);
+$accent-teal: mat-palette($mat-teal);
+
+$teal-theme: mat-light-theme($primary-teal, $accent-teal, $warn);
+$teal-theme-dark: mat-dark-theme($primary-teal, $accent-teal, $warn);
+
+.teal-theme {
+  @include angular-material-theme($teal-theme);
+  @include theme($teal-theme);
+}
+
+.teal-theme-dark {
+  @include angular-material-theme($teal-theme-dark);
+  @include theme($teal-theme-dark);
+}
+
+// Tema Cyan
+$primary-cyan: mat-palette($mat-cyan, 800); //700
+$accent-cyan: mat-palette($mat-cyan);
+
+$cyan-theme: mat-light-theme($primary-cyan, $accent-cyan, $warn);
+$cyan-theme-dark: mat-dark-theme($primary-cyan, $accent-cyan, $warn);
+
+.cyan-theme {
+  @include angular-material-theme($cyan-theme);
+  @include theme($cyan-theme);
+}
+
+.cyan-theme-dark {
+  @include angular-material-theme($cyan-theme-dark);
+  @include theme($cyan-theme-dark);
+}
+
+// Tema Ligth Green
+$primary-ligth-green: mat-palette($mat-light-green, 750);
+$accent-ligth-green: mat-palette($mat-light-green, A725);
+
+$light-green-theme: mat-light-theme($primary-ligth-green, $accent-ligth-green, $warn);
+$light-green-theme-dark: mat-dark-theme($primary-ligth-green, $accent-ligth-green, $warn);
+
+.light-green-theme {
+  @include angular-material-theme($light-green-theme);
+  @include theme($light-green-theme);
+}
+
+.light-green-theme-dark {
+  @include angular-material-theme($light-green-theme-dark);
+  @include theme($light-green-theme-dark);
+}
+
+// Tema Rojo
+$primary-red: mat-palette($mat-red, 600);
+$accent-red: mat-palette($mat-pink, 450);
+
+$red-theme: mat-light-theme($primary-red, $accent-red);
+$red-theme-dark: mat-dark-theme($primary-red, $accent-red);
+
+.red-theme {
+  @include angular-material-theme($red-theme);
+  @include theme($red-theme);
+}
+
+.red-theme-dark {
+  @include angular-material-theme($red-theme-dark);
+  @include theme($red-theme-dark);
+}
+
+// Tema Morado
+$primary-morado: mat-palette($mat-purple, 500);
+$accent-morado: mat-palette($mat-purple, A200);
+
+$purple-theme: mat-light-theme($primary-morado, $accent-morado);
+$purple-theme-dark: mat-dark-theme($primary-morado, $accent-morado);
+
+.purple-theme {
+  @include angular-material-theme($purple-theme);
+  @include theme($purple-theme);
+}
+
+.purple-theme-dark {
+  @include angular-material-theme($purple-theme-dark);
+  @include theme($purple-theme-dark);
+}
+
+// Tema Balu
+$primary-balu: mat-palette($mat-orange,800);
+$accent-balu: mat-palette($mat-orange);
+
+$balu-theme: mat-light-theme($primary-balu, $accent-balu);
+$balu-theme-dark: mat-dark-theme($primary-balu, $accent-balu);
+
+.balu-theme {
+  @include angular-material-theme($balu-theme);
+  @include theme($balu-theme);
+}
+
+.balu-theme-dark {
+  @include angular-material-theme($balu-theme-dark);
+  @include theme($balu-theme-dark);
+}

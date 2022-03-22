@@ -1,0 +1,17 @@
+<ng-container *ngIf="datosListos">
+    <h4 class="txt-c-titulo p-0 m-0 tracking-in-expand text-center">{{data.titulo}}</h4>
+    <div>
+        <div class="imagen-principal">
+            <img  [src]="imagenPrincipal" alt="Imágen Principal">
+        </div>
+        <div class="lista-imagenes">
+            <img *ngFor="let imagen of data.imagenes" [src]="imagen.urlImagen" [alt]="imagen.nombre"
+                (click)="imagenPrincipal = imagen.urlImagen" matTooltip="Click para ver">
+        </div>
+    </div>
+</ng-container>
+
+<div class="div-center w-100 mt-10" *ngIf="!datosListos">
+    <h5>{{lblMensajeCargando}}</h5>
+    <mat-spinner></mat-spinner>
+</div>

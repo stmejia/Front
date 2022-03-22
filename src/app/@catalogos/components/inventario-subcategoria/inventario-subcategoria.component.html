@@ -1,0 +1,49 @@
+<ng-container *ngIf="!cargandoDatos">
+    <app-header-component [header]="(configuracionComponent | async).header" (eventos)="eventosHeader($event)">
+    </app-header-component>
+</ng-container>
+
+<div class="box">
+    <div class="div-center w-100 mt-10" *ngIf="cargandoDatos">
+        <mat-spinner></mat-spinner>
+    </div>
+
+    <mat-card class="mat-elevation-z12 slide-in-bottom" *ngIf="!cargandoDatos">
+        <mat-card-content>
+            <form [formGroup]="form">
+                <div class="row">
+                    <div class="col-md-4">
+                        <app-select-aguila [columnas]="colTipoEquipoRemolque"
+                            [datos]="getCategorias() | async"
+                            (itemSeleccionado)="this.form.controls['idInvCategoria'].setValue($event)"
+                            [nombre]="'Categoria Inventario'"
+                            [itemSelect]="this.form.controls['idInvCategoria'].value">
+                        </app-select-aguila>
+                    </div>
+                    <div class="col-md-4 col-sm-6">
+                        <mat-form-field appearance="legacy" class="w-100">
+                            <mat-label>Código:</mat-label>
+                            <input matInput type="text" formControlName="codigo" />
+                            <mat-error>{{ codErrores.codigo }}</mat-error>
+                        </mat-form-field>
+                    </div>
+                    <div class="col-md-8 col-sm-6">
+                        <mat-form-field appearance="legacy" class="w-100">
+                            <mat-label>Descripción:</mat-label>
+                            <input matInput type="text" formControlName="descripcion" />
+                            <mat-error>{{ codErrores.descripcion }}</mat-error>
+                        </mat-form-field>
+                    </div>
+                    <div class="col-md-4 col-sm-3" *ngIf="!isNuevo()">
+                        <mat-form-field appearance="legacy" class="w-100">
+                            <mat-label>Fecha de Creación</mat-label>
+                            <input matInput [matDatepicker]="dpC" formControlName="fechaCreacion" />
+                            <mat-datepicker-toggle matSuffix [for]="dpC"></mat-datepicker-toggle>
+                            <mat-datepicker #dpC></mat-datepicker>
+                        </mat-form-field>
+                    </div>
+                </div>
+            </form>
+        </mat-card-content>
+    </mat-card>
+</div>

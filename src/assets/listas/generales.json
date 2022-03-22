@@ -1,0 +1,66 @@
+[
+    {
+        "tipoLista": "Paises",
+        "campo": "paises",
+        "valores": [
+            {
+                "nombre": "Guatemala",
+                "valor": "GT"
+            },
+            {
+                "nombre": "El Salvador",
+                "valor": "SV"
+            },
+            {
+                "nombre": "Honduras",
+                "valor": "HN"
+            }
+        ]
+    },
+    {
+        "tipoLista": "Empresas",
+        "campo": "empresa",
+        "valores": [
+            {
+                "nombre": "CLT",
+                "valor": "CLT"
+            },
+            {
+                "nombre": "SYT",
+                "valor": "SYT"
+            },
+            {
+                "nombre": "INTERSTAFF",
+                "valor": "INTERSTAFF"
+            },
+            {
+                "nombre": "MAREX",
+                "valor": "MAREX"
+            },
+            {
+                "nombre": "TGR",
+                "valor": "TGR"
+            },
+            {
+                "nombre": "NELOGISA",
+                "valor": "NELOGISA"
+            },
+            {
+                "nombre": "INTERSEC",
+                "valor": "INTERSEC"
+            },
+            {
+                "nombre": "TRADICA",
+                "valor": "TRADICA"
+            },
+            {
+                "nombre": "INTER STATE",
+                "valor": "INTER STATE"
+            },
+            {
+                "nombre": "Otro",
+                "valor": "Otro"
+            }
+        ]
+    }
+]

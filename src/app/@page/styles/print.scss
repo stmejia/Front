@@ -1,0 +1,45 @@
+// Estilo de Impresion
+@media print {
+  @page {
+    margin-top: 15px !important;
+    margin-left: 75px !important;
+    margin-right: 15px !important;
+  }
+
+  header,
+  footer,
+  button {
+    display: none !important;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h6,
+  p,
+  span {
+    color: black !important;
+  }
+
+
+  body,
+  html {
+    background-image: none !important;
+    background-color: white !important;
+    color: black;
+  }
+
+  mat-sidenav {
+    display: none !important;
+  }
+
+  app-sidebar {
+    display: none !important;
+  }
+
+  .ocultar {
+    display: none !important;
+  }
+
+}

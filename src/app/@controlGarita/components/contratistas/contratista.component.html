@@ -1,0 +1,63 @@
+<ng-container *ngIf="!cargando">
+    <app-header-component [header]="(configuracionComponent | async).header" (eventos)="eventosHeader($event)">
+    </app-header-component>
+</ng-container>
+
+<div class="box">
+    <div class="div-center w-100 mt-10" *ngIf="cargando">
+        <mat-spinner></mat-spinner>
+    </div>
+
+    <mat-card class="mat-elevation-z12" *ngIf="!cargando">
+        <form [formGroup]="form">
+            <div class="row">
+                <div class="col-sm-6">
+                    <mat-form-field class="w-100">
+                        <mat-label>Documento De Identificación:</mat-label>
+                        <input matInput type="text" placeholder="No. De Documento De Identificación"
+                            formControlName="identificacion" (focusout)="buscarDocumento()" />
+                        <mat-error>{{ codErrores.identificacion }}</mat-error>
+                    </mat-form-field>
+                </div>
+                <div class="col-sm-6">
+                    <mat-form-field class="w-100">
+                        <mat-label>Nombre:</mat-label>
+                        <input matInput type="text" placeholder="Nombre De Contratista" formControlName="nombre" />
+                        <mat-error>{{ codErrores.nombre }}</mat-error>
+                    </mat-form-field>
+                </div>
+                <div class="col-sm-4">
+                    <mat-form-field class="w-100">
+                        <mat-label>Empresa:</mat-label>
+                        <input matInput type="text" placeholder="Empresa" formControlName="empresa" />
+                        <mat-error>{{ codErrores.empresa }}</mat-error>
+                    </mat-form-field>
+                </div>
+                <div class="col-sm-4">
+                    <mat-form-field class="w-100">
+                        <mat-label>Empresa Que Visita:</mat-label>
+                        <mat-select formControlName="empresaVisita">
+                            <mat-option *ngFor="let e of listaEmpresas.valores" [value]="e.valor">{{e.nombre}}
+                            </mat-option>
+                        </mat-select>
+                        <mat-error>{{ codErrores.empresaVisita }}</mat-error>
+                    </mat-form-field>
+                </div>
+                <div class="col-sm-4">
+                    <mat-form-field class="w-100">
+                        <mat-label>Placa:</mat-label>
+                        <input matInput type="text" placeholder="Placa Del Vehículo" formControlName="vehiculo" />
+                        <mat-error>{{ codErrores.vehiculo }}</mat-error>
+                    </mat-form-field>
+                </div>
+                <div class="col-sm-12">
+                    
+                    <!-- Select Imagenes -->
+                    <app-select-images-files [imagenRecurso]="imgRecursoDPI" [titulo]="'Subir Archivos'"
+                        (listaImagenes)="setImagenesSelect($event)">
+                    </app-select-images-files>
+                </div>
+            </div>
+        </form>
+    </mat-card>
+</div>

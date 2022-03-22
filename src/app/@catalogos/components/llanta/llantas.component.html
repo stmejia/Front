@@ -1,0 +1,67 @@
+<div *ngIf="!cargandoDatos">
+    <ng-container *ngIf="!(configuracionComponent | async).isModal">
+        <app-header-component [header]="(configuracionComponent | async).header" (eventos)="eventosHeader($event)">
+        </app-header-component>
+        <div class="box">
+            <mat-card class="mat-elevation-z18 p-0 slide-in-bottom">
+                <mat-card-content class="p-10">
+                    <app-tabla-aguila [columnas]="getColumnas() |async" [listaDatos]="getDatos() | async"
+                        [paginador]="getPaginador() | async" [listaOpciones]="getMenuOpcionesTabla() | async"
+                        (eventMenu)="eventoMenuOpciones($event)" (eventPaginador)="eventoPaginador($event)">
+                    </app-tabla-aguila>
+                </mat-card-content>
+            </mat-card>
+        </div>
+    </ng-container>
+
+    <!-- Diseño de Modal -->
+    <ng-container *ngIf="(configuracionComponent | async).isModal">
+        <div class="h-modal">
+            <h4 class="txt-c-titulo p-0 m-0 text-center" mat-dialog-title>
+                {{(configuracionComponent |async).header.titulo}}
+            </h4>
+            <mat-accordion class="w-100">
+                <div class="card">
+                    <mat-expansion-panel>
+                        <mat-expansion-panel-header>
+                            <mat-panel-title>
+                                <h5 class="p-0 m-0 div-center-v">Filtrar Datos</h5>
+                            </mat-panel-title>
+                        </mat-expansion-panel-header>
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <mat-form-field appearance="legacy" class="w-100">
+                                    <mat-label>Tipo Llantas:</mat-label>
+                                    <mat-select [(ngModel)]="filtros[1].parametro">
+                                        <mat-option [value]="''">Todos </mat-option>
+                                        <mat-option *ngFor="let tipo of getTiposLlanta() | async" [value]="tipo.id">
+                                            {{tipo.prefijo}}-{{tipo.descripcion}}</mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+                            <div class="col-sm-12 p-0 m-0 pr-15">
+                                <div class="box-paginador slide-in-left">
+                                    <div class="box-right">
+                                        <button class="txt-c-titulo p-0 mr-5" mat-flat-button [matTooltip]="''"
+                                            (click)="cargarPaginaFiltros()">
+                                            <mat-icon class="rotate-in-center">refresh</mat-icon>
+                                            Consultar Datos
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </mat-expansion-panel>
+                </div>
+            </mat-accordion>
+            <app-tabla-aguila [columnas]="getColumnas() |async" [listaDatos]="getDatos() | async"
+                [paginador]="getPaginador() | async" [listaOpciones]="getMenuOpcionesTabla() | async" [modal]="true"
+                [multi]="false" (eventMenu)="eventoMenuOpciones($event)" (eventPaginador)="eventoPaginador($event)">
+            </app-tabla-aguila>
+        </div>
+    </ng-container>
+</div>
+
+<div class="div-center w-100 mt-10" *ngIf="cargandoDatos">
+    <mat-spinner></mat-spinner>
+</div>

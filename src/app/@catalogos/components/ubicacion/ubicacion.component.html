@@ -1,0 +1,89 @@
+<ng-container *ngIf="!cargandoDatos">
+  <app-header-component [header]="(configuracionComponent | async).header" (eventos)="eventosHeader($event)">
+  </app-header-component>
+</ng-container>
+
+<div class="box">
+  <div class="div-center w-100 mt-10" *ngIf="cargandoDatos">
+    <mat-spinner></mat-spinner>
+  </div>
+  <mat-card class="mat-elevation-z12 slide-in-bottom" *ngIf="!cargandoDatos">
+    <mat-card-content>
+      <div class="row">
+        <div class="col-sm-6">
+          <h4 class="txt-c-titulo p-0 m-0 text-center">Datos de Ubicación</h4>
+          <form [formGroup]="form">
+            <div class="row">
+              <div class="col-md-4 col-sm-6">
+                <app-select-aguila [columnas]="colPaises" [datos]="getPaises() |async"
+                  [itemSelect]="form.controls['idPais'].value" (itemSeleccionado)="selectPais($event)"
+                  [nombre]="'Seleccione un pais'">
+                </app-select-aguila>
+              </div>
+              <div class="col-md-4 col-sm-6" *ngIf="!form.controls['idPais'].invalid">
+                <app-select-aguila [columnas]="colDepartamentos" [datos]="getDepartamentos() |async"
+                  (itemSeleccionado)="selectDepartamento($event)" [nombre]="'Seleccione un departamento'"
+                  [itemSelect]="form.controls['idDepartamento'].value">
+                </app-select-aguila>
+              </div>
+              <div class="col-md-4 col-sm-6" *ngIf="!form.controls['idDepartamento'].invalid">
+                <app-select-aguila [columnas]="colMunicipios" [datos]="getMunicipios() |async"
+                  [itemSelect]="form.controls['idMunicipio'].value"
+                  (itemSeleccionado)="this.form.controls['idMunicipio'].setValue($event)"
+                  [nombre]="'Selecciones un Municipio'">
+                </app-select-aguila>
+              </div>
+              <div class="col-md-4 col-sm-6">
+                <mat-form-field appearance="legacy" class="w-100">
+                  <mat-label>Código:</mat-label>
+                  <input matInput type="text" formControlName="codigo" />
+                  <mat-error>{{ codErrores.codigo }}</mat-error>
+                </mat-form-field>
+              </div>
+              <div class="col-md-4 col-sm-6">
+                <mat-form-field appearance="legacy" class="w-100">
+                  <mat-label>Código postal:</mat-label>
+                  <input matInput type="text" formControlName="codigoPostal" />
+                  <mat-error>{{ codErrores.codigoPostal }}</mat-error>
+                </mat-form-field>
+              </div>
+              <div class="col-md-4 col-sm-6">
+                <mat-form-field appearance="legacy" class="w-100">
+                  <mat-label>¿Es puerto?</mat-label>
+                  <mat-select formControlName="esPuerto">
+                    <mat-option [value]="true">Sí</mat-option>
+                    <mat-option [value]="false">No</mat-option>
+                  </mat-select>
+                  <mat-error>{{codErrores.esPuerto}}</mat-error>
+                </mat-form-field>
+              </div>
+              <div class="col-md-8 col-sm-6">
+                <mat-form-field appearance="legacy" class="w-100">
+                  <mat-label>Lugar:</mat-label>
+                  <input matInput type="text" formControlName="lugar" />
+                  <mat-error>{{ codErrores.lugar }}</mat-error>
+                </mat-form-field>
+              </div>
+              <div class="col-md-4 col-sm-3" *ngIf="!isNuevo()">
+                <mat-form-field appearance="legacy" class="w-100">
+                  <mat-label>Fecha de Creación</mat-label>
+                  <input matInput [matDatepicker]="dpC" formControlName="fechaCreacion" />
+                  <mat-datepicker-toggle matSuffix [for]="dpC"></mat-datepicker-toggle>
+                  <mat-datepicker #dpC></mat-datepicker>
+                </mat-form-field>
+              </div>
+            </div>
+          </form>
+        </div>
+        <div class="col-sm-6">
+          <div class="pb-15">
+            <app-mapa [titulo]="'Ubicación'" [latitud]="form.controls['latitud'].value"
+              [longitud]="form.controls['longitud'].value"
+              (latlng)="form.controls['latitud'].setValue($event.lat); form.controls['longitud'].setValue($event.lng)">
+            </app-mapa>
+          </div>
+        </div>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>

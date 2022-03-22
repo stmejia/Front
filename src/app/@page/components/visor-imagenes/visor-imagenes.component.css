@@ -1,0 +1,50 @@
+div {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.lista-imagenes {
+    flex-direction: row;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    overflow-y: hidden;
+    width: 100%;
+    padding: 5px;
+}
+
+.lista-imagenes img {
+    padding: 5px;
+    max-width: 125px;
+    max-height: 125px;
+}
+
+.imagen-principal {
+    width: 100%;
+    height: auto;
+    padding: 5px;
+}
+
+@media screen and (min-width: 801px) {
+    div {
+        flex-direction: row;
+    }
+
+    .lista-imagenes {
+        flex-direction: column;
+        flex-wrap: nowrap;
+        overflow-x: hidden;
+        overflow-y: auto;
+        width: auto;
+        padding: 5px;
+    }
+
+    .imagen-principal {
+        align-items: center;
+        justify-content: center;
+    }
+
+    .imagen-principal img {
+        max-width: 60%;
+    }
+}

@@ -1,0 +1,73 @@
+.row-section {
+  display: flex;
+  align-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+mat-divider{
+  border-top-color: black;
+    border-top-width: 1px;
+    border-top-style: solid;
+    margin-bottom: 0px;
+}
+
+.contenedor-impresion {
+  overflow: hidden;
+  /* padding: 25px; */
+}
+
+.encabezado {
+  display: flex;
+  align-items: center;
+}
+
+.contenedor-c {
+  display: flex;
+  flex-direction: column;
+  justify-content: center !important;
+  width: 100%;
+}
+
+h1,
+h2,
+h3,
+h4,
+h6,
+p,
+span {
+  color: black !important;
+}
+
+mat-card,
+div,
+body,
+html,
+button {
+  background-image: none !important;
+  background-color: white !important;
+}
+p::before {
+  content: counter(page) " of " counter(pages);
+}
+
+@media print {
+
+  p:before {
+    content: "Page " counter(page) " of " counter(pages);
+  }
+
+  .salto,
+  img {
+    page-break-inside: avoid;
+  }
+
+  .encabezado {
+    color: black;
+  }
+
+  .contenedor-impresion {
+    overflow: hidden;
+    padding: 0px;
+  }
+}

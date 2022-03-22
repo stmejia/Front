@@ -1,0 +1,37 @@
+<div class="row">
+  <div class="col-sm-12">
+    <mat-form-field appearance="legacy" class="w-100 pl-10 pr-10 pt-5">
+      <mat-label>Buscar:</mat-label>
+      <input matInput (keyup)="buscarItem()" [(ngModel)]="filtro" (keydown)="$event.stopPropagation()">
+    </mat-form-field>
+  </div>
+</div>
+<div class="row">
+  <div class="col-6" *ngFor="let columna of columnas">
+    <p [ngClass]="{
+          'text-center': columna.aligment == 'center',
+          'text-left': columna.aligment == 'left',
+          'text-right': columna.aligment == 'right',
+          'text-justify': columna.aligment == 'justify'
+        }">{{columna.nombre}}</p>
+  </div>
+</div>
+<ng-container *ngFor="let dato of getItems()">
+  <mat-option [value]="dato[identificador]" (click)="selectItem(dato[identificador])">
+    <div class="row">
+      <ng-container *ngFor="let columna of columnas; first as isFirst">
+        <div class="col-5">
+          <p class="w-100" [ngClass]="{
+              'text-center': columna.aligment == 'center',
+              'text-left': columna.aligment == 'left',
+              'text-right': columna.aligment == 'right',
+              'text-justify': columna.aligment == 'justify'
+            }">{{dato[columna.targetId]}}</p>
+        </div>
+        <div class="col-1" *ngIf="isFirst">
+          <p>--</p>
+        </div>
+      </ng-container>
+    </div>
+  </mat-option>
+</ng-container>

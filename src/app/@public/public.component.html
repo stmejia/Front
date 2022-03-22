@@ -1,0 +1,6 @@
+<div class="h-100 w-100 div-center" *ngIf="cargando">
+    <mat-spinner></mat-spinner>
+</div>
+<app-standar1-layout [menuItems]="menuItems" *ngIf="!cargando">
+    <router-outlet></router-outlet>
+</app-standar1-layout>

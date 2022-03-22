@@ -1,0 +1,200 @@
+<ng-container *ngIf="!cargandoDatos">
+    <app-header-component [header]="header" (eventos)="eventosHeader($event)">
+    </app-header-component>
+</ng-container>
+
+<div class="box">
+    <div class="div-center w-100 mt-10" *ngIf="cargandoDatos">
+        <mat-spinner></mat-spinner>
+    </div>
+
+    <mat-card class="mat-elevation-z12" *ngIf="!cargandoDatos">
+        <mat-card-content>
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="card p-10">
+                        <mat-vertical-stepper>
+                            <mat-step [stepControl]="formEncabezado" errorMessage="Campos Requeridos">
+                                <ng-template matStepLabel>Datos Condición De Ingreso</ng-template>
+                                <form [formGroup]="formEncabezado">
+                                    <mat-form-field appearance="legacy" class="w-100">
+                                        <mat-label>Serie De Documento</mat-label>
+                                        <input matInput type="text" formControlName="serie" />
+                                        <mat-error>{{ codErrores.serie }}</mat-error>
+                                    </mat-form-field>
+                                    <mat-form-field appearance="legacy" class="w-100">
+                                        <mat-label>No. De Documento</mat-label>
+                                        <input matInput type="number" formControlName="numero" />
+                                        <mat-error>{{ codErrores.numero }}</mat-error>
+                                    </mat-form-field>
+                                    <mat-form-field class="w-100" appearance="legacy">
+                                        <mat-label>Fecha De Ingreso</mat-label>
+                                        <input matInput [matDatepicker]="fdi" formControlName="fechaIngreso" />
+                                        <mat-datepicker-toggle matSuffix [for]="fdi"></mat-datepicker-toggle>
+                                        <mat-datepicker #fdi></mat-datepicker>
+                                        <mat-error>{{ codErrores.fechaIngreso }}</mat-error>
+                                    </mat-form-field>
+                                </form>
+                            </mat-step>
+                            <mat-step [stepControl]="formPiloto" errorMessage="Campos Requeridos">
+                                <ng-template matStepLabel>Piloto</ng-template>
+                                <form [formGroup]="formPiloto">
+                                    <app-input-empleado [filtrosComponent]="filtrosEmpleados"
+                                        [filtroAplicar]="filtrosAplicarEmpleados" [tituloModal]="'Seleccione Un Piloto'"
+                                        [columnas]="columnasEmpleado" (getItem)="setEmpleado($event)">
+                                    </app-input-empleado>
+                                    <div class="card m-5 p-10">
+                                        <h5 class="txt-c-danger text-center p-0 m-0"
+                                            *ngIf="!formPiloto.controls['empleados'].value">
+                                            ¡Ingrese la información del piloto!</h5>
+                                        <div *ngIf="formPiloto.controls['empleados'].value">
+                                            <h6 class="p-0 m-0"><b>Nombre:
+                                                </b>{{this.formPiloto.controls['empleados'].value.nombres}}
+                                                {{this.formPiloto.controls['empleados'].value.apellidos}}
+                                            </h6>
+                                            <h6 class="p-0 m-0"><b>CUI:
+                                                </b>{{this.formPiloto.controls['empleados'].value.codigo}}
+                                            </h6>
+                                        </div>
+                                    </div>
+                                </form>
+                            </mat-step>
+                            <mat-step [stepControl]="formEquipo" errorMessage="Campos Requeridos">
+                                <ng-template matStepLabel>Vehículo</ng-template>
+                                <form [formGroup]="formEquipo">
+                                    <app-input-vehiculo [filtrosComponent]="filtrosVehiculo"
+                                        [filtroAplicar]="filtrosAplicarVehiculo"
+                                        [tituloModal]="'Seleccione Un Vehículo'" [columnas]="columnasVehiculo"
+                                        (getItem)="setActivo($event)">
+                                    </app-input-vehiculo>
+                                    <div class="card m-5 p-10">
+                                        <h5 class="txt-c-danger text-center"
+                                            *ngIf="!formEquipo.controls['vehiculos'].value">
+                                            ¡Ingrese la información del vehiculo!</h5>
+                                        <div class="mt-10" *ngIf="formEquipo.controls['vehiculos'].value">
+                                            <h6 class="p-0 m-0"><b>Código: </b>
+                                                {{this.formEquipo.controls['vehiculos'].value.activoOperacion.codigo}}
+                                            </h6>
+                                            <h6 class="p-0 m-0"><b>Placa: </b>
+                                                {{this.formEquipo.controls['vehiculos'].value.placa}}
+                                            </h6>
+                                            <h6 class="p-0 m-0"><b>Marca: </b>
+                                                {{this.formEquipo.controls['vehiculos'].value.activoOperacion.marca}}
+                                            </h6>
+                                        </div>
+                                    </div>
+                                </form>
+                            </mat-step>
+                            <mat-step [stepControl]="formDetalle" errorMessage="Campos Requeridos">
+                                <ng-template matStepLabel>Estado Del Equipo</ng-template>
+                                <form [formGroup]="formDetalle">
+                                    <mat-form-field appearance="legacy" class="w-100">
+                                        <mat-label>Vidrios</mat-label>
+                                        <input matInput type="text" formControlName="vidrios" />
+                                        <mat-error>{{ codErrores.codigo }}</mat-error>
+                                    </mat-form-field>
+                                    <mat-form-field appearance="legacy" class="w-100">
+                                        <mat-label>Llantas</mat-label>
+                                        <input matInput type="text" formControlName="llantas" />
+                                        <mat-error>{{ codErrores.codigo }}</mat-error>
+                                    </mat-form-field>
+                                    <mat-form-field appearance="legacy" class="w-100">
+                                        <mat-label>Tanque De Combustible</mat-label>
+                                        <input matInput type="text" formControlName="tanqueCombustible" />
+                                        <mat-error>{{ codErrores.codigo }}</mat-error>
+                                    </mat-form-field>
+                                    <mat-form-field appearance="legacy" class="w-100">
+                                        <mat-label>Observaciones</mat-label>
+                                        <input matInput type="text" formControlName="observaciones" />
+                                        <mat-error>{{ codErrores.codigo }}</mat-error>
+                                    </mat-form-field>
+                                </form>
+                            </mat-step>
+                        </mat-vertical-stepper>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="card p-10" *ngIf="form.controls['id'].value">
+                        <h5 class="txt-c-titulo text-center">Detalle De Reparaciones</h5>
+                        <div class="div-center w-100 mt-10" *ngIf="cargandoDetalle">
+                            <mat-spinner></mat-spinner>
+                        </div>
+                        <mat-accordion multi *ngIf="!cargandoDetalle">
+                            <mat-expansion-panel class="card" [expanded]="true">
+                                <mat-expansion-panel-header>
+                                    <mat-panel-title>
+                                        Agregar Reparación
+                                    </mat-panel-title>
+                                </mat-expansion-panel-header>
+                                <div class="card m-5 p-10">
+                                    <app-input-reparacion [filtrosComponent]="filtrosReparaciones"
+                                        [filtroAplicar]="filtrosAplicarReparaciones" [columnas]="columnasReparaciones"
+                                        (getItem)="setReparacion($event)">
+                                    </app-input-reparacion>
+                                    <div class="card m-5 p-10">
+                                        <h5 class="txt-c-danger text-center p-0 m-0"
+                                            *ngIf="!formDetalleInspeccion.controls['reparacion'].value">
+                                            ¡Ingrese la información de la reparación!</h5>
+                                        <div *ngIf="formDetalleInspeccion.controls['reparacion'].value">
+                                            <h6 class="p-0 m-0"><b>Código De Reparación: </b>
+                                                {{this.formDetalleInspeccion.controls['reparacion'].value.codigo}}
+                                            </h6>
+                                            <h6 class="p-0 m-0"><b>Descripción: </b>
+                                                {{this.formDetalleInspeccion.controls['reparacion'].value.descripcion}}
+                                            </h6>
+                                        </div>
+                                    </div>
+                                </div>
+                                <form [formGroup]="formDetalleInspeccion">
+                                    <mat-form-field appearance="legacy" class="w-100">
+                                        <mat-label>Cantidad</mat-label>
+                                        <input matInput type="number" formControlName="cantidad" />
+                                        <mat-error>{{ codErrores.cantidad }}</mat-error>
+                                    </mat-form-field>
+                                    <mat-form-field class="w-100" appearance="legacy">
+                                        <mat-label>Fecha Estimada De Reparación</mat-label>
+                                        <input matInput [matDatepicker]="fer"
+                                            formControlName="fechaEstimadoReparacion" />
+                                        <mat-datepicker-toggle matSuffix [for]="fer"></mat-datepicker-toggle>
+                                        <mat-datepicker #fer></mat-datepicker>
+                                        <mat-error>{{ codErrores.fechaEstimadoReparacion }}</mat-error>
+                                    </mat-form-field>
+                                    <mat-form-field appearance="legacy" class="w-100">
+                                        <mat-label>Observaciones</mat-label>
+                                        <input matInput type="text" formControlName="observaciones" />
+                                        <mat-error>{{ codErrores.observaciones }}</mat-error>
+                                    </mat-form-field>
+                                </form>
+                                <div class="box-paginador">
+                                    <button mat-raised-button color="primary" type="button"
+                                        (click)="guardarDetalleInspeccion()">
+                                        <mat-icon>add_circle_outline</mat-icon> Agregar Detalle
+                                    </button>
+                                </div>
+                            </mat-expansion-panel>
+                            <mat-expansion-panel class="card" [expanded]="true">
+                                <mat-expansion-panel-header>
+                                    <mat-panel-title>
+                                        Lista De Reparaciones
+                                    </mat-panel-title>
+                                </mat-expansion-panel-header>
+                                <app-aguila-tabla [columnas]="columnasDetalle" [listaDatos]="datosDetalle | async"
+                                    [listaOpciones]="opcionesDetalle" [exportar]="false"
+                                    [paginador]="paginadorDetalle |async"
+                                    (eventPaginador)="eventoPaginadorDetalle($event)"
+                                    (eventMenu)="eventosTablaDetalleInspeccion($event)">
+                                </app-aguila-tabla>
+                            </mat-expansion-panel>
+                        </mat-accordion>
+                    </div>
+                    <div class="card p-10" [ngClass]="{'mt-15':form.controls['id'].value}">
+                        <h5 class="txt-c-titulo text-center">Fotografias De Equipo</h5>
+                        <app-imagenes [imagenRecurso]="form.controls['fotos'].value"
+                            [imagenRecursoConfiguracion]="imgRecursoFotos"
+                            (imagenRecursoChange)="form.controls['fotos'].setValue($event)"></app-imagenes>
+                    </div>
+                </div>
+            </div>
+        </mat-card-content>
+    </mat-card>
+</div>

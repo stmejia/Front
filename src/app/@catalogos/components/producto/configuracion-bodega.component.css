@@ -1,0 +1,5 @@
+.mat-divider {
+    display: block;
+    border-top-width: 5px;
+    border-top-style: solid;
+}

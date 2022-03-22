@@ -1,0 +1,62 @@
+<h5 mat-dialog-title class="text-bold">{{textos && textos.lblCambiarEstacion || 'Cambiar Estación de Trabajo'}}</h5>
+<div mat-dialog-content>
+  <!--Tabla de Tados-->
+  <div class="table-responsive">
+    <table class="table">
+      <!-- Encabezado de la Tabla -->
+      <thead class="thead">
+        <tr class="tr">
+          <th class="th" scope="col">
+            <mat-icon>perm_media</mat-icon>
+          </th>
+          <th class="th text-left">
+            {{textos && textos.lblEstacionTrabajo || 'Estación'}}
+          </th>
+          <th class="th text-left">
+            {{textos && textos.lblSucursal || 'Sucursal'}}
+          </th>
+          <th class="th text-left">
+            {{textos && textos.lblEmpresa || 'Empresa'}}
+          </th>
+          <th class="th text-left">
+            {{textos && textos.lblTipo || 'Tipo'}}
+          </th>
+          <th class="th text-left">
+
+          </th>
+        </tr>
+      </thead>
+      <!-- Cuerpo de la Tabla -->
+      <tbody class="tbody">
+        <!-- Filla de Contenido -->
+        <tr class="tr" *ngFor="let estacion of data">
+          <td class="td"><img class="img-perfil d-block mx-auto"
+              [src]="getImagen(estacion.estacionTrabajo.sucursal.empresa)" alt="Logo"></td>
+          <td class="td">
+            <span class="td-m">{{textos && textos.lblEstacionTrabajo || 'Estación'}}</span>
+            {{estacion.estacionTrabajo.nombre}}
+          </td>
+          <td class="td">
+            <span class="td-m">{{textos && textos.lblSucursal || 'Sucursal'}}</span>
+            {{estacion.estacionTrabajo.sucursal.nombre}}
+          </td>
+          <td class="td">
+            <span class="td-m">{{textos && textos.lblEmpresa || 'Empresa'}}</span>
+            {{estacion.estacionTrabajo.sucursal.empresa.nombre}}
+          </td>
+          <td class="td">
+            <span class="td-m">{{textos && textos.lblTipo || 'Tipo'}}</span>
+            {{estacion.estacionTrabajo.tipo}}</td>
+          <td class="td">
+            <button mat-icon-button color="accent" (click)="asignar(estacion)">
+              <mat-icon>published_with_changes</mat-icon>
+            </button>
+          </td>
+        </tr>
+        <tr class="tr" *ngIf="data.length < 1">
+          <td class="text-center td" colspan="6">{{textos && textos.msjSinDatos || 'No hay datos para mostrar'}}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

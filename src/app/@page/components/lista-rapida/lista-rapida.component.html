@@ -1,0 +1,107 @@
+<mat-dialog-content>
+  <!-- Tabla -->
+  <div class="table-responsive">
+    <table class="table">
+      <!-- Encabezado de la Tabla -->
+      <thead class="thead">
+        <tr class="tr">
+          <!-- ngFor de Columnas -->
+          <th class="th" scope="col">
+            <mat-icon>settings</mat-icon>
+          </th>
+          <ng-container *ngFor="let columna of columnas">
+            <ng-container *ngIf="columna.texto || columna.estado || columna.fecha">
+              <th class="th" scope="col" [ngClass]="{
+                    'text-center': columna.aligment == 'center',
+                    'text-left': columna.aligment == 'left',
+                    'text-right': columna.aligment == 'right',
+                    'text-justify': columna.aligment == 'justify'
+                  }">
+                {{columna.nombre}}
+              </th>
+            </ng-container>
+            <ng-container *ngIf="columna.img">
+              <th class="th" scope="col" *ngIf="columna.visible">
+                <mat-icon>{{columna.nombre}}</mat-icon>
+              </th>
+            </ng-container>
+          </ng-container>
+        </tr>
+      </thead>
+      <!-- Cuerpo de la Tabla -->
+      <tbody class="tbody">
+        <!-- Filla de Contenido -->
+        <tr class="tr" *ngFor="let dato of listaDatos; index as i">
+          <ng-container *ngIf="!multi">
+            <td class="td">
+              <button mat-mini-fab color="primary" matTooltip="Seleccionar" [mat-dialog-close]="[dato]">
+                <mat-icon>check</mat-icon>
+              </button>
+            </td>
+          </ng-container>
+          <ng-container *ngIf="multi">
+            <td class="td">
+              <mat-checkbox class="example-margin" (click)="seleccionarItem(dato)"></mat-checkbox>
+            </td>
+          </ng-container>
+          <ng-container *ngFor="let columna of columnas">
+            <!-- Texto -->
+            <ng-container *ngIf="columna.texto">
+              <td class="td" [ngClass]="{
+                    'text-center': columna.aligment == 'center',
+                    'text-left': columna.aligment == 'left',
+                    'text-right': columna.aligment == 'right',
+                    'text-justify': columna.aligment == 'justify'
+                  }">
+                <span class="td-m">
+                  {{columna.nombre}}
+                </span>
+                {{dato[columna.targetId]}}
+              </td>
+            </ng-container>
+            <!-- Imagen -->
+            <ng-container *ngIf="columna.img">
+              <td class="td" *ngIf="columna.visible">
+                <img class="img-perfil d-block mx-auto" [src]="getImagen(dato)" alt="Logo Empresa"
+                  (click)="mostrarImagen(getImagen(dato))" [matTooltip]="'Click para visualizar'">
+              </td>
+            </ng-container>
+            <!-- Estado -->
+            <ng-container *ngIf="columna.estado">
+              <td class="td">
+                <span class="td-m">{{columna.nombre}}</span>
+                <div class="div-center-h">
+                  <img class="icono-25" *ngIf="dato[columna.targetId]" oncontextmenu="return false"
+                    [matTooltip]="'Activo'" src="assets/iconos/checked.png" alt="IconoCheck">
+                  <img class="icono-25" *ngIf="!dato[columna.targetId]" oncontextmenu="return false"
+                    [matTooltip]="'Bloqueado'" src="assets/iconos/checked_red.png" alt="IconoCheck">
+                </div>
+              </td>
+            </ng-container>
+            <!-- Fecha -->
+            <ng-container *ngIf="columna.fecha">
+              <td class="td" [ngClass]="{
+                    'text-center': columna.aligment == 'center',
+                    'text-left': columna.aligment == 'left',
+                    'text-right': columna.aligment == 'right',
+                    'text-justify': columna.aligment == 'justify'
+                  }">
+                <span class="td-m">{{'Fecha de Creación'}}</span>
+                {{dato[columna.targetId] | fecha}}
+              </td>
+            </ng-container>
+          </ng-container>
+          <!-- Fila que se muetra cuando no hay datos en la tabla -->
+        <tr class="tr" *ngIf="listaDatos.length < 1">
+          <td class="text-center td" colspan="9">{{'No hay datos para mostrar'}}
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close color="warn">Cancelar</button>
+  <button mat-button color="primary" [mat-dialog-close]="itemsSeleccionados">Seleccionar</button>
+</mat-dialog-actions>

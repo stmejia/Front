@@ -1,0 +1,235 @@
+<ng-container *ngIf="!cargando">
+    <app-header-component [header]="(configuracionComponent | async).header" (eventos)="eventosHeader($event)">
+    </app-header-component>
+</ng-container>
+
+<div class="box">
+    <div class="div-center w-100 mt-10" *ngIf="cargando">
+        <mat-spinner></mat-spinner>
+    </div>
+
+    <mat-card class="mat-elevation-z12" *ngIf="!cargando">
+        <mat-card-content>
+            <div class="card mb-5">
+                <h4 class="ml-5 mt-10 m-0 p-0 text-bold txt-c-titulo">Buscar Equipo</h4>
+                <div class="row">
+                    <div class="col-sm-6 col-md-4" [formGroup]="form">
+                        <mat-form-field class="w-100">
+                            <mat-label>Tipo De Movimiento:</mat-label>
+                            <mat-select formControlName="evento">
+                                <mat-option [value]="'Ingresado'">Ingreso De Equipo</mat-option>
+                                <mat-option [value]="'Egresado'">Salida De Equipo</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                    <div class="col-sm-2 col-md-3 col-lg-3">
+                        <mat-form-field appearance="legacy" class="w-100">
+                            <mat-label>Buscar por:</mat-label>
+                            <mat-select [(ngModel)]="buscarPor">
+                                <mat-option value="Código" matTooltip="Código del vehículo">Código De Equipo
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                    <div class="col-sm-3 col-md-4">
+                        <mat-form-field appearance="legacy" class="w-100">
+                            <mat-label>{{buscarPor}}:</mat-label>
+                            <input matInput type="text" [(ngModel)]="inputValue" placeholder="Ingrese Código De Equipo"
+                                (keyup.enter)="buscar()" />
+                        </mat-form-field>
+                    </div>
+                    <div class="col-sm-1 col-md-1">
+                        <button type="button" mat-icon-button color="primary" matTooltip="Buscar registro"
+                            (click)="buscar()">
+                            <mat-icon>search</mat-icon>
+                        </button>
+                        <button type="button" mat-icon-button color="primary" matTooltip="Escanear código QR"
+                            (click)="abrirEscanerQR()">
+                            <mat-icon>qr_code_scanner</mat-icon>
+                        </button>
+                    </div>
+                    <div class="col-sm-12 p-0 m-0" [formGroup]="form">
+                        <h4 class="txt-c-titulo text-bold div-center-v pl-5">Inspección de Ingreso / Salida</h4>
+                        <div class="row">
+                            <div class="col-sm-6 col-md-4 col-lg-3" *ngIf="!(form.controls['evento'].value == 'Egresado')">
+                                <mat-form-field class="w-100">
+                                    <mat-label>Cargado Con Viaje (En Servicio):</mat-label>
+                                    <!-- [(ngModel)]="" -->
+                                    <mat-select formControlName="cargado">
+                                        <mat-option [value]="true">Si</mat-option>
+                                        <mat-option [value]="false">No</mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+                            <div class="col-sm-6 col-md-6 col-lg-3" *ngIf="false">
+                                <mat-form-field class="w-100">
+                                    <mat-label>Ingresado Por:</mat-label>
+                                    <input type="text" matInput formControlName="guardiaNombre">
+                                    <button matSuffix mat-icon-button *ngIf="true"
+                                        (click)="form.controls['guardiaNombre'].setValue('')">
+                                        <mat-icon>close</mat-icon>
+                                    </button>
+                                </mat-form-field>
+                            </div>
+                            <div class="col-sm-6 col-md-4 col-lg-3">
+                                <mat-form-field class="w-100">
+                                    <mat-label>Observaciones:</mat-label>
+                                    <input type="text" matInput formControlName="observaciones">
+                                    <button matSuffix mat-icon-button *ngIf="true"
+                                        (click)="form.controls['observaciones'].setValue('')">
+                                        <mat-icon>close</mat-icon>
+                                    </button>
+                                </mat-form-field>
+                            </div>
+                            <div class="col-sm-6 col-md-4 col-lg-3" *ngIf="false">
+                                <mat-form-field class="w-100">
+                                    <mat-label>Fecha De Ingreso</mat-label>
+                                    <input matInput [matDatepicker]="dp1" disabled>
+                                    <mat-datepicker-toggle matSuffix [for]="dp1"></mat-datepicker-toggle>
+                                    <mat-datepicker #dp1></mat-datepicker>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <ng-container *ngIf="form.controls['idActivo'].value">
+                <div class="card p-10 mt-10">
+                    <h4 class="txt-c-titulo text-bold div-center-v pl-10">Datos Del Equipo</h4>
+                    <div class="row">
+                        <div class="col-sm-6 col-md-4 col-lg-3 p-0">
+                            <div class="row m-0">
+                                <div class="col-5 p-0">
+                                    <h6 class="txt-c-titulo p-0 txt-puntos" matTooltip="Código Del Equipo (CUI)">
+                                        <b>Código:</b>
+                                    </h6>
+                                </div>
+                                <div class="col-7 p-0">
+                                    <h6 class="txt-c-titulo p-0 txt-puntos" [matTooltip]="inputValue">
+                                        {{inputValue}}
+                                    </h6>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6 col-md-4 col-lg-3 p-0">
+                            <div class="row m-0">
+                                <div class="col-5 p-0">
+                                    <h6 class="txt-c-titulo p-0 txt-puntos" matTooltip="Transporte">
+                                        <b>Placa:</b>
+                                    </h6>
+                                </div>
+                                <div class="col-7 p-0">
+                                    <h6 class="txt-c-titulo p-0 txt-puntos">
+                                        {{form.controls['activoOperacion'].value.placa}}
+                                    </h6>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6 col-md-4 col-lg-3 p-0">
+                            <div class="row m-0">
+                                <div class="col-5 p-0">
+                                    <h6 class="txt-c-titulo p-0 txt-puntos" matTooltip="Marca"><b>Marca:</b></h6>
+                                </div>
+                                <div class="col-7 p-0">
+                                    <h6 class="txt-c-titulo p-0 txt-puntos">
+                                        {{form.controls['activoOperacion'].value.marca}}
+                                    </h6>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6 col-md-4 col-lg-3 p-0" *ngIf="false">
+                            <div class="row m-0">
+                                <div class="col-5 p-0">
+                                    <h6 class="txt-c-titulo p-0 txt-puntos txt-puntos" matTooltip="Tipo De Equipo">
+                                        <b>Tipo De
+                                            Equipo:</b>
+                                    </h6>
+                                </div>
+                                <div class="col-7 p-0">
+                                    <h6 class="txt-c-titulo p-0 txt-puntos txt-puntos">
+                                        {{form.controls['tipoEquipo'].value}}
+                                    </h6>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6 col-md-4 col-lg-3 p-0">
+                            <div class="row m-0">
+                                <div class="col-5 p-0">
+                                    <h6 class="txt-c-titulo p-0 txt-puntos" matTooltip="Transporte">
+                                        <b>Piloto:</b>
+                                    </h6>
+                                </div>
+                                <div class="col-7 p-0">
+                                    <h6 class="txt-c-titulo p-0 txt-puntos">
+                                        {{form.controls['empleado'].value ? form.controls['empleado'].value.nombres :
+                                        ''}}
+                                    </h6>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6 col-md-4 col-lg-3 p-0" *ngIf="false">
+                            <div class="row m-0">
+                                <div class="col-5 p-0">
+                                    <h6 class="txt-c-titulo p-0 txt-puntos" matTooltip="Transporte">
+                                        <b>Condición:</b>
+                                    </h6>
+                                </div>
+                                <div class="col-7 p-0">
+                                    <h6 class="txt-c-titulo p-0 txt-puntos">
+                                        {{form.controls['condicion'].value}}
+                                    </h6>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6 col-md-4 col-lg-3 p-0" *ngIf="false">
+                            <div class="row m-0">
+                                <div class="col-5 p-0">
+                                    <h6 class="txt-c-titulo p-0 txt-puntos" matTooltip="Transporte">
+                                        <b>Transporte:</b>
+                                    </h6>
+                                </div>
+                                <div class="col-7 p-0">
+                                    <h6 class="txt-c-titulo p-0 txt-puntos">
+                                        {{form.controls['transporte'].value}}
+                                    </h6>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card p-10 mt-10" *ngIf="false">
+                    <h4 class="txt-c-titulo text-bold div-center-v pl-10">Condición de Ingreso / Salida</h4>
+                    <div class="row">
+                        <div class="col-sm-6 col-md-4 col-lg-3">
+                            <mat-form-field class="w-100">
+                                <mat-label>Equipo Cargado:</mat-label>
+                                <!-- [(ngModel)]="" -->
+                                <mat-select>
+                                    <mat-option [value]="true">Si</mat-option>
+                                    <mat-option [value]="false">No</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                        <div class="col-sm-6 col-md-4 col-lg-3">
+                            <mat-form-field class="w-100">
+                                <mat-label>Ingresado Por:</mat-label>
+                                <input type="text" matInput>
+                                <button matSuffix mat-icon-button *ngIf="true" (click)="{}">
+                                    <mat-icon>close</mat-icon>
+                                </button>
+                            </mat-form-field>
+                        </div>
+                        <div class="col-sm-6 col-md-4 col-lg-3">
+                            <mat-form-field class="w-100">
+                                <mat-label>Fecha De Ingreso</mat-label>
+                                <input matInput [matDatepicker]="dp1" disabled [(ngModel)]="fecha">
+                                <mat-datepicker-toggle matSuffix [for]="dp1"></mat-datepicker-toggle>
+                                <mat-datepicker #dp1></mat-datepicker>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                </div>
+            </ng-container>
+        </mat-card-content>
+    </mat-card>
+</div>

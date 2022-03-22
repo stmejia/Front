@@ -1,0 +1,71 @@
+<div class="row">
+    <div class="col-sm-12">
+        <ng-container *ngIf="imagenRecurso">
+            <div class="gridImagenes">
+                <ng-container *ngFor="let imagen of imagenRecurso.imagenes">
+                    <div class="imagen" *ngIf="imagen.subirImagenBase64 == null">
+                        <img [src]="imagen.urlImagen" matTooltip="Click para visualizar" (click)="mostrarImagen(imagen)"
+                            alt="Imagen">
+                        <div class="contenido">
+                            <h6 class="txt-c-titulo p-0 m-0">{{imagen.nombre}}</h6>
+                            <p class="p-0 m-0">{{imagen.descripcion}}</p>
+                            <button class="w-100" mat-flat-button color="warn" (click)="eliminarImagen(imagen)">
+                                <mat-icon>delete</mat-icon> Eliminar Imagen
+                            </button>
+                        </div>
+                    </div>
+                    <div class="imagen" *ngIf="imagen.subirImagenBase64 != null">
+                        <img [src]="imagen.subirImagenBase64" matTooltip="Click para visualizar"
+                            (click)="mostrarImagen(imagen)" alt="Imagen">
+                        <div class="contenido">
+                            <h6 class="txt-c-titulo p-0 m-0">{{imagen.nombre}}</h6>
+                            <p class="p-0 m-0">{{imagen.descripcion}}</p>
+                        </div>
+                    </div>
+                </ng-container>
+                <ng-container *ngIf="imagenRecurso.imagenDefault">
+                    <div class="imagen">
+                        <img [src]="imagenRecurso.imagenDefault.urlImagen" matTooltip="Click para visualizar"
+                            (click)="mostrarImagen(imagenRecurso.imagenDefault)" alt="Imagen">
+                        <div class="contenido">
+                            <h6 class="txt-c-titulo p-0 m-0">{{imagenRecurso.imagenDefault.nombre}}</h6>
+                            <p class="p-0 m-0">{{imagenRecurso.imagenDefault.descripcion}}</p>
+                            <h5 class="p-0 m-0 txt-c-titulo text-bold text-center">¡Imagen por defecto!</h5>
+                            <button class="w-100" mat-flat-button color="warn"
+                                (click)="eliminarImagen(imagenRecurso.imagenDefault)">
+                                <mat-icon>delete</mat-icon> Eliminar Imagen
+                            </button>
+                        </div>
+                    </div>
+                </ng-container>
+                <ng-container *ngFor="let imagen of imagenesAEliminar">
+                    <div class="imagen">
+                        <img [src]="imagen.urlImagen" matTooltip="Click para visualizar" (click)="mostrarImagen(imagen)"
+                            alt="Imagen">
+                        <div class="contenido">
+                            <h6 class="txt-c-titulo p-0 m-0">{{imagen.nombre}}</h6>
+                            <p class="p-0 m-0">{{imagen.descripcion}}</p>
+                            <button class="w-100" mat-flat-button color="warn" [disabled]="true">
+                                <mat-icon>delete</mat-icon> La imagen se eliminara
+                            </button>
+                        </div>
+                    </div>
+                </ng-container>
+            </div>
+        </ng-container>
+    </div>
+</div>
+<div class="row">
+    <div class="col-12" *ngIf="imagenRecursoConfiguracion">
+        <div class="centrar">
+            <button type="button" mat-raised-button color="primary" (click)="fileInput.click()">
+                {{imagenRecursoConfiguracion.multiplesImagenes ? 'Seleccionar Archivos' : 'Seleccionar Archivo'}}
+            </button>
+        </div>
+        <input hidden type="file" #fileInput mat-flat-button accept="image/*" excludeAcceptAllOption="false"
+            [multiple]="imagenRecursoConfiguracion.multiplesImagenes" (change)="seleccionarArchivo($event)">
+    </div>
+    <div class="col-sm-12" *ngIf="!imagenRecursoConfiguracion">
+        <h3 class="txt-c-titulo text-center">Sin Imagen Recurso Configuracion</h3>
+    </div>
+</div>

@@ -1,0 +1,8 @@
+{
+  "/apis/glpi/*": {
+  "target": "http://192.168.10.146",
+  "secure": false,
+  "logLevel": "debug",
+  "changeOrigin": true
+  }
+}

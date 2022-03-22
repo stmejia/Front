@@ -1,0 +1,60 @@
+<!-- <div class="card" *ngIf="!cargando">
+    <h5 class="ml-5 mt-10 m-0 p-0 txt-c-titulo">{{titulo}}</h5>
+    <div class="row">
+        <div class="col-sm-2">
+            <mat-form-field appearance="legacy" class="w-100">
+                <mat-label>Buscar por:</mat-label>
+                <mat-select [(ngModel)]="buscarPor">
+                    <mat-option value="Código" matTooltip="Código del vehículo">Código</mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+        <div class="col-sm-3">
+            <mat-form-field appearance="legacy" class="w-100">
+                <mat-label>{{buscarPor}}:</mat-label>
+                <input matInput type="text" [(ngModel)]="inputValue" placeholder="Pulsa TAB para buscar"
+                    (focusout)="buscar()" />
+            </mat-form-field>
+        </div>
+        <div class="col-sm-1">
+            <button type="button" mat-icon-button color="primary" matTooltip="Buscar registro en una lista"
+                (click)="abrirModal()">
+                <mat-icon>open_in_new</mat-icon>
+            </button>
+        </div>
+        <div class="col-sm-6 div-center-h">
+            <h5 class="text-bold p-0 m-0">{{label}}</h5>
+            <h4 class="txt-c-danger text-center" *ngIf="!label">*Campo Requerido</h4>
+        </div>
+    </div>
+</div> -->
+
+<!-- Nuevo Input -->
+<div *ngIf="!cargando">
+    <div class="row pl-5 pr-5">
+        <div class="col-sm-12 p-0 m-0">
+            <mat-form-field appearance="legacy" class="w-100">
+                <mat-label>CUI De Equipo:</mat-label>
+                <input matInput type="text" [(ngModel)]="input" (keyup.enter)="buscar()" />
+                <button mat-icon-button matSuffix (click)="buscar()">
+                    <mat-icon>search</mat-icon>
+                </button>
+            </mat-form-field>
+        </div>
+        <div class="col-sm-12 p-0 m-0">
+            <button class="mr-5" type="button" mat-stroked-button color="primary"
+                matTooltip="Buscar registro en una lista" (click)="abrirModal()">
+                <mat-icon>open_in_new</mat-icon>
+                Abrir Ventana
+            </button>
+            <button type="button" mat-stroked-button color="primary" matTooltip="Escanear código QR"
+                (click)="abrirEscanerQR()">
+                <mat-icon>qr_code_scanner</mat-icon>
+                Escanear QR
+            </button>
+        </div>
+    </div>
+</div>
+<div class="div-center w-100 mt-10" *ngIf="cargando">
+    <mat-spinner></mat-spinner>
+</div>

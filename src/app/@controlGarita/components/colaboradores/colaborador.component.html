@@ -1,0 +1,104 @@
+<ng-container *ngIf="!cargando">
+    <app-header-component [header]="(configuracionComponent | async).header" (eventos)="eventosHeader($event)">
+    </app-header-component>
+</ng-container>
+
+<div class="box">
+    <div class="div-center w-100 mt-10" *ngIf="cargando">
+        <mat-spinner></mat-spinner>
+    </div>
+
+    <mat-card class="mat-elevation-z12" *ngIf="!cargando">
+        <div class="p-15 card mb-10">
+            <mat-slide-toggle [(ngModel)]="modo">Modo Automatico</mat-slide-toggle>
+        </div>
+        <form [formGroup]="form" class="card p-5 mb-5">
+            <mat-form-field class="w-100">
+                <mat-label>Movimiento</mat-label>
+                <mat-select formControlName="evento">
+                    <mat-option [value]="'Ingreso'">Ingreso A Predio</mat-option>
+                    <mat-option [value]="'Salida'">Salida De Predio </mat-option>
+                </mat-select>
+                <mat-error>*Campor requerido</mat-error>
+            </mat-form-field>
+        </form>
+        <div *ngIf="!modo">
+            <div class="card p-5">
+                <app-input-empleado [filtrosComponent]="filtrosEmpleados" [filtroAplicar]="filtrosAplicarEmpleados"
+                    [tituloModal]="'Seleccione un piloto'" [columnas]="columnasEmpleado"
+                    (getItem)="getEmpleado($event)">
+                </app-input-empleado>
+            </div>
+            <div class="mt-10" *ngIf="empleado">
+                <div class="row">
+                    <div class="col-sm-4 div-center" *ngIf="empleado.fotos">
+                        <img class="img-fluid img-perfil-max"
+                            [src]="empleado.fotos.imagenDefault ? empleado.fotos.imagenDefault.urlImagen : './assets/img/LogoApp.png'"
+                            alt="">
+                    </div>
+                    <div class="col-sm-8">
+                        <h6 class="p-0 m-0"><b>Nombre:
+                            </b>{{empleado.nombres}} {{empleado.apellidos}}
+                        </h6>
+                        <h6 class="p-0 m-0"><b>CUI:
+                            </b>{{empleado.codigo}}
+                        </h6>
+                        <h6 class="p-0 m-0"><b>Placa:
+                            </b>{{empleado.placas || "Peatón"}}
+                        </h6>
+                    </div>
+                </div>
+            </div>
+            <div *ngIf="!empleado" class="mt-10">
+                <h5 class="text-center txt-c-danger" color="warn"> Ingrese o Escanee el CUI Del Colaborador</h5>
+            </div>
+        </div>
+        <div *ngIf="modo">
+            <div class="row">
+                <div class="col-sm-12 col-md-6 col-lg-4">
+                    <zxing-scanner previewFitMode="cover"
+                        *ngIf="(hasPermission|async) && (!reintentar) && form.controls['evento'].valid"
+                        [formats]="allowedFormats" [(device)]="currentDevice" [torch]="torchEnabled"
+                        (scanSuccess)="codigoEscaneado($event)" (camerasFound)="onCamerasFound($event)"
+                        (torchCompatible)="onTorchCompatible($event)" (permissionResponse)="onHasPermission($event)">
+                    </zxing-scanner>
+
+                    <h4 class="text-center text-bold txt-c-danger" *ngIf="!form.controls['evento'].valid">
+                        Seleccione un movimiento
+                    </h4>
+                    <h4 class="text-center text-bold txt-c-danger" *ngIf="(!hasPermission) && form.controls['evento'].valid">No es posible tener acceso a
+                        la cámara, revise
+                        la configuracion del dispositivo </h4>
+
+                    <h4 class="text-center text-bold txt-c-danger" *ngIf="(hasDevices === false) && form.controls['evento'].valid">No se encontraron
+                        dispositivos
+                        multimedia </h4>
+
+                    <h4 class="text-center text-bold txt-c-danger" *ngIf="(hasDevices === undefined) && form.controls['evento'].valid">No se encontraron
+                        dispositivos. Esto
+                        puede deberse a algún error de seguridad.</h4>
+                </div>
+                <div class="col-sm-12 col-md-6 col-lg-8">
+                    <mat-form-field class="w-100">
+                        <select matNativeControl matInput (change)="onDeviceSelectChange($event.target.value)">
+                            <option value="" [selected]="!currentDevice">No Device Selected</option>
+                            <option *ngFor="let device of availableDevices" [value]="device.deviceId"
+                                [selected]="currentDevice && device.deviceId === currentDevice.deviceId">
+                                {{device.label}}</option>
+                        </select>
+                    </mat-form-field>
+                    <button mat-stroked-button color="accent" class="w-100" *ngIf="torchAvailable$ | async"
+                        (click)="toggleTorch()">
+                        <mat-icon>{{torchEnabled? 'flashlight_off' : 'flashlight_on' }}</mat-icon>
+                        Linterna
+                    </button>
+                    <button mat-raised-button color="primary" class="w-100" *ngIf="reintentar"
+                        (click)="reintentar = false">
+                        <mat-icon>refresh</mat-icon>
+                        Volver A Intentar
+                    </button>
+                </div>
+            </div>
+        </div>
+    </mat-card>
+</div>

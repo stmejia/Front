@@ -1,0 +1,41 @@
+<div class="bg-primary-dark row pl-5" *ngIf="estado">
+  <div class="div-center-v" matTooltip="Modulo: {{modulo.nombre}}">
+    <mat-icon class="icono-m-mr-5">{{getIconoModulo()}}</mat-icon>
+    <span class="pr-10 vista-m">{{modulo.nombre}}</span>
+  </div>
+  <div class="div-center-v" [matTooltip]="'Empresa: ' + estacion.estacionTrabajo.sucursal.empresa.nombre">
+    <mat-icon class="icono-m-mr-5">apartment</mat-icon>
+    <span class="pr-10 vista-m">{{estacion.estacionTrabajo.sucursal.empresa.abreviatura}}</span>
+  </div>
+  <div class="div-center-v" [matTooltip]="'Sucursal: ' +estacion.estacionTrabajo.sucursal.nombre">
+    <mat-icon class="icono-m-mr-5">home_work</mat-icon>
+    <span class="pr-10 vista-m">{{estacion.estacionTrabajo.sucursal.nombre}}</span>
+  </div>
+  <div class="div-center-v" [matTooltip]="'Estación De Trabajo: ' +estacion.estacionTrabajo.nombre">
+    <mat-icon>store</mat-icon>
+    <span class="pr-10">{{estacion.estacionTrabajo.nombre}}</span>
+  </div>
+  <!-- Opcionales -->
+  <div>
+    <div class="div-center-v" [matTooltip]="'Año En Curso: ' +fecha.getFullYear()">
+      <mat-icon class="icono-m-mr-5">today</mat-icon>
+      <span class="pr-10">{{fecha.getFullYear()}}</span>
+    </div>
+  </div>
+  <div>
+    <div class="div-center-v"
+      [matTooltip]="'Tu sesión va a expirar a las ' +getExpiracion().vence + ', tiempo restante: '+ getExpiracion().restante">
+      <mat-icon class="icono-m-mr-5">timer</mat-icon>
+      <span class="pr-10">{{getExpiracion().vence}}</span>
+    </div>
+  </div>
+</div>
+<div class="bg-d row pl-5" *ngIf="mostrarAlerta">
+  <div class="div-alerta">
+    <div class="mx-auto alerta-items">
+      <mat-icon>warning</mat-icon>
+      <p class="p-0 m-0 pl-5">La sesión expirara pronto, guarda tu información, cierra sesión y vuelve a ingresar al
+        sistema</p>
+    </div>
+  </div>
+</div>

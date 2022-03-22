@@ -1,0 +1,208 @@
+<!--Buscador y Paginador-->
+<div class="row pl-10 pr-5 pt-10">
+  <!--Buscador-->
+  <div class="col-md-4 col-sm-4 p-0" *ngIf="buscador">
+    <mat-form-field class="w-100">
+      <mat-label>{{'Buscar'}}:</mat-label>
+      <input matInput (keyup.enter)="eventoBuscador()" #input [(ngModel)]="filtro"
+        [matTooltip]="'Presiona ENTER para buscar'" (keyup)="filtrarTabla()" />
+      <button mat-button matSuffix mat-icon-button (click)="eventoBuscador()">
+        <mat-icon matSuffix>search</mat-icon>
+      </button>
+    </mat-form-field>
+  </div>
+  <!--Paginador-->
+  <div class="col-md-8 col-sm-8 p-0" *ngIf="paginador">
+    <div class="box-paginador">
+      <div class="box-right card pl-5 pr-5">
+        <p class="p-0 m-0 mr-5">
+          {{
+          paginador.pageSize * paginador.currentPage -
+          paginador.pageSize +
+          1
+          }}-{{ paginador.pageSize * paginador.currentPage }} {{'de'}}
+          {{ paginador.totalCount }}
+        </p>
+        <button class="pagina" *ngIf="1 !== paginador.currentPage" mat-icon-button
+          disabled="{{ 1 == paginador.currentPage }}" (click)="clickEventPaginador(1)" [matTooltip]="'Primera Página'">
+          <mat-icon>first_page</mat-icon>
+        </button>
+        <button class="pagina" *ngIf="paginador.hasPreviousPage" mat-icon-button
+          disabled="{{ !paginador.hasPreviousPage }}" (click)="clickEventPaginador(paginador.currentPage - 1)"
+          [matTooltip]="'Página Anterior'">
+          <mat-icon>keyboard_arrow_left</mat-icon>
+        </button>
+        <button class="pagina" mat-icon-button *ngFor="let item of paginador.paginas"
+          [ngClass]="{ 'txt-c-titulo': paginador.currentPage == item }" (click)="clickEventPaginador(item)"
+          [matTooltip]="('Página') + ' ' +item">
+          {{ item }}
+        </button>
+        <button class="pagina" *ngIf="paginador.hasNextPage" mat-icon-button disabled="{{ !paginador.hasNextPage }}"
+          (click)="clickEventPaginador(paginador.currentPage + 1)" [matTooltip]="'Página Siguiente'">
+          <mat-icon>keyboard_arrow_right</mat-icon>
+        </button>
+        <button class="pagina" *ngIf="paginador.totalPages !== paginador.currentPage" mat-icon-button
+          disabled="{{ paginador.totalPages == paginador.currentPage }}"
+          (click)="clickEventPaginador(paginador.totalPages)" [matTooltip]="'Ultima Página'">
+          <mat-icon>last_page</mat-icon>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="table-responsive">
+  <table class="table">
+    <thead class="thead">
+      <tr class="tr">
+        <!-- ngFor de Columnas -->
+        <ng-container *ngIf="modal">
+          <th class="th" scope="col">
+            <mat-icon>settings</mat-icon>
+          </th>
+        </ng-container>
+        <ng-container *ngFor="let columna of columnas">
+          <ng-container
+            *ngIf="columna.tipo == 'texto' || columna.tipo == 'estado' || columna.tipo == 'fecha' || columna.tipo == 'boolean' || columna.tipo == 'objeto'">
+            <th class="th" [ngClass]="{
+                    'text-center': columna.aligment == 'center' && !device.isMobile(),
+                    'text-left': columna.aligment == 'left' && !device.isMobile(),
+                    'text-right': columna.aligment == 'right' || device.isMobile(),
+                    'text-justify': columna.aligment == 'justify' && !device.isMobile()
+                  }">
+              {{columna.nombre}}
+            </th>
+          </ng-container>
+          <ng-container *ngIf="columna.tipo == 'imagen' || columna.tipo == 'opcion'">
+            <th class="th">
+              <mat-icon>{{columna.nombre}}</mat-icon>
+            </th>
+          </ng-container>
+        </ng-container>
+      </tr>
+    </thead>
+    <tbody class="tbody">
+
+      <tr class="tr" *ngFor="let item of getDatos(); index as i">
+        <ng-container *ngIf="modal">
+          <ng-container *ngIf="!multi">
+            <td class="td">
+              <button mat-mini-fab color="primary" matTooltip="Seleccionar" [mat-dialog-close]="[item]">
+                <mat-icon>check</mat-icon>
+              </button>
+            </td>
+          </ng-container>
+          <ng-container *ngIf="multi">
+            <td class="td">
+              <mat-checkbox class="example-margin" (click)="seleccionarItem(item)"></mat-checkbox>
+            </td>
+          </ng-container>
+        </ng-container>
+
+
+        <ng-container *ngFor="let columna of columnas">
+          <!-- Menu Opciones -->
+          <ng-container *ngIf="columna.tipo == 'opcion'">
+            <td class="td">
+              <button mat-icon-button [matMenuTriggerFor]="menu" [matTooltip]="'Opciones'">
+                <mat-icon>more_vert</mat-icon>
+              </button>
+              <mat-menu #menu="matMenu">
+                <ng-container *ngFor="let opcion of listaOpciones">
+                  <button mat-menu-item [disabled]="!opcion.disponible"
+                    (click)="clickEventoMenuOpciones(opcion.idEvento,item)">
+                    <mat-icon>{{opcion.icono}}</mat-icon>
+                    {{opcion.nombre}}
+                  </button>
+                </ng-container>
+              </mat-menu>
+            </td>
+          </ng-container>
+          <!-- Texto -->
+          <ng-container *ngIf="columna.tipo == 'texto'">
+            <td class="td" [ngClass]="{
+              'text-center': columna.aligment == 'center' && !device.isMobile(),
+              'text-left': columna.aligment == 'left' && !device.isMobile(),
+              'text-right': columna.aligment == 'right' || device.isMobile(),
+              'text-justify': columna.aligment == 'justify' && !device.isMobile()
+            }">
+              <span class="td-m">
+                {{columna.nombre}}
+              </span>
+              {{item[columna.targetId]}}
+            </td>
+          </ng-container>
+          <!-- Objeto -->
+          <ng-container *ngIf="columna.tipo == 'objeto'">
+            <td class="td" [ngClass]="{
+              'text-center': columna.aligment == 'center' && !device.isMobile(),
+              'text-left': columna.aligment == 'left' && !device.isMobile(),
+              'text-right': columna.aligment == 'right' || device.isMobile(),
+              'text-justify': columna.aligment == 'justify' && !device.isMobile()
+            }">
+              <span class="td-m">
+                {{columna.nombre}}
+              </span>
+              {{getDatoObjeto(item,columna.targetOpt)}}
+              {{item[columna.targetOpt]}}
+            </td>
+          </ng-container>
+          <!-- Imagen -->
+          <ng-container *ngIf="columna.tipo == 'imagen'">
+            <td class="td" *ngIf="columna.visible">
+              <img class="img-perfil d-block mx-auto" [src]="getImagen(item)" alt="Logo Empresa"
+                (click)="mostrarImagen(getImagen(item))" [matTooltip]="'Click para visualizar'">
+            </td>
+          </ng-container>
+          <!-- Estado -->
+          <ng-container *ngIf="columna.tipo == 'estado'">
+            <td class="td">
+              <span class="td-m">{{columna.nombre}}</span>
+              <div class="div-center-h">
+                <img class="icono-25" *ngIf="item[columna.targetOpt]" oncontextmenu="return false"
+                  [matTooltip]="'Activo'" src="assets/iconos/checked.png" alt="IconoCheck">
+                <img class="icono-25" *ngIf="!item[columna.targetId]" oncontextmenu="return false"
+                  [matTooltip]="'Bloqueado'" src="assets/iconos/checked_red.png" alt="IconoCheck">
+              </div>
+            </td>
+          </ng-container>
+          <!-- Boolean -->
+          <ng-container *ngIf="columna.tipo == 'boolean'">
+            <td class="td">
+              <span class="td-m">{{columna.nombre}}</span>
+              <div class="div-center-h">
+                <img class="icono-25" *ngIf="item[columna.targetId]" oncontextmenu="return false" [matTooltip]="'Si'"
+                  src="assets/iconos/checked.png" alt="IconoCheck">
+                <img class="icono-25" *ngIf="!item[columna.targetId]" oncontextmenu="return false" [matTooltip]="'No'"
+                  src="assets/iconos/checked_red.png" alt="IconoCheck">
+              </div>
+            </td>
+          </ng-container>
+          <!-- Fecha -->
+          <ng-container *ngIf="columna.tipo == 'fecha'">
+            <td class="td" [ngClass]="{
+              'text-center': columna.aligment == 'center' && !device.isMobile(),
+              'text-left': columna.aligment == 'left' && !device.isMobile(),
+              'text-right': columna.aligment == 'right' || device.isMobile(),
+              'text-justify': columna.aligment == 'justify' && !device.isMobile()
+            }">
+              <span class="td-m">{{'Fecha de Creación'}}</span>
+              {{item[columna.targetId] | fecha}}
+            </td>
+          </ng-container>
+        </ng-container>
+    </tbody>
+  </table>
+  <ng-container *ngIf="getDatos().length<1">
+    <div class="text-center">
+      <p>No hay datos para mostrar</p>
+    </div>
+  </ng-container>
+</div>
+
+<ng-container *ngIf="modal">
+  <mat-dialog-actions align="end">
+    <button mat-button mat-dialog-close color="warn">Cancelar</button>
+    <button mat-button *ngIf="multi" color="primary" [mat-dialog-close]="itemsSeleccionados">Seleccionar</button>
+  </mat-dialog-actions>
+</ng-container>

@@ -1,0 +1,25 @@
+<ng-container *ngIf="!cargandoDatos">
+    <app-header-component [header]="(configuracionComponent | async).header" (eventos)="eventosHeader($event)">
+    </app-header-component>
+</ng-container>
+
+<div class="box">
+    <div class="div-center w-100 mt-10" *ngIf="cargandoDatos">
+        <mat-spinner></mat-spinner>
+    </div>
+
+    <mat-card class="mat-elevation-z18 p-0 slide-in-bottom" *ngIf="!cargandoDatos">
+        <mat-card-content class="p-10">
+            <!-- Filtros -->
+            <div class="card">
+                <app-filtros [filtros]="getFiltrosComponent() | async" (queryFilters)="getFiltros($event)"
+                    (clickConsultarDatos)="cargarPaginaFiltros()"></app-filtros>
+            </div>
+            <app-aguila-tabla [columnas]="getColumnas() |async" [listaDatos]="getDatos() | async"
+                [paginador]="getPaginador() | async" [listaOpciones]="getMenuOpcionesTabla() | async"
+                (eventMenu)="eventoMenuOpciones($event)" (eventPaginador)="eventoPaginador($event)"
+                (eventExcel)="generarExcel($event)" (eventPdf)="generarPdf($event)">
+            </app-aguila-tabla>
+        </mat-card-content>
+    </mat-card>
+</div>

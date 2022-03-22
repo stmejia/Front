@@ -1,0 +1,13 @@
+<h5 class="txt-c-titulo p-0 m-0 mb-5 text-center text-bold" mat-dialog-title *ngIf="data.titulo">
+    {{data.titulo}}
+</h5>
+<mat-dialog-content>
+    <div class="card">
+        <app-filtros [filtros]="data.filtros" [modal]="true" (queryFilters)="getFiltros($event)"
+            (clickConsultarDatos)="eventConsultarDatos()">
+        </app-filtros>
+    </div>
+    <app-aguila-tabla [columnas]="data.columnas" [modal]="true" [exportar]="false" [listaDatos]="getDatos() | async"
+        [paginador]="getPaginador() | async" [multi]="data.selectMultiple" (eventPaginador)="eventoPaginador($event)">
+    </app-aguila-tabla>
+</mat-dialog-content>   

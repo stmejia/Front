@@ -1,0 +1,45 @@
+<div *ngIf="!cargandoDatos">
+    <ng-container *ngIf="!(configuracionComponent | async).isModal">
+        <app-header-component [header]="(configuracionComponent | async).header" (eventos)="eventosHeader($event)">
+        </app-header-component>
+
+        <div class="box">
+            <mat-card class="mat-elevation-z18 p-0 slide-in-bottom">
+                <mat-card-content class="p-10">
+                    <!-- Filtros -->
+                    <div class="card">
+                        <app-filtros [filtros]="getFiltrosComponent() | async" (queryFilters)="getFiltros($event)"
+                            (clickConsultarDatos)="cargarPaginaFiltros()"></app-filtros>
+                    </div>
+                    <app-aguila-tabla [columnas]="getColumnas() |async" [listaDatos]="getDatos() | async"
+                        [exportar]="false" [paginador]="getPaginador() | async"
+                        [listaOpciones]="getMenuOpcionesTabla() | async" (eventMenu)="eventoMenuOpciones($event)"
+                        (eventPaginador)="eventoPaginador($event)">
+                    </app-aguila-tabla>
+                </mat-card-content>
+            </mat-card>
+        </div>
+    </ng-container>
+
+    <!-- Diseño de Modal -->
+    <ng-container *ngIf="(configuracionComponent | async).isModal">
+        <div class="h-modal">
+            <h4 class="txt-c-titulo p-0 m-0 text-center" mat-dialog-title>
+                {{(configuracionComponent |async).header.titulo}}
+            </h4>
+            <mat-accordion class="w-100">
+                <div class="card">
+                    <app-filtros [filtros]="getFiltrosComponent() | async" (queryFilters)="getFiltros($event)"
+                        (clickConsultarDatos)="cargarPaginaFiltros()"></app-filtros>
+                </div>
+            </mat-accordion>
+            <app-aguila-tabla [columnas]="getColumnas() |async" [listaDatos]="getDatos() | async" [exportar]="false"
+                [paginador]="getPaginador() | async" (eventPaginador)="eventoPaginador($event)" [modal]="true">
+            </app-aguila-tabla>
+        </div>
+    </ng-container>
+</div>
+
+<div class="div-center w-100 mt-10" *ngIf="cargandoDatos">
+    <mat-spinner></mat-spinner>
+</div>

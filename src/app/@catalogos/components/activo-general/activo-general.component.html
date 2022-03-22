@@ -1,0 +1,75 @@
+<div>
+    <div class="div-center w-100 mt-10" *ngIf="cargando">
+        <mat-spinner></mat-spinner>
+    </div>
+
+    <form *ngIf="!cargando" [formGroup]="form">
+        <div class="row">
+            <div class="col-md-3">
+                <app-select-aguila [columnas]="colTipoActivo" [datos]="getTiposActivos() | async"
+                    (focusout)="enviarObjeto()" (itemSeleccionado)="this.form.controls['idTipoActivo'].setValue($event)"
+                    [nombre]="'Tipo de Activo'" [itemSelect]="this.form.controls['idTipoActivo'].value">
+                </app-select-aguila>
+            </div>
+            <div class="col-md-3">
+                <mat-form-field class="w-100" appearance="legacy">
+                    <mat-label>Fecha de Compra</mat-label>
+                    <input matInput [matDatepicker]="fechaCompra" formControlName="fechaCompra"
+                        (focusout)="enviarObjeto()" />
+                    <mat-datepicker-toggle matSuffix [for]="fechaCompra" (focusout)="enviarObjeto()"></mat-datepicker-toggle>
+                    <mat-datepicker #fechaCompra></mat-datepicker>
+                    <mat-error>{{ codErrores.fechaCompra }}</mat-error>
+                </mat-form-field>
+            </div>
+            <div class="col-md-3">
+                <mat-form-field appearance="legacy" class="w-100">
+                    <mat-label>Valor de Compra:</mat-label>
+                    <input matInput type="number" formControlName="valorCompra" (focusout)="enviarObjeto()" />
+                    <mat-error>{{ codErrores.valorCompra }}</mat-error>
+                </mat-form-field>
+            </div>
+            <div class="col-md-3">
+                <mat-form-field appearance="legacy" class="w-100">
+                    <mat-label>Valor de Libro:</mat-label>
+                    <input matInput type="number" formControlName="valorLibro" (focusout)="enviarObjeto()" />
+                    <mat-error>{{ codErrores.valorLibro }}</mat-error>
+                </mat-form-field>
+            </div>
+            <div class="col-md-3">
+                <mat-form-field appearance="legacy" class="w-100">
+                    <mat-label>Valor de Rescate:</mat-label>
+                    <input matInput type="number" formControlName="valorRescate" (focusout)="enviarObjeto()" />
+                    <mat-error>{{ codErrores.valorRescate }}</mat-error>
+                </mat-form-field>
+            </div>
+            <div class="col-md-3">
+                <mat-form-field appearance="legacy" class="w-100">
+                    <mat-label>Deprecición Acumulada:</mat-label>
+                    <input matInput type="text" formControlName="depreciacionAcumulada" (focusout)="enviarObjeto()" />
+                    <mat-error>{{ codErrores.depreciacionAcumulada }}</mat-error>
+                </mat-form-field>
+            </div>
+            <div class="col-md-3">
+                <mat-form-field appearance="legacy" class="w-100">
+                    <mat-label>Id Documento de Compra:</mat-label>
+                    <input matInput type="number" formControlName="idDocumentoCompra" (focusout)="enviarObjeto()" />
+                    <mat-error>{{ codErrores.idDocumentoCompra }}</mat-error>
+                </mat-form-field>
+            </div>
+            <div class="col-md-3">
+                <mat-form-field appearance="legacy" class="w-100">
+                    <mat-label>Título de Propiedad:</mat-label>
+                    <input matInput type="text" formControlName="tituloPropiedad" (focusout)="enviarObjeto()" />
+                    <mat-error>{{ codErrores.tituloPropiedad }}</mat-error>
+                </mat-form-field>
+            </div>
+            <div class="col-md-3">
+                <mat-form-field appearance="legacy" class="w-100">
+                    <mat-label>Póliza de Importación:</mat-label>
+                    <input matInput type="text" formControlName="polizaImportacion" (focusout)="enviarObjeto()" />
+                    <mat-error>{{ codErrores.polizaImportacion }}</mat-error>
+                </mat-form-field>
+            </div>
+        </div>
+    </form>
+</div>

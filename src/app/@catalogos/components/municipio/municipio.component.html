@@ -1,0 +1,53 @@
+<ng-container *ngIf="!cargandoDatos">
+  <app-header-component [header]="(configuracionComponent | async).header" (eventos)="eventosHeader($event)">
+  </app-header-component>
+</ng-container>
+
+<div class="box">
+  <div class="div-center w-100 mt-10" *ngIf="cargandoDatos">
+    <mat-spinner></mat-spinner>
+  </div>
+
+  <mat-card class="mat-elevation-z6 slide-in-bottom" *ngIf="!cargandoDatos">
+    <mat-card-content>
+      <form [formGroup]="form">
+        <div class="row">
+          <div class="col-md-6 col-sm-6">
+            <app-select-aguila [nombre]="'Pais'" [columnas]="colPaises" [datos]="getPaises() | async"
+              (itemSeleccionado)="selectPais($event)" [itemSelect]="form.controls['idPais'].value">
+            </app-select-aguila>
+          </div>
+          <div class="col-md-6 col-sm-6" *ngIf="form.controls['idPais'].valid">
+            <app-select-aguila [nombre]="'Departamento'" [columnas]="colDepartamentos"
+              [datos]="getDepartamentos() | async"
+              (itemSeleccionado)="this.form.controls['idDepartamento'].setValue($event);"
+              [itemSelect]="form.controls['idDepartamento'].value">
+            </app-select-aguila>
+          </div>
+          <div class="col-md-6 col-sm-6">
+            <mat-form-field appearance="legacy" class="w-100">
+              <mat-label>Código del municipio:</mat-label>
+              <input matInput type="text" formControlName="codMunicipio" />
+              <mat-error>{{ codErrores.codMunicipio }}</mat-error>
+            </mat-form-field>
+          </div>
+          <div class="col-md-6 col-sm-6">
+            <mat-form-field appearance="legacy" class="w-100">
+              <mat-label>Nombre del municipio:</mat-label>
+              <input matInput type="text" formControlName="nombreMunicipio" />
+              <mat-error>{{ codErrores.nombreMunicipio }}</mat-error>
+            </mat-form-field>
+          </div>
+          <div class="col-md-3 col-sm-4" *ngIf="!isNuevo()">
+            <mat-form-field appearance="legacy" class="w-100">
+              <mat-label>Fecha de Creación</mat-label>
+              <input matInput [matDatepicker]="dpC" formControlName="fechaCreacion" />
+              <mat-datepicker-toggle matSuffix [for]="dpC"></mat-datepicker-toggle>
+              <mat-datepicker #dpC></mat-datepicker>
+            </mat-form-field>
+          </div>
+        </div>
+      </form>
+    </mat-card-content>
+  </mat-card>
+</div>

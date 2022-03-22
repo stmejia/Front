@@ -1,0 +1,20 @@
+mat-divider {
+    border-top-width: 5px;
+    border-top-style: solid;
+    margin-bottom: 0px;
+}
+
+.div-modulo {
+    margin: 10px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    flex-wrap: nowrap;
+}
+
+@media screen and (max-width: 600px) {
+    .div-modulo{
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}

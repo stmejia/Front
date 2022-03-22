@@ -1,0 +1,17 @@
+<div class="div-center w-100 mt-10" *ngIf="cargando">
+    <mat-spinner></mat-spinner>
+</div>
+<mat-dialog-content>
+    <ng-container *ngIf="!cargando">
+        <h4 class="txt-c-titulo p-0 m-0 text-center" mat-dialog-title>Lista De Solicitudes</h4>
+        <mat-accordion class="w-100">
+            <div class="card">
+                <app-filtros [filtros]="getFiltrosComponent()" (queryFilters)="getFiltros($event)"
+                    (clickConsultarDatos)="cargarPaginaFiltros()"></app-filtros>
+            </div>
+        </mat-accordion>
+        <app-aguila-tabla [columnas]="getColumnas()" [listaDatos]="getDatos() |async" [exportar]="false"
+            [paginador]="getPaginador() | async" (eventPaginador)="eventoPaginador($event)" [modal]="true">
+        </app-aguila-tabla>
+    </ng-container>
+</mat-dialog-content>

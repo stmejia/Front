@@ -1,0 +1,77 @@
+<div class="div-center-h" *ngIf="!datosListos">
+  <mat-spinner></mat-spinner>
+</div>
+<div class="contenedor-impresion" *ngIf="datosListos">
+  <mat-card class="mat-elevation-z0 m-0 p-0 w-100">
+    <div id="contenido">
+      <div id="encabezado" class="encabezado">
+        <img class="img-mw-100" [src]="imagen" alt="" />
+        <div class="contenedor-c">
+          <h3 class="text-center m-0">Perfil de Usuario</h3>
+        </div>
+      </div>
+      <div id="informacion" class="row">
+        <div class="col-6 p-0">
+          <h4 class="m-0">{{ this.usuario.nombre }}</h4>
+          <h6 class="m-0">
+            <b>Usuario:
+            </b>
+            {{ this.usuario.username }}</h6>
+          <h6 class="m-0">
+            <b>Email:
+            </b>
+            {{ this.usuario.email }}</h6>
+          <h6 class="m-0">
+            <b>Fecha de creación:
+            </b>
+            {{ this.usuario.fchCreacion | date: "dd-MM-yyyy" }}
+          </h6>
+        </div>
+        <div class="col-6 p-0">
+          <!--Segunda Columna para agregar información-->
+        </div>
+      </div>
+      <div id="cuerpo" class="cuerpo" *ngFor="let estacion of usuario.estacionesTrabajoAsignadas">
+        <h5 class="m-0 text-center bg-c3 w-100">
+          {{ estacion.estacionTrabajo.nombre }}
+          ---
+          {{ estacion.estacionTrabajo.sucursal.nombre }}
+          ---
+          {{ estacion.estacionTrabajo.sucursal.empresa.abreviatura }}
+        </h5>
+
+        <div class="row">
+          <div class="col-4 p-0 text-center">
+            <span>
+              <b>Recursos</b>
+            </span>
+          </div>
+          <div class="col-8 p-0 text-center">
+            <span>
+              <b>Atributos</b>
+            </span>
+          </div>
+        </div>
+        <div class="row salto" *ngFor="let recurso of estacion.estacionTrabajo.recursos">
+          <div class="col-4 p-0 div-center-v salto">
+            <span class="m-0">
+              {{ recurso.nombre }}
+            </span>
+          </div>
+          <div class="col-8 p-0">
+            <div class="row-section">
+              <div class="div-center-v" *ngFor="let opcion of recurso.opciones">
+                <img *ngIf="isSelect(opcion,recurso.id,estacion.estacionTrabajoId)"
+                  src="https://img.icons8.com/color/25/000000/checked-checkbox.png" />
+                <img *ngIf="!isSelect(opcion,recurso.id,estacion.estacionTrabajoId)"
+                  src="https://img.icons8.com/color/25/000000/unchecked-checkbox.png" />
+                <span>{{ opcion }}</span>
+              </div>
+            </div>
+          </div>
+          <mat-divider></mat-divider>
+        </div>
+      </div>
+    </div>
+  </mat-card>
+</div>

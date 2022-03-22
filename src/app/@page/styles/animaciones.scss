@@ -1,0 +1,293 @@
+//Animacion de rotacion de los iconos
+//---------- ---------- ---------- ---------- ---------- ---------- ----------
+.rotate-in-center:hover {
+  animation: rotate-in-center 0.8s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
+}
+
+button:hover .rotate-in-center {
+  animation: rotate-in-center 0.8s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
+}
+
+a:hover .rotate-in-center{
+  animation: rotate-in-center 0.8s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
+}
+
+@keyframes rotate-in-center {
+  0% {
+    transform: rotate(-360deg);
+    opacity: 1;
+  }
+
+  100% {
+    transform: rotate(0);
+    opacity: 1;
+  }
+}
+//---------- ---------- ---------- ---------- ---------- ---------- ----------
+
+//Animacion de movimiento para iconos
+//---------- ---------- ---------- ---------- ---------- ---------- ----------
+.wobble-hor-bottom:hover {
+	animation: wobble-hor-bottom 0.8s both;
+}
+button:hover .wobble-hor-bottom {
+	animation: wobble-hor-bottom 0.8s both;
+}
+@keyframes wobble-hor-bottom {
+  0%,
+  100% {
+    transform: translateX(0%);
+    transform-origin: 50% 50%;
+  }
+  15% {
+    transform: translateX(-30px) rotate(-6deg);
+  }
+  30% {
+    transform: translateX(15px) rotate(6deg);
+  }
+  45% {
+    transform: translateX(-15px) rotate(-3.6deg);
+  }
+  60% {
+    transform: translateX(9px) rotate(2.4deg);
+  }
+  75% {
+    transform: translateX(-6px) rotate(-1.2deg);
+  }
+}
+//---------- ---------- ---------- ---------- ---------- ---------- ----------
+
+//Animacion de entrada de la barra de Informacion
+//---------- ---------- ---------- ---------- ---------- ---------- ----------
+.tracking-in-expand {
+  animation: tracking-in-expand 0.7s cubic-bezier(0.215, 0.610, 0.355, 1.000) both;
+}
+
+@keyframes tracking-in-expand {
+  0% {
+    letter-spacing: -0.5em;
+    opacity: 0;
+  }
+
+  40% {
+    opacity: 0.6;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+//---------- ---------- ---------- ---------- ---------- ---------- ----------
+
+//---------- ---------- ---------- ---------- ---------- ---------- ----------
+//---------- ---------- ---------- ---------- ---------- ---------- ----------
+
+//Animacion de entrada para el cuerpo de un componente
+//---------- ---------- ---------- ---------- ---------- ---------- ----------
+.slide-in-bottom {
+	animation: slide-in-bottom 0.8s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
+}
+
+@keyframes slide-in-bottom {
+  0% {
+    transform: translateY(1000px);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+//---------- ---------- ---------- ---------- ---------- ---------- ----------
+
+//Animacion de entrada para el cuerpo de la barra de informacion
+//---------- ---------- ---------- ---------- ---------- ---------- ----------
+.slide-in-left {
+	animation: slide-in-left 0.8s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
+}
+
+@keyframes slide-in-left {
+  0% {
+    transform: translateX(-1000px);
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+//---------- ---------- ---------- ---------- ---------- ---------- ----------
+
+//Animacion de movimiento Aguila
+//---------- ---------- ---------- ---------- ---------- ---------- ----------
+.slide-aguila{
+  animation: slide-aguila cubic-bezier(0,0,0,0) 5s infinite both;
+}
+
+@keyframes slide-aguila{
+  0%{
+    transform: translateX(200px);
+    opacity: 1;
+  }
+  100%{
+    transform: translateX(-200px);
+    opacity: 1;
+  }
+}
+//---------- ---------- ---------- ---------- ---------- ---------- ----------
+
+//Animacion para las Cards GLPI
+//---------- ---------- ---------- ---------- ---------- ---------- ----------
+
+
+.card2:hover{
+  transform: scale(1.05);
+  box-shadow: 0 10px 20px rgba(0,0,0,.12), 0 4px 8px rgba(0,0,0,.06);
+  // height: 600px;
+  // width: 300px;
+  //border: 10px solid var(--lightGray);
+  //border-radius: 32px;
+}
+
+.title {
+  font-size: 18px;
+  margin: 0;
+  padding: 15px 0 5px;
+}
+.title + .tagline {
+  margin-top: 10px;
+}
+.tagline {
+  font-size: 12px;
+}
+
+/* Defaults */
+:root {
+  --altGray: #E1EBEA;
+  --lightGray: #F1F2F4;
+  --gray: #E9E9F1;
+  --green: #00B9AB;
+  --white: #fff;
+  --fontColor: #808288;
+}
+
+.flex-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.flex-space-around {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.flex-column {
+  display: flex;
+  flex-direction: column;
+  width: 300px;
+}
+
+body {
+  box-sizing: border-box;
+  height: 100vh;
+  color: var(--fontColor);
+  font-family: Poppins;
+  font-size: 14px;
+  text-shadow: none;
+  text-rendering: optimizelegibility;
+  --webkit-font-smoothing: antialiased;
+  line-height: 8px;
+}
+
+/* Main Content */
+main {
+  height: 600px;
+  width: 300px;
+  border: 10px solid var(--lightGray);
+  //border-radius: 32px;
+}
+
+main .container {
+  height: 600px;
+  width: 300px;
+  background-color: var(--gray);
+}
+
+.container section:first-of-type {
+  height: 300px;
+  background-color: var(--green);
+  color: var(--white);
+  text-align: center; 
+  clip-path: circle(90% at 50% 10%);
+  //border-radius: 32px;
+}
+
+.container nav {
+  height: 50px;
+}
+
+
+#chartOne {
+  height: 150px;
+}
+
+.container section:first-of-type span {
+  opacity: 0.75;
+  line-height: 0.9;
+  
+}
+
+.container section:nth-of-type(2) {
+  height: 150px;
+}
+
+#circle {
+  height: 50px;
+  width: 50px;
+  border-radius: 50%;
+  border: 2px solid var(--green);
+  background-color: var(--gray);
+  color: var(--green);
+  margin: 0 auto;
+  position: relative;
+  top: -32px;
+  z-index: 9999;
+}
+
+#chartTwo {
+  height: 100px;
+  width: 100%;
+}
+
+.container section:nth-of-type(3) {
+  height: 100px;
+  width: 100%;
+}
+
+.pill-container {
+  height: 40px;
+  width: 95%;
+  background-color: var(--white);
+  border: 1px solid var(--altGray);
+  border-radius: 4px;
+}
+
+.pill-container i {
+  color: var(--green);
+}
+
+.container footer {
+  height: 45px;
+  width: 100%;
+  margin-top: 5px;
+  background-color: var(--white);
+  color: var(--green);
+  box-shadow:inset 0px 0px 0px 1px var(--altGray);
+}
+
+// footer div {
+//   width: 33%;
+//   border-right: 1px solid var(--altGray);
+// }

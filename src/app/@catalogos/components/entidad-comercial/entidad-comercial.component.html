@@ -1,0 +1,54 @@
+<div class="">
+  <div class="div-center w-100 mt-10" *ngIf="cargandoDatos">
+    <mat-spinner></mat-spinner>
+  </div>
+
+  <mat-card class="mat-elevation-z6 slide-in-bottom" *ngIf="!cargandoDatos">
+    <ng-container *ngIf="!cargandoDatos">
+      <app-header-component [header]="(configuracionComponent | async).header" (eventos)="eventosHeader($event)">
+      </app-header-component>
+    </ng-container>
+    <form [formGroup]="form">
+      <div class="row">
+        <div class="col-md-3 col-sm-6">
+          <mat-form-field appearance="legacy" class="w-100">
+            <mat-label>NIT:</mat-label>
+            <input matInput type="text" formControlName="nit" (keyup)="edicionFormulario()" (focusout)="bucarNit()" />
+            <mat-error>{{ codErrores.nit }}</mat-error>
+          </mat-form-field>
+        </div>
+        <div class="col-md-3 col-sm-6">
+          <mat-form-field appearance="legacy" class="w-100">
+            <mat-label>Tipo de Documento:</mat-label>
+            <mat-select formControlName="tipoNit" (keyup)="edicionFormulario()">
+              <mat-option (click)="edicionFormulario()" *ngFor="let item of listaTipoNit" [value]="item.valor"
+                [matTooltip]="item.descripcion">
+                {{item.valor}}</mat-option>
+            </mat-select>
+            <mat-error>{{codErrores.tipoNit}}</mat-error>
+          </mat-form-field>
+        </div>
+        <div class="col-md-6 col-sm-6">
+          <mat-form-field appearance="legacy" class="w-100">
+            <mat-label>Nombre:</mat-label>
+            <input matInput type="text" formControlName="nombre" (keyup)="edicionFormulario()" />
+            <mat-error>{{ codErrores.nombre }}</mat-error>
+          </mat-form-field>
+        </div>
+        <div class="col-md-6 col-sm-6">
+          <mat-form-field appearance="legacy" class="w-100">
+            <mat-label>Razón Social:</mat-label>
+            <input matInput type="text" formControlName="razonSocial" (keyup)="edicionFormulario()" />
+            <mat-error>{{ codErrores.razonSocial }}</mat-error>
+          </mat-form-field>
+        </div>
+        <div class="col-md-4 col-sm-6">
+          <app-select-aguila [columnas]="colCorporacion" [datos]="getCorporaciones() |async"
+            (itemSeleccionado)="this.form.controls['idCorporacion'].setValue($event);getEntidadComercial.emit(null)"
+            [nombre]="'Corporacion'" [itemSelect]="this.form.controls['idCorporacion'].value">
+          </app-select-aguila>
+        </div>
+      </div>
+    </form>
+  </mat-card>
+</div>

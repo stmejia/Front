@@ -1,0 +1,8 @@
+{
+    "aguila": "dns",
+    "catalogos": "schema",
+    "activoOperaciones": "queue_play_next",
+    "controlGarita": "admin_panel_settings",
+    "taller": "home_repair_service",
+    "rrhh":"groups"
+}

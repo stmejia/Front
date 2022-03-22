@@ -1,0 +1,285 @@
+<!-- Nombre de Componente y Opciones -->
+<mat-card mat-card-content class="mat-elevation-z0">
+  <div class="row">
+    <!-- Nombre de Componente -->
+    <div class="col-md-6 col-sm-6 m-0 p-0 box-center-h">
+      <h4 class="txt-c-titulo p-0 m-0 tracking-in-expand">{{textos && textos.tltPerfil || 'Perfil'}}</h4>
+    </div>
+    <!-- Opciones -->
+    <div class="col-md-6 col-sm-6 p-0">
+      <div class="box-paginador">
+        <div class="box-right">
+          <button class="txt-c-danger d-block mx-auto p-0 mr-10" mat-flat-button type="button" (click)="back()">
+            <mat-icon>clear</mat-icon>
+            {{textos && textos.btnRegresar|| "Regresar"}}
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</mat-card>
+
+<!-- Contenido de la Pagina -->
+<div class="box">
+  <div class="row p-0">
+    <div class="col-md-4 col-sm-5">
+      <!-- Informacion del Usuario -->
+      <mat-card class="mat-elevation-z12">
+        <mat-card-content>
+          <div class="scale-in-top" *ngIf="usuario.id && !cargandoDatos">
+            <img class="img-fluid img-perfil-max d-block mx-auto"
+              [matTooltip]="textos && textos.tlpClickVisualizar || 'Click para visualizar'" [src]="img"
+              (click)="sweetService.sweetImagen(img)" />
+            <h4 class="m-0 text-center mt-10">{{ usuario.nombre }}</h4>
+            <p class="m-0 text-center">{{ usuario.username }}</p>
+            <p class="m-0 text-center">{{usuario.fchNacimiento|fecha}}</p>
+            <mat-divider></mat-divider>
+            <div class="mt-15">
+              <h6 class="m-0 div-center-v text-bold">{{textos && textos.lblCorreo || "Correo"}}</h6>
+              <p class="m-0">{{ usuario.email }}</p>
+
+              <h6 class="m-0 mt-10 div-center-v text-bold">{{textos && textos.lblFchCreacion||"Fecha de Creación"}}</h6>
+              <p class="m-0">
+                {{ usuario.fchCreacion | fecha }}
+              </p>
+
+              <h6 class="m-0 mt-10 div-center-v text-bold">{{textos && textos.lblRolesAsig||"Roles Asignados"}}</h6>
+              <mat-chip-list>
+                <mat-chip class="txt-no-selection" *ngFor="let rol of usuario.roles" color="accent" selected>
+                  {{rol.nombre}}</mat-chip>
+              </mat-chip-list>
+
+              <h6 class="m-0 mt-10 text-bold">{{textos && textos.lblModuloDefecto||"Modulo por Defecto"}}</h6>
+              <p class="m-0">{{modulo}}</p>
+
+              <h6 class="m-0 mt-10 text-bold">{{textos && textos.lblEstacionDefecto||"Estación de Trabajo por Defecto"}}
+              </h6>
+              <p class="m-0">{{estacion}}</p>
+            </div>
+
+            <mat-divider class="mt-10"></mat-divider>
+            <!-- Boton de Cerrar Sesion y Recarga de Perfil -->
+            <div class="mt-15 pt-5">
+              <div class="box-paginador">
+                <div class="box-right">
+                  <button class="m-5" mat-raised-button color="primary"
+                    [matTooltip]="textos && textos.msjActuIfoPerfil ||'Actualiza la información del perfil'"
+                    (click)="btnSincronizar()">
+                    <mat-icon>refresh</mat-icon>
+                    {{textos && textos.btnActualizarDatos||"Actualizar"}}
+                  </button>
+                  <button class="m-5" mat-raised-button color="warn" (click)="btnCerrarSesion()">
+                    <mat-icon>exit_to_app</mat-icon>
+                    {{textos && textos.btnCerrarSesion||"Cerrar Sesión"}}
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- Vista si no estan autenticados -->
+          <div class="scale-in-top" *ngIf="!usuario.id && !cargandoDatos">
+            <img class="img-fluid img-perfil-max d-block mx-auto"
+              src="https://img.icons8.com/color/500/000000/login-rounded-right.png" />
+            <h3 class="text-center">
+              Inicia sesión para ver la información de tu Perfil
+            </h3>
+          </div>
+          <!-- Animacion de carga de datos (Spinner) -->
+          <div class="div-center-h" *ngIf="cargandoDatos">
+            <mat-spinner></mat-spinner>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+    <div class="col-md-8 col-sm-7 slide-in-bottom">
+      <!-- Permisos y Ajustes -->
+      <mat-card class="mat-elevation-z12 tracking-in-expand">
+        <mat-tab-group selectedIndex="0">
+          <!-- Permisos del Usuario -->
+          <mat-tab *ngIf="!cargandoDatos && usuario.id">
+            <ng-template mat-tab-label="mat-tab-label">
+              <mat-icon class="mr-10">admin_panel_settings</mat-icon>
+              {{textos && textos.lblPermisosAsig||"Permisos Asignados"}}
+            </ng-template>
+            <div class="card m-5">
+              <!--Estaciones de Trabajo Asignadas -->
+              <mat-accordion>
+                <mat-expansion-panel>
+                  <!-- [expanded]="true" -->
+                  <mat-expansion-panel-header>
+                    <mat-panel-title>
+                      <h6 class="m-0 p-0">
+                        {{textos && textos.lblEstacionesAsig||"Estaciones de Trabajo Asignadas"}}
+                      </h6>
+                    </mat-panel-title>
+                  </mat-expansion-panel-header>
+                  <div class="card">
+                    <mat-expansion-panel *ngFor="let estacion of usuario.estacionesTrabajoAsignadas; index as e">
+                      <mat-expansion-panel-header>
+                        <mat-panel-title>
+                          <h6 class="m-0 p-0">
+                            {{ estacion.estacionTrabajo.codigo }}
+                            -
+                            {{ estacion.estacionTrabajo.nombre }}
+                          </h6>
+                        </mat-panel-title>
+                      </mat-expansion-panel-header>
+                      <div>
+                        <p class="txt-c-titulo m-0 p-0">
+                          <b>{{textos && textos.lblSucursal||"Sucursal"}}:
+                          </b>
+                          {{ estacion.estacionTrabajo.sucursal.nombre }}
+                        </p>
+                        <p class="txt-c-titulo m-0 p-0">
+                          <b>{{textos && textos.lblEmpresa||"Empresa"}}:
+                          </b>
+                          {{ estacion.estacionTrabajo.sucursal.empresa.nombre }}
+                        </p>
+                        <div class="row mt-5 card"
+                          *ngFor="let recurso of estacion.estacionTrabajo.recursos; index as r">
+                          <div class="col-md-3 col-sm-4 div-center-v p-5">
+                            <b>{{ recurso.nombre }}</b>
+                          </div>
+                          <div class="col-md-9 col-sm-8 p-5">
+                            <mat-chip-list multiple="multiple">
+                              <mat-chip class="txt-no-selection" *ngFor="let atributo of recurso.opciones;index as a"
+                                color="primary" [selected]="atributo">{{atributo}}</mat-chip>
+                            </mat-chip-list>
+                          </div>
+                        </div>
+                        <div class="mt-10">
+                          <mat-divider></mat-divider>
+                        </div>
+                      </div>
+                    </mat-expansion-panel>
+                  </div>
+                </mat-expansion-panel>
+              </mat-accordion>
+              <!-- Modulos Asignados -->
+              <mat-accordion>
+                <mat-expansion-panel>
+                  <mat-expansion-panel-header>
+                    <mat-panel-title>
+                      <h6 class="m-0 p-0">
+                        {{textos && textos.lblModulosAsig||"Modulos Asignados"}}
+                      </h6>
+                    </mat-panel-title>
+                  </mat-expansion-panel-header>
+                  <div class="">
+                    <div class="table-responsive">
+                      <table class="table">
+                        <thead class="thead">
+                          <tr class="tr">
+                            <th data-label="Nombre" class="th text-left" scope="col">
+                              {{textos && textos.lblNombre || "Nombre"}}
+                            </th>
+                            <th data-label="Estado" class="th text-center" scope="col">
+                              {{textos && textos.lblEstado|| "Estado"}}
+                            </th>
+                            <th data-label="Versión" class="th text-left" scope="col">
+                              {{textos && textos.lblVersion|| "Versión"}}
+                            </th>
+                          </tr>
+                        </thead>
+                        <tbody class="tbody">
+                          <tr class="tr" *ngFor="let modulo of usuario.modulos">
+                            <td data-label="Nombre" class="td">{{modulo.nombre}}</td>
+                            <td data-label="Estado" class="td">
+                              <div class="div-center-h">
+                                <img class="icono-25" *ngIf="modulo.activo" oncontextmenu="return false"
+                                  [matTooltip]="textos && textos.lblActivo || 'Activo'" src="assets/iconos/checked.png"
+                                  alt="IconoCheck">
+                                <img class="icono-25" *ngIf="!modulo.activo" oncontextmenu="return false"
+                                  [matTooltip]="textos && textos.lblBloqueado || 'Bloqueado'"
+                                  src="assets/iconos/checked_red.png" alt="IconoCheck">
+                              </div>
+                            </td>
+                            <td data-label="Versión" class="td">{{modulo.moduMinVersion}}</td>
+                          </tr>
+                          <!-- Fila que se muetra cuando no hay datos en la tabla -->
+                          <tr class="tr" *ngIf="usuario.modulos.length < 1">
+                            <td class="text-center td" colspan="3">
+                              {{textos && textos.msjSinDatos || 'No hay datos para mostrar'}}</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </mat-expansion-panel>
+              </mat-accordion>
+            </div>
+          </mat-tab>
+          <!-- Pestaña Vacia -->
+          <!-- <mat-tab *ngIf="!cargandoDatos">
+            <ng-template mat-tab-label="mat-tab-label">
+              <mat-icon class="mr-10">anchor</mat-icon>
+              Tab 2
+            </ng-template>
+            Contenido de Tab 2
+          </mat-tab> -->
+          <!-- Ajustes -->
+          <mat-tab>
+            <ng-template mat-tab-label="mat-tab-label">
+              <mat-icon class="mr-10">settings</mat-icon>
+              {{textos && textos.lblAjustes || 'Ajustes'}}
+            </ng-template>
+            <!-- Tema de la Aplicación -->
+            <div class="p-10">
+              <h4 class="m-0 p-0">{{textos && textos.lblTema||"Tema"}}</h4>
+              <mat-divider></mat-divider>
+              <div class="mt-10">
+                <h6 class="m-0 p-0 text-bold">{{textos && textos.lblColorTema||"Color de Te"}}</h6>
+                <mat-radio-group [(ngModel)]="tema">
+                  <mat-radio-button class="mt-5 ml-10 mr-10" value="default-theme">Azul</mat-radio-button>
+                  <mat-radio-button class="mt-5 ml-10 mr-10" value="teal-theme">Verde Azulado</mat-radio-button>
+                  <mat-radio-button class="mt-5 ml-10 mr-10" value="cyan-theme">Cian</mat-radio-button>
+                  <mat-radio-button class="mt-5 ml-10 mr-10" value="light-green-theme">Verde</mat-radio-button>
+                  <mat-radio-button class="mt-5 ml-10 mr-10" value="balu-theme">Balu</mat-radio-button>
+                  <!-- <mat-radio-button class="mt-5 ml-10 mr-10" value="red-theme">Rojo</mat-radio-button>
+                  <mat-radio-button class="mt-5 ml-10 mr-10" value="purple-theme">Morado</mat-radio-button> -->
+                </mat-radio-group>
+                <h6 class="m-0 p-0 mt-10 text-bold">{{textos && textos.lblTonoTema || "Tono del Tema"}}</h6>
+                <mat-radio-group [(ngModel)]="tipoTema">
+                  <mat-radio-button class="mt-5 ml-10 mr-10" value="">{{textos && textos.lblTemaClaro || "Claro"}}
+                  </mat-radio-button>
+                  <mat-radio-button class="mt-5 ml-10 mr-10" value="-dark">
+                    {{textos && textos.lblTemaOscuro || "Oscuro"}}
+                  </mat-radio-button>
+                </mat-radio-group>
+              </div>
+              <div class="box-paginador mt-10">
+                <div class="box-right">
+                  <button class="" mat-raised-button="mat-raised-button" color="primary" (click)="btnGuardarTema()">
+                    <mat-icon>save</mat-icon>
+                    {{textos && textos.btnGuardar|| 'Guardar'}}
+                  </button>
+                </div>
+              </div>
+            </div>
+            <!-- Idioma de la aplicación -->
+            <div class="p-10">
+              <h4 class="m-0 p-0">{{textos && textos.lblIdioma || 'Idioma'}}</h4>
+              <mat-divider></mat-divider>
+              <div class="mt-10">
+                <mat-radio-group class="p-15" [(ngModel)]="idioma">
+                  <mat-radio-button class="mr-15" value="ES">{{textos && textos.lblEspanol || 'Español'}}
+                  </mat-radio-button>
+                  <mat-radio-button  *ngIf="false" class="mr-15 ml-15" value="EN">{{textos && textos.lblIngles || 'Ingles'}}
+                  </mat-radio-button>
+                </mat-radio-group>
+              </div>
+              <div class="box-paginador mt-10">
+                <div class="box-right">
+                  <button class="" mat-raised-button="mat-raised-button" color="primary" (click)="btnGuardarIdioma()">
+                    <mat-icon>save</mat-icon>
+                    {{textos && textos.btnGuardar || 'Guardar'}}
+                  </button>
+                </div>
+              </div>
+            </div>
+          </mat-tab>
+        </mat-tab-group>
+      </mat-card>
+    </div>
+  </div>
+</div>

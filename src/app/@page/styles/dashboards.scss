@@ -1,0 +1,118 @@
+.card-glass {
+    background: rgba(255, 255, 255, 0.5);
+    box-shadow: 0 8px 8px 0 rgba(31, 38, 135, 0.37);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    border-radius: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    display: flex;
+    padding: 5px;
+    width: 100%;
+}
+
+.contadores {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    box-sizing: border-box;
+    padding-top: 10px;
+    .contador {
+        width: 50%;
+        display: flex;
+        flex-direction: row;
+        padding-left: 10px;
+        padding-right: 10px;
+        padding-top: 8px;
+        padding-bottom: 8px;
+        box-sizing: border-box;
+        img {
+            width: 20%;
+            height: auto;
+        }
+        .texto {
+            width: 80%;
+            display: flex;
+            flex-direction: column;
+            text-align: right;
+            justify-content: center;
+            p {
+                font-weight: bold;
+                margin: 0px;
+                padding: 0px;
+            }
+            h4 {
+                margin: 0px;
+                padding: 0px;
+            }
+        }
+    }
+}
+
+.graficas {
+    width: 100%;
+    height: auto;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    box-sizing: border-box;
+    padding-top: 10px;
+    .grafica {
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+        box-sizing: border-box;
+        padding: 8px;
+        .card-glass {
+            display: block;
+            //padding-top: 8px;
+        }
+    }
+    .grafica-bar {
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+        box-sizing: border-box;
+        padding: 8px;
+        .card-glass {
+            display: block;
+            //padding-top: 8px;
+        }
+    }
+}
+
+@media screen and (min-width: 1024px) {
+    .contadores {
+        width: 100%;
+        box-sizing: border-box;
+        .contador {
+            width: 33.333333%;
+        }
+    }
+
+    .graficas .grafica {
+        width: 50%;
+    }
+
+    .graficas .grafica-bar {
+        width: 50%;
+    }
+}
+
+@media screen and (min-width: 1440px) {
+    .contadores {
+        width: 100%;
+        box-sizing: border-box;
+        .contador {
+            width: 25%;
+        }
+    }
+
+    .graficas .grafica {
+        width: 33.333333%;
+    }
+
+    .graficas .grafica-bar {
+        width: 50%;
+    }
+}

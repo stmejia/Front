@@ -1,0 +1,127 @@
+<form [formGroup]="form" *ngIf="!cargando">
+    <div class="row">
+        <div class="col-md-12 col-lg-6 slide-in-left"
+            *ngIf="form.controls['id'].value>0 && form.controls['id'].value <= maxLlanta"
+            [ngClass]="{'col-lg-12': !visual}">
+            <!-- Titulo de Condicion -->
+            <div class="mb-5" *ngIf="form.controls['id'].value>0">
+                <h4 class="p-0 m-0 text-center w-100 txt-c-titulo text-bold">{{titulo}} </h4>
+                <h5 class="p-0 m-0 text-center w-100 txt-c-titulo">Posición {{this.form.controls["id"].value}} </h5>
+            </div>
+            <!-- Input de Llanta -->
+            <app-input-llanta [titulo]="'Llanta'" (getItem)="getLlanta($event)"
+                [codigo]="form.controls['codigo'].value">
+            </app-input-llanta>
+            <!-- Profundidad de la banda -->
+            <div class="row card mt-5 mb-5">
+                <div class="col-12 p-0 pt-10 pl-10">
+                    <h5 class="p-0 m-0 txt-c-titulo">Profundidad De La Banda (1/32")</h5>
+                </div>
+                <div class="col-4">
+                    <mat-form-field appearance="legacy" class="w-100">
+                        <mat-label>Izq:</mat-label>
+                        <input matInput type="text" formControlName="profundidadIzq" />
+                        <mat-error>Campo requerido</mat-error>
+                    </mat-form-field>
+                </div>
+                <div class="col-4">
+                    <mat-form-field appearance="legacy" class="w-100">
+                        <mat-label>Cto:</mat-label>
+                        <input matInput type="text" formControlName="profundidadCto" />
+                        <mat-error>Campo requerido</mat-error>
+                    </mat-form-field>
+                </div>
+                <div class="col-4">
+                    <mat-form-field appearance="legacy" class="w-100">
+                        <mat-label>Der:</mat-label>
+                        <input matInput type="text" formControlName="profundidadDer" />
+                        <mat-error>Campo requerido</mat-error>
+                    </mat-form-field>
+                </div>
+            </div>
+            <!-- Otros Aspectos -->
+            <div class="row card mt-5 mb-5">
+                <div class="col-12 p-0 pt-10 pl-10">
+                    <h5 class="p-0 m-0 txt-c-titulo">Otros Aspectos</h5>
+                </div>
+                <div class="col-md-4">
+                    <mat-form-field appearance="legacy" class="w-100">
+                        <mat-label>PSI:</mat-label>
+                        <input matInput type="number" formControlName="psi" />
+                        <mat-error>Campo requerido</mat-error>
+                    </mat-form-field>
+                </div>
+                <div class="col-md-4">
+                    <mat-form-field class="w-100">
+                        <mat-label>Estado:</mat-label>
+                        <mat-select formControlName="estado">
+                            <mat-option *ngFor="let e of listaEstados" [value]="e.valor">{{e.nombre}}</mat-option>
+                        </mat-select>
+                        <mat-error>Campo requerido</mat-error>
+                    </mat-form-field>
+                </div>
+                <div class="col-md-4">
+                    <mat-form-field class="w-100">
+                        <mat-label>Observaciones</mat-label>
+                        <input type="text" matInput formControlName="observaciones">
+                        <button matSuffix mat-icon-button *ngIf="form.controls['observaciones'].value"
+                            (click)="form.controls['observaciones'].setValue('')">
+                            <mat-icon>close</mat-icon>
+                        </button>
+                        <mat-error>Campo requerido</mat-error>
+                    </mat-form-field>
+                </div>
+            </div>
+            <!-- Boton de guardar -->
+            <div class="row">
+                <div class="col-12">
+                    <div class="grid-botones">
+                        <button class="ml-5 mr-5" mat-raised-button color="primary" (click)="enviarObjeto()">
+                            <mat-icon>save_alt</mat-icon> Guardar
+                        </button>
+                        <button *ngIf="false" class="ml-5 mr-5" mat-raised-button color="warn" [disabled]="!llanta" (click)="crearEvento()">
+                            <mat-icon>report_problem</mat-icon> Reportar Evento
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Dibujo de Equipo -->
+        <div class="col-md-12 col-lg-6 slide-in-left mx-auto" *ngIf="visual"
+            [ngClass]="{'col-md-12': !(form.controls['id'].value>0)}">
+            <h4 class="text-center text-bold txt-c-titulo text-bold">Seleccione la llanta a registrar</h4>
+
+            <app-chasis *ngIf="prefijo.startsWith('CH') && maxLlanta == 12"
+                [llantasRegistradas]="listaLlantas.asObservable() | async" [noLlanta]="form.controls['id'].value"
+                (llanta)="getNoLlanta($event)">
+            </app-chasis>
+
+            <app-chasis2 *ngIf="prefijo.startsWith('CH') && maxLlanta == 8"
+                [llantasRegistradas]="listaLlantas.asObservable() | async" [noLlanta]="form.controls['id'].value"
+                (llanta)="getNoLlanta($event)"></app-chasis2>
+
+            <app-cabezal *ngIf="prefijo.startsWith('CA')" [llantasRegistradas]="listaLlantas.asObservable() | async"
+                [noLlanta]="form.controls['id'].value" (llanta)="getNoLlanta($event)"></app-cabezal>
+
+            <app-furgon *ngIf="prefijo.startsWith('FU') && maxLlanta == 12"
+                [llantasRegistradas]="listaLlantas.asObservable() | async" [noLlanta]="form.controls['id'].value"
+                (llanta)="getNoLlanta($event)"></app-furgon>
+
+            <app-furgon2 *ngIf="prefijo.startsWith('FU') && maxLlanta == 8"
+                [llantasRegistradas]="listaLlantas.asObservable() | async" [noLlanta]="form.controls['id'].value"
+                (llanta)="getNoLlanta($event)"></app-furgon2>
+        </div>
+    </div>
+    <div class="row p-0 m-0 mb-10">
+        <div class="col-12 p-0 m-0">
+            <app-tabla-aguila [buscador]="false" [listaDatos]="listaLlantas.asObservable() | async"
+                (eventMenu)="eventoMenuOpciones($event)" [columnas]="columnasCondicionesLlantas"
+                [listaOpciones]="optTablaCondicionLlanta">
+            </app-tabla-aguila>
+        </div>
+    </div>
+</form>
+
+<div class="div-center w-100 mt-10" *ngIf="cargando">
+    <mat-spinner></mat-spinner>
+</div>

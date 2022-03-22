@@ -1,0 +1,163 @@
+<ng-container *ngIf="!cargandoDatos">
+  <app-header-component [header]="(configuracionComponent | async).header" (eventos)="eventosHeader($event)">
+  </app-header-component>
+</ng-container>
+
+<div class="box">
+  <div class="div-center w-100 mt-10" *ngIf="cargandoDatos">
+    <mat-spinner></mat-spinner>
+  </div>
+
+  <mat-card class="mat-elevation-z12" *ngIf="!cargandoDatos">
+    <mat-tab-group mat-align-tabs="start">
+      <mat-tab label="Datos del Cliente">
+        <mat-card-content>
+          <mat-vertical-stepper [linear]="true" #stepper>
+            <!-- Entidad Comercial -->
+            <mat-step [stepControl]="form.controls['entidadComercial']" errorMessage="{{codErrores.entidadComercial}}">
+              <ng-template matStepLabel>Datos Comerciales</ng-template>
+              <app-entidad-comercial (getEntidadComercial)="eventoGetEntidadComercial($event,stepper)"
+                (direccionFiscal)="eventoGetDireccionFiscal($event)" [tipo]="'C'"
+                [entidadComercial]="form.controls['entidadComercial'].value">
+              </app-entidad-comercial>
+            </mat-step>
+            <!-- Direccion Fiscal -->
+            <mat-step [stepControl]="form.controls['direccionFiscal']" errorMessage="{{codErrores.direccionFiscal}}">
+              <ng-template matStepLabel>Dirección Fiscal</ng-template>
+              <app-direccion (getDireccion)="eventoGetDireccionFiscal($event,stepper)"
+                [direccion]="form.controls['direccionFiscal'].value">
+              </app-direccion>
+            </mat-step>
+            <!-- Direccion Comercial -->
+            <mat-step [stepControl]="form.controls['direccion']" errorMessage="{{codErrores.direccion}}">
+              <ng-template matStepLabel>Dirección Fiscal De Cliente</ng-template>
+              <app-direccion (getDireccion)="eventoGetDireccion($event,stepper)"
+                [direccion]="form.controls['direccion'].value">
+              </app-direccion>
+            </mat-step>
+            <mat-step>
+              <ng-template matStepLabel>Otros Datos</ng-template>
+              <form [formGroup]="form">
+                <div class="row">
+                  <div class="col-md-4 col-sm-6">
+                    <mat-form-field appearance="legacy" class="w-100">
+                      <mat-label>Código:</mat-label>
+                      <input matInput type="text" formControlName="codigo" />
+                      <mat-error>{{ codErrores.codigo }}</mat-error>
+                    </mat-form-field>
+                  </div>
+                  <div class="col-md-4 col-sm-6">
+                    <app-select-aguila [columnas]="colTipoCliente" [datos]="getTiposClientes() |async"
+                      (itemSeleccionado)="this.form.controls['idTipoCliente'].setValue($event);"
+                      [nombre]="'Tipo de Cliente'" [itemSelect]="this.form.controls['idTipoCliente'].value">
+                    </app-select-aguila>
+                  </div>
+                  <div class="col-md-4 col-sm-6">
+                    <mat-form-field appearance="legacy" class="w-100">
+                      <mat-label>Dias de Crédito:</mat-label>
+                      <input matInput type="text" formControlName="diasCredito" />
+                      <mat-error>{{ codErrores.diasCredito }}</mat-error>
+                    </mat-form-field>
+                  </div>
+                </div>
+              </form>
+            </mat-step>
+          </mat-vertical-stepper>
+        </mat-card-content>
+      </mat-tab>
+      <mat-tab label="Direcciones" *ngIf="!isNuevo()">
+        <mat-card class="slide-in-bottom" *ngIf="!cargandoDatos">
+          <!-- Botones de Direccion Nueva, Cancelar -->
+          <div class="row p-0 m-0">
+            <div class="col-sm-12 p-0 m-0">
+              <div class="box-paginador slide-in-left">
+                <div class="box-right">
+                  <button mat-raised-button color="primary" *ngIf="!direccionNueva"
+                    (click)="direccionNueva=true; direccionEditar= false; formDireccionNueva.reset()">
+                    <mat-icon class="rotate-in-center">add_circle_outline</mat-icon>
+                    Dirección Nueva
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <h4 class="txt-c-titulo">Direcciones Registradas</h4>
+          <ng-container>
+            <mat-list>
+              <mat-list-item *ngFor="let direccion of listaDirecciones">
+                <button class="txt-c-titulo" mat-icon-button [disabled]="!opcionDisponible('Modificar')"
+                  *ngIf="form.controls['idDireccion'].value!=direccion.idDireccion"
+                  (click)="cambiarDireccionDefecto(direccion)">
+                  <mat-icon matTooltip="Direccion por defecto">check_circle</mat-icon>
+                </button>
+                <button class="txt-c-danger" mat-icon-button [disabled]="!opcionDisponibleDirecciones('Eliminar')"
+                  (click)="eliminarDireccion(direccion)">
+                  <mat-icon matTooltip="Eliminar Dirección">delete_forever</mat-icon>
+                </button>
+                <button class="txt-c-titulo" mat-icon-button [disabled]="!opcionDisponibleDirecciones('Modificar')"
+                  (click)="cargarDireccionId(direccion.id)">
+                  <mat-icon matTooltip="Modificar Dirección">create</mat-icon>
+                </button>
+                <div mat-line>
+                  <p class="txt-c-titulo text-bold p-0 m-0">{{direccion.descripcion}}
+                    {{form.controls['idDireccion'].value==direccion.idDireccion ? "(Dirección Comercial)":""}}</p>
+                </div>
+                <div mat-line>
+                  <p class="p-0 m-0">{{direccion.vDireccion}}</p>
+                </div>
+              </mat-list-item>
+            </mat-list>
+          </ng-container>
+          <mat-divider></mat-divider>
+          <div class="pt-5" *ngIf="direccionNueva">
+            <form class="slide-in-bottom" [formGroup]="formDireccionNueva">
+              <app-direccion (getDireccion)="guardarDireccionNueva($event)" (cancelEvent)="direccionNueva = false">
+              </app-direccion>
+              <div class="row">
+                <div class="col-md-8 col-sm-6">
+                  <mat-form-field appearance="legacy" class="w-100">
+                    <mat-label>Descripción:</mat-label>
+                    <input matInput type="text" formControlName="descripcion" />
+                    <mat-error>*Campo Requerido</mat-error>
+                  </mat-form-field>
+                </div>
+              </div>
+            </form>
+            <mat-divider></mat-divider>
+          </div>
+          <div class="pt-5" *ngIf="direccionEditar">
+            <form class="slide-in-bottom" [formGroup]="formDireccionNueva">
+              <app-direccion [direccion]="this.formDireccionNueva.controls['direccion'].value"
+                (getDireccion)="actualizardireccion($event)" (cancelEvent)="direccionEditar = false">
+              </app-direccion>
+              <div class="row">
+                <div class="col-md-8 col-sm-6">
+                  <mat-form-field appearance="legacy" class="w-100">
+                    <mat-label>Descripción:</mat-label>
+                    <input matInput type="text" formControlName="descripcion" />
+                    <mat-error>*Campo Requerido</mat-error>
+                  </mat-form-field>
+                </div>
+              </div>
+            </form>
+            <mat-divider></mat-divider>
+          </div>
+        </mat-card>
+      </mat-tab>
+      <mat-tab label="Tarifas" *ngIf="!isNuevo()">
+        <div class="div-right">
+          <button mat-raised-button color="primary" (click)="abrirModalClienteTarifa()"
+            [disabled]="!opcionDisponible('Asignar Tarifa')">
+            <mat-icon class="rotate-in-center">add_circle_outline</mat-icon>
+            Nuevo
+          </button>
+        </div>
+        <div class="p-5">
+          <app-tabla-aguila [columnas]="colClientetarifa" [listaDatos]="getClienteTarifa() | async"
+            [paginador]="getPaginadorCT() | async" (eventPaginador)="eventoPaginadorCT($event)">
+          </app-tabla-aguila>
+        </div>
+      </mat-tab>
+    </mat-tab-group>
+  </mat-card>
+</div>

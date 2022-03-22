@@ -1,0 +1,16 @@
+.map-container {
+    height: 100% !important;
+    width: 100% !important;
+}
+
+.map-frame {
+    border: 2px solid black;
+    height: 100% !important;
+    width: 100% !important;
+}
+
+#map {
+    min-height: 350px;
+    height: 100% !important;
+    width: 100% !important;
+}

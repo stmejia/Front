@@ -1,0 +1,871 @@
+{
+    "empresa": "CLT",
+    "departamentos": [
+        {
+            "nombre": "Operaciones",
+            "codigo": "OP"
+        },
+        {
+            "nombre": "Balu País",
+            "codigo": "BP"
+        },
+        {
+            "nombre": "Administración",
+            "codigo": "AD"
+        },
+        {
+            "nombre": "Comercial",
+            "codigo": "CM"
+        },
+        {
+            "nombre": "Logística",
+            "codigo": "LG"
+        },
+        {
+            "nombre": "Balu Región",
+            "codigo": "BR"
+        }
+    ],
+    "areas": [
+        {
+            "cod_departamento": "OP",
+            "nombre": "Administración",
+            "codigo": "01"
+        },
+        {
+            "cod_departamento": "OP",
+            "nombre": "Bodega",
+            "codigo": "02"
+        },
+        {
+            "cod_departamento": "OP",
+            "nombre": "Compras",
+            "codigo": "03"
+        },
+        {
+            "cod_departamento": "OP",
+            "nombre": "Predios",
+            "codigo": "04"
+        },
+        {
+            "cod_departamento": "OP",
+            "nombre": "Taller",
+            "codigo": "05"
+        },
+        {
+            "cod_departamento": "OP",
+            "nombre": "No Aplica",
+            "codigo": "06"
+        },
+        {
+            "cod_departamento": "BP",
+            "nombre": "Contraloria",
+            "codigo": "01"
+        },
+        {
+            "cod_departamento": "BP",
+            "nombre": "Departamento De Servicios Compartidos",
+            "codigo": "02"
+        },
+        {
+            "cod_departamento": "BP",
+            "nombre": "Unidad De Negocio",
+            "codigo": "03"
+        },
+        {
+            "cod_departamento": "BP",
+            "nombre": "Unidad De Soporte",
+            "codigo": "04"
+        },
+        {
+            "cod_departamento": "BP",
+            "nombre": "No Aplica",
+            "codigo": "05"
+        },
+        {
+            "cod_departamento": "AD",
+            "nombre": "Contabilidad",
+            "codigo": "01"
+        },
+        {
+            "cod_departamento": "AD",
+            "nombre": "No Aplica",
+            "codigo": "02"
+        },
+        {
+            "cod_departamento": "CM",
+            "nombre": "Administración",
+            "codigo": "01"
+        },
+        {
+            "cod_departamento": "CM",
+            "nombre": "Pre-Venta",
+            "codigo": "02"
+        },
+        {
+            "cod_departamento": "CM",
+            "nombre": "Post-Venta",
+            "codigo": "03"
+        },
+        {
+            "cod_departamento": "CM",
+            "nombre": "No Aplica",
+            "codigo": "04"
+        },
+        {
+            "cod_departamento": "LG",
+            "nombre": "Administración",
+            "codigo": "01"
+        },
+        {
+            "cod_departamento": "LG",
+            "nombre": "Exportaciones",
+            "codigo": "02"
+        },
+        {
+            "cod_departamento": "LG",
+            "nombre": "Gestión Portuaria",
+            "codigo": "03"
+        },
+        {
+            "cod_departamento": "LG",
+            "nombre": "Importaciones",
+            "codigo": "04"
+        },
+        {
+            "cod_departamento": "LG",
+            "nombre": "Pilotos",
+            "codigo": "05"
+        },
+        {
+            "cod_departamento": "LG",
+            "nombre": "Predios",
+            "codigo": "06"
+        },
+        {
+            "cod_departamento": "LG",
+            "nombre": "Tráfico",
+            "codigo": "07"
+        },
+        {
+            "cod_departamento": "LG",
+            "nombre": "No Aplica",
+            "codigo": "08"
+        },
+        {
+            "cod_departamento": "BR",
+            "nombre": "Dirección General",
+            "codigo": "01"
+        },
+        {
+            "cod_departamento": "BR",
+            "nombre": "Dirección Comercial",
+            "codigo": "02"
+        },
+        {
+            "cod_departamento": "BR",
+            "nombre": "Dirección De Operaciones",
+            "codigo": "03"
+        },
+        {
+            "cod_departamento": "BR",
+            "nombre": "Dirección Financiera",
+            "codigo": "04"
+        },
+        {
+            "cod_departamento": "BR",
+            "nombre": "No Aplica",
+            "codigo": "05"
+        }
+    ],
+    "sub_areas": [
+        {
+            "cod_departamento": "OP",
+            "nombre": "Administración de Taller",
+            "codigo": "AT"
+        },
+        {
+            "cod_departamento": "OP",
+            "nombre": "Electromecánica",
+            "codigo": "EM"
+        },
+        {
+            "cod_departamento": "OP",
+            "nombre": "Enderezado Y Pintura",
+            "codigo": "EP"
+        },
+        {
+            "cod_departamento": "OP",
+            "nombre": "Equipo Intermodal",
+            "codigo": "EI"
+        },
+        {
+            "cod_departamento": "OP",
+            "nombre": "Gasolinera",
+            "codigo": "GA"
+        },
+        {
+            "cod_departamento": "OP",
+            "nombre": "Genset",
+            "codigo": "GS"
+        },
+        {
+            "cod_departamento": "OP",
+            "nombre": "Llantera",
+            "codigo": "LL"
+        },
+        {
+            "cod_departamento": "OP",
+            "nombre": "Mecánica General",
+            "codigo": "MG"
+        },
+        {
+            "cod_departamento": "OP",
+            "nombre": "Soldadura",
+            "codigo": "SL"
+        },
+        {
+            "cod_departamento": "OP",
+            "nombre": "No Aplica",
+            "codigo": "NA"
+        },
+        {
+            "cod_departamento": "BP",
+            "nombre": "Administración",
+            "codigo": "AD"
+        },
+        {
+            "cod_departamento": "BP",
+            "nombre": "Agenciamiento De Carga",
+            "codigo": "AC"
+        },
+        {
+            "cod_departamento": "BP",
+            "nombre": "Auditoría",
+            "codigo": "AU"
+        },
+        {
+            "cod_departamento": "BP",
+            "nombre": "Contabilidad",
+            "codigo": "CT"
+        },
+        {
+            "cod_departamento": "BP",
+            "nombre": "Depósito",
+            "codigo": "DP"
+        },
+        {
+            "cod_departamento": "BP",
+            "nombre": "Infraestructura",
+            "codigo": "IF"
+        },
+        {
+            "cod_departamento": "BP",
+            "nombre": "Recursos Humanos",
+            "codigo": "RH"
+        },
+        {
+            "cod_departamento": "BP",
+            "nombre": "Seguridad",
+            "codigo": "SG"
+        },
+        {
+            "cod_departamento": "BP",
+            "nombre": "Tecnología",
+            "codigo": "TC"
+        },
+        {
+            "cod_departamento": "BP",
+            "nombre": "Tecnología De La Información",
+            "codigo": "TI"
+        },
+        {
+            "cod_departamento": "BP",
+            "nombre": "Transporte",
+            "codigo": "TS"
+        },
+        {
+            "cod_departamento": "BP",
+            "nombre": "No Aplica",
+            "codigo": "NA"
+        },
+        {
+            "cod_departamento": "AD",
+            "nombre": "Logística",
+            "codigo": "LG"
+        },
+        {
+            "cod_departamento": "AD",
+            "nombre": "Predios",
+            "codigo": "PD"
+        },
+        {
+            "cod_departamento": "AD",
+            "nombre": "Taller",
+            "codigo": "TA"
+        },
+        {
+            "cod_departamento": "AD",
+            "nombre": "No Aplica",
+            "codigo": "NA"
+        },
+        {
+            "cod_departamento": "CM",
+            "nombre": "No Aplica",
+            "codigo": "NA"
+        },
+        {
+            "cod_departamento": "LG",
+            "nombre": "Administración De Pilotos",
+            "codigo": "AP"
+        },
+        {
+            "cod_departamento": "LG",
+            "nombre": "Control De Equipos",
+            "codigo": "CE"
+        },
+        {
+            "cod_departamento": "LG",
+            "nombre": "Pool Container",
+            "codigo": "PC"
+        },
+        {
+            "cod_departamento": "LG",
+            "nombre": "Servicio al Cliente",
+            "codigo": "SC"
+        },
+        {
+            "cod_departamento": "LG",
+            "nombre": "Supervisión",
+            "codigo": "SP"
+        },
+        {
+            "cod_departamento": "LG",
+            "nombre": "Viáticos y Combustible",
+            "codigo": "VC"
+        },
+        {
+            "cod_departamento": "LG",
+            "nombre": "No Aplica",
+            "codigo": "NA"
+        },
+        {
+            "cod_departamento": "BR",
+            "nombre": "Contraloría",
+            "codigo": "CT"
+        },
+        {
+            "cod_departamento": "BR",
+            "nombre": "Desarrollo Organizacional",
+            "codigo": "DO"
+        },
+        {
+            "cod_departamento": "BR",
+            "nombre": "Operaciones",
+            "codigo": "OP"
+        },
+        {
+            "cod_departamento": "BR",
+            "nombre": "Soporte",
+            "codigo": "SP"
+        },
+        {
+            "cod_departamento": "BR",
+            "nombre": "No Aplica",
+            "codigo": "NA"
+        }
+    ],
+    "puestos": [
+        {
+            "cod_departamento": "OP",
+            "nombre": "Asistente Administrativo de Operaciones",
+            "codigo": "01"
+        },
+        {
+            "cod_departamento": "OP",
+            "nombre": "Asistente de Taller",
+            "codigo": "02"
+        },
+        {
+            "cod_departamento": "OP",
+            "nombre": "Auxiliar De Bodega",
+            "codigo": "03"
+        },
+        {
+            "cod_departamento": "OP",
+            "nombre": "Auxiliar De Taller",
+            "codigo": "04"
+        },
+        {
+            "cod_departamento": "OP",
+            "nombre": "Coordinador De Bodega",
+            "codigo": "05"
+        },
+        {
+            "cod_departamento": "OP",
+            "nombre": "Coordinador De Bodega De Repuestos Usados Y Equipo Especial",
+            "codigo": "06"
+        },
+        {
+            "cod_departamento": "OP",
+            "nombre": "Conserje",
+            "codigo": "07"
+        },
+        {
+            "cod_departamento": "OP",
+            "nombre": "Coordinador De Bodega De Llantas Y Baterías",
+            "codigo": "08"
+        },
+        {
+            "cod_departamento": "OP",
+            "nombre": "Despachador de Combustible",
+            "codigo": "09"
+        },
+        {
+            "cod_departamento": "OP",
+            "nombre": "Gestor De Compras",
+            "codigo": "10"
+        },
+        {
+            "cod_departamento": "OP",
+            "nombre": "Electromecánico",
+            "codigo": "11"
+        },
+        {
+            "cod_departamento": "OP",
+            "nombre": "Gerente De Operaciones",
+            "codigo": "12"
+        },
+        {
+            "cod_departamento": "OP",
+            "nombre": "Gerente De Puerto",
+            "codigo": "13"
+        },
+        {
+            "cod_departamento": "OP",
+            "nombre": "Jefe De Compras Y Almacén General",
+            "codigo": "14"
+        },
+        {
+            "cod_departamento": "OP",
+            "nombre": "Jefe De Talleres",
+            "codigo": "15"
+        },
+        {
+            "cod_departamento": "OP",
+            "nombre": "Jefe De Taller",
+            "codigo": "16"
+        },
+        {
+            "cod_departamento": "OP",
+            "nombre": "Llantero",
+            "codigo": "17"
+        },
+        {
+            "cod_departamento": "OP",
+            "nombre": "Mecánico de Equipo Intermodal",
+            "codigo": "18"
+        },
+        {
+            "cod_departamento": "OP",
+            "nombre": "Mecánico de Furgones",
+            "codigo": "19"
+        },
+        {
+            "cod_departamento": "OP",
+            "nombre": "Mecánico General",
+            "codigo": "20"
+        },
+        {
+            "cod_departamento": "OP",
+            "nombre": "Operador de Maquinaria",
+            "codigo": "21"
+        },
+        {
+            "cod_departamento": "OP",
+            "nombre": "Pintor",
+            "codigo": "22"
+        },
+        {
+            "cod_departamento": "OP",
+            "nombre": "Remachador",
+            "codigo": "23"
+        },
+        {
+            "cod_departamento": "OP",
+            "nombre": "Soldador",
+            "codigo": "24"
+        },
+        {
+            "cod_departamento": "OP",
+            "nombre": "Técnico Especializado",
+            "codigo": "25"
+        },
+        {
+            "cod_departamento": "BP",
+            "nombre": "Analista Contable",
+            "codigo": "01"
+        },
+        {
+            "cod_departamento": "BP",
+            "nombre": "Analista De Capacitaciones",
+            "codigo": "02"
+        },
+        {
+            "cod_departamento": "BP",
+            "nombre": "Analista De Compesaciones Y Beneficios",
+            "codigo": "03"
+        },
+        {
+            "cod_departamento": "BP",
+            "nombre": "Analista De Comunicación",
+            "codigo": "04"
+        },
+        {
+            "cod_departamento": "BP",
+            "nombre": "Analista De Reclutamiento Y Selección",
+            "codigo": "05"
+        },
+        {
+            "cod_departamento": "BP",
+            "nombre": "Asistente De Auditoría",
+            "codigo": "06"
+        },
+        {
+            "cod_departamento": "BP",
+            "nombre": "Asistente De Gerencia RRHH",
+            "codigo": "07"
+        },
+        {
+            "cod_departamento": "BP",
+            "nombre": "Asistente De Presidencia",
+            "codigo": "08"
+        },
+        {
+            "cod_departamento": "BP",
+            "nombre": "Auditor De Egresos",
+            "codigo": "09"
+        },
+        {
+            "cod_departamento": "BP",
+            "nombre": "Auditor De Ingresos",
+            "codigo": "10"
+        },
+        {
+            "cod_departamento": "BP",
+            "nombre": "Auditor Interno",
+            "codigo": "11"
+        },
+        {
+            "cod_departamento": "BP",
+            "nombre": "Auxiliar Contable",
+            "codigo": "12"
+        },
+        {
+            "cod_departamento": "BP",
+            "nombre": "Auxiliar De Compensaciones Y Beneficios",
+            "codigo": "13"
+        },
+        {
+            "cod_departamento": "BP",
+            "nombre": "Contador De País",
+            "codigo": "14"
+        },
+        {
+            "cod_departamento": "BP",
+            "nombre": "Contador Junior",
+            "codigo": "15"
+        },
+        {
+            "cod_departamento": "BP",
+            "nombre": "Coordinador De Ingresos",
+            "codigo": "16"
+        },
+        {
+            "cod_departamento": "BP",
+            "nombre": "Coordinador De Recursos Humanos",
+            "codigo": "17"
+        },
+        {
+            "cod_departamento": "BP",
+            "nombre": "Gerente De País",
+            "codigo": "18"
+        },
+        {
+            "cod_departamento": "BP",
+            "nombre": "Gerente General",
+            "codigo": "19"
+        },
+        {
+            "cod_departamento": "BP",
+            "nombre": "Recepcionista RRHH",
+            "codigo": "20"
+        },
+        {
+            "cod_departamento": "BP",
+            "nombre": "Soporte Logistico Comercial",
+            "codigo": "21"
+        },
+        {
+            "cod_departamento": "AD",
+            "nombre": "Asistente Administrativo Contable",
+            "codigo": "01"
+        },
+        {
+            "cod_departamento": "AD",
+            "nombre": "Contador",
+            "codigo": "02"
+        },
+        {
+            "cod_departamento": "AD",
+            "nombre": "Gerente Administrativo",
+            "codigo": "03"
+        },
+        {
+            "cod_departamento": "CM",
+            "nombre": "Analista De Facturación",
+            "codigo": "01"
+        },
+        {
+            "cod_departamento": "CM",
+            "nombre": "Coordinador Comercial",
+            "codigo": "02"
+        },
+        {
+            "cod_departamento": "CM",
+            "nombre": "Gestor De Cotizaciones",
+            "codigo": "03"
+        },
+        {
+            "cod_departamento": "CM",
+            "nombre": "Gestor De Cuenta Por Cobrar",
+            "codigo": "04"
+        },
+        {
+            "cod_departamento": "LG",
+            "nombre": "Administración De Combustible",
+            "codigo": "01"
+        },
+        {
+            "cod_departamento": "LG",
+            "nombre": "Administración de Pilotos",
+            "codigo": "02"
+        },
+        {
+            "cod_departamento": "LG",
+            "nombre": "Agente De Servicios",
+            "codigo": "03"
+        },
+        {
+            "cod_departamento": "LG",
+            "nombre": "Asesor Logístico",
+            "codigo": "04"
+        },
+        {
+            "cod_departamento": "LG",
+            "nombre": "Asistente Administrativo De Logística",
+            "codigo": "05"
+        },
+        {
+            "cod_departamento": "LG",
+            "nombre": "Asistente De Documentación",
+            "codigo": "06"
+        },
+        {
+            "cod_departamento": "LG",
+            "nombre": "Asistente De Viáticos Y Combustible",
+            "codigo": "07"
+        },
+        {
+            "cod_departamento": "LG",
+            "nombre": "Coordinador De Equipos",
+            "codigo": "08"
+        },
+        {
+            "cod_departamento": "LG",
+            "nombre": "Coordinador De Exportaciones",
+            "codigo": "09"
+        },
+        {
+            "cod_departamento": "LG",
+            "nombre": "Coordinador De Importaciones",
+            "codigo": "10"
+        },
+        {
+            "cod_departamento": "LG",
+            "nombre": "Coordinador De Logística",
+            "codigo": "11"
+        },
+        {
+            "cod_departamento": "LG",
+            "nombre": "Coordinador De Predio",
+            "codigo": "12"
+        },
+        {
+            "cod_departamento": "LG",
+            "nombre": "Coordinador De Pilotos",
+            "codigo": "13"
+        },
+        {
+            "cod_departamento": "LG",
+            "nombre": "Coordinador De Import. Y Export.",
+            "codigo": "14"
+        },
+        {
+            "cod_departamento": "LG",
+            "nombre": "Digitador",
+            "codigo": "15"
+        },
+        {
+            "cod_departamento": "LG",
+            "nombre": "Documentador",
+            "codigo": "16"
+        },
+        {
+            "cod_departamento": "LG",
+            "nombre": "Gerente De Logística",
+            "codigo": "17"
+        },
+        {
+            "cod_departamento": "LG",
+            "nombre": "Gestor Aduanal Portuario",
+            "codigo": "18"
+        },
+        {
+            "cod_departamento": "LG",
+            "nombre": "Gestor De Operaciones",
+            "codigo": "19"
+        },
+        {
+            "cod_departamento": "LG",
+            "nombre": "Inspector De Equipos",
+            "codigo": "20"
+        },
+        {
+            "cod_departamento": "LG",
+            "nombre": "Lavador De Contenedores",
+            "codigo": "21"
+        },
+        {
+            "cod_departamento": "LG",
+            "nombre": "Operador De Montacargas",
+            "codigo": "22"
+        },
+        {
+            "cod_departamento": "LG",
+            "nombre": "Piloto De Cabezal",
+            "codigo": "23"
+        },
+        {
+            "cod_departamento": "LG",
+            "nombre": "Piloto De Patio",
+            "codigo": "24"
+        },
+        {
+            "cod_departamento": "LG",
+            "nombre": "Supervisor De Ruta",
+            "codigo": "25"
+        },
+        {
+            "cod_departamento": "BR",
+            "nombre": "Presidente",
+            "codigo": "01"
+        },
+        {
+            "cod_departamento": "BR",
+            "nombre": "Contralor Corporativo",
+            "codigo": "02"
+        },
+        {
+            "cod_departamento": "BR",
+            "nombre": "Director General",
+            "codigo": "03"
+        },
+        {
+            "cod_departamento": "BR",
+            "nombre": "Director Financiero",
+            "codigo": "04"
+        },
+        {
+            "cod_departamento": "BR",
+            "nombre": "Director Comercial",
+            "codigo": "05"
+        },
+        {
+            "cod_departamento": "BR",
+            "nombre": "Director De Operaciones",
+            "codigo": "06"
+        },
+        {
+            "cod_departamento": "BR",
+            "nombre": "Gerente De Desarrollo Organizacional Regional",
+            "codigo": "07"
+        },
+        {
+            "cod_departamento": "BR",
+            "nombre": "Gestor De Procesos Corporativos",
+            "codigo": "08"
+        }
+    ],
+    "categorias": [
+        {
+            "nombre": "Especializado",
+            "codigo": "A"
+        },
+        {
+            "nombre": "General",
+            "codigo": "B"
+        },
+        {
+            "nombre": "Ayudante / Auxiliar",
+            "codigo": "C"
+        },
+        {
+            "nombre": "No Aplica",
+            "codigo": "N"
+        }
+    ],
+    "localidades": [
+        {
+            "nombre": "Villa Nueva",
+            "codigo": "VN"
+        },
+        {
+            "nombre": "Puerto Quetzal",
+            "codigo": "PTQ"
+        },
+        {
+            "nombre": "Santo Tomás De Castilla",
+            "codigo": "PTQ"
+        },
+        {
+            "nombre": "Guatemala",
+            "codigo": "GT"
+        },
+        {
+            "cod_departamento": "BP",
+            "nombre": "La Libertad, El Salvador",
+            "codigo": "LB"
+        },
+        {
+            "cod_departamento": "BP",
+            "nombre": "San Pedro Sula, Honduras",
+            "codigo": "SPS"
+        },
+        {
+            "cod_departamento": "BP",
+            "nombre": "Villa Nueva, Guatemala",
+            "codigo": "VN"
+        }
+    ],
+    "estados": [
+        {
+            "nombre": "Activo",
+            "codigo": "1"
+        },
+        {
+            "nombre": "Inactivo",
+            "codigo": "0"
+        }
+    ]
+}

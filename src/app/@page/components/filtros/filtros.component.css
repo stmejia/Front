@@ -1,0 +1,15 @@
+.div-Filtros {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.span {
+    margin-top: -10px !important;
+    padding: 0px !important;
+}
+
+.example-additional-selection {
+    opacity: 0.75;
+    font-size: 0.75em;
+  }

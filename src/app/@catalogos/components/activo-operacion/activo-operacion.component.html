@@ -1,0 +1,95 @@
+<div>
+    <div class="div-center w-100 mt-10" *ngIf="cargando">
+        <mat-spinner></mat-spinner>
+    </div>
+
+    <form *ngIf="!cargando" [formGroup]="form">
+        <div class="row">
+            <div class="col-md-4">
+                <app-select-aguila [columnas]="colTransportes" [datos]="getTransportes() | async"
+                    (focusout)="enviarObjeto()" (itemSeleccionado)="this.form.controls['idTransporte'].setValue($event)"
+                    [nombre]="'Transporte'" [itemSelect]="this.form.controls['idTransporte'].value">
+                </app-select-aguila>
+            </div>
+            <div class="col-md-3">
+                <mat-form-field appearance="legacy" class="w-100">
+                    <mat-label>Marca:</mat-label>
+                    <input matInput type="text" formControlName="marca" (focusout)="enviarObjeto()" />
+                    <mat-error>{{ codErrores.marca }}</mat-error>
+                </mat-form-field>
+            </div>
+            <div class="col-md-2">
+                <mat-form-field appearance="legacy" class="w-100">
+                    <mat-label>No. Serie:</mat-label>
+                    <input matInput type="text" formControlName="serie" (focusout)="enviarObjeto()" />
+                    <mat-error>{{ codErrores.serie }}</mat-error>
+                </mat-form-field>
+            </div>
+            <div class="col-md-3">
+                <mat-form-field appearance="legacy" class="w-100">
+                    <mat-label>VIN:</mat-label>
+                    <input matInput type="text" formControlName="vin" (focusout)="enviarObjeto()" />
+                    <mat-error>{{ codErrores.vin }}</mat-error>
+                </mat-form-field>
+            </div>
+            <!--  -->
+            <div class="col-md-3">
+                <mat-form-field appearance="legacy" class="w-100">
+                    <mat-label>Color:</mat-label>
+                    <input matInput type="text" formControlName="color" (focusout)="enviarObjeto()" />
+                    <mat-error>{{ codErrores.color }}</mat-error>
+                </mat-form-field>
+            </div>
+            <div class="col-md-2">
+                <mat-form-field appearance="legacy" class="w-100">
+                    <mat-label>Modelo (año):</mat-label>
+                    <input matInput type="number" formControlName="modeloAnio" (focusout)="enviarObjeto()" />
+                    <mat-error>{{ codErrores.modeloAnio }}</mat-error>
+                </mat-form-field>
+            </div>
+            <div class="col-md-2">
+                <mat-form-field appearance="legacy" class="w-100">
+                    <mat-label>Correlativo:</mat-label>
+                    <input matInput type="number" formControlName="correlativo" (focusout)="enviarObjeto()" />
+                    <mat-error>{{ codErrores.correlativo }}</mat-error>
+                </mat-form-field>
+            </div>
+            <div class="col-md-5">
+                <mat-form-field appearance="legacy" class="w-100">
+                    <mat-label>Descripción:</mat-label>
+                    <input matInput type="text" formControlName="descripcion" (focusout)="enviarObjeto()" />
+                    <mat-error>{{ codErrores.descripcion }}</mat-error>
+                </mat-form-field>
+            </div>
+            <div class="col-md-2">
+                <mat-form-field appearance="legacy" class="w-100">
+                    <mat-label>Flota:</mat-label>
+                    <mat-select formControlName="flota" (focusout)="enviarObjeto()">
+                        <mat-option *ngFor="let item of listaFlota" [matTooltip]="item.descripcion"
+                            (focusout)="enviarObjeto()" [value]="item.valor">
+                            {{item.valor}}
+                        </mat-option>
+                    </mat-select>
+                    <mat-error></mat-error>
+                </mat-form-field>
+            </div>
+            <div class="col-md-3">
+                <mat-form-field class="w-100" appearance="legacy">
+                    <mat-label>Fecha de Baja:</mat-label>
+                    <input matInput [matDatepicker]="fechaBaja" formControlName="fechaBaja" />
+                    <mat-datepicker-toggle matSuffix [for]="fechaBaja"></mat-datepicker-toggle>
+                    <mat-datepicker #fechaBaja></mat-datepicker>
+                    <mat-error>{{ codErrores.fechaBaja }}</mat-error>
+                </mat-form-field>
+            </div>
+            <div class="col-md-3">
+                <mat-form-field appearance="legacy" class="w-100">
+                    <mat-label>Fecha de Creación</mat-label>
+                    <input matInput [matDatepicker]="dpC" formControlName="fechaCreacion" />
+                    <mat-datepicker-toggle matSuffix [for]="dpC"></mat-datepicker-toggle>
+                    <mat-datepicker #dpC></mat-datepicker>
+                </mat-form-field>
+            </div>
+        </div>
+    </form>
+</div>
